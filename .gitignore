@@ -15,3 +15,7 @@ api/data/
 
 # Rust build output
 fabric-db/target/
+
+# Node / TypeScript
+web/node_modules/
+web/dist/
