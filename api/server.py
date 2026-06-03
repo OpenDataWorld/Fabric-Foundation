@@ -23,7 +23,7 @@ import json
 import os
 import sys
 from collections import deque
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "codegen"))
@@ -203,8 +203,43 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         u = urlparse(self.path)
+        if u.path.rstrip("/") == "/stream":
+            return self._stream()
         status, body = route(u.path, parse_qs(u.query))
         self._send(status, body)
+
+    def _stream(self):
+        """Server-Sent Events: push new audit Events as they happen.
+        Mirrors SurrealDB LIVE SELECT — swappable for the real engine later."""
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        # Start from the current end of the event log; only stream new events.
+        pos = os.path.getsize(EVENTS) if os.path.exists(EVENTS) else 0
+        try:
+            self.wfile.write(b": connected\n\n")
+            self.wfile.flush()
+            ticks = 0
+            while True:
+                size = os.path.getsize(EVENTS) if os.path.exists(EVENTS) else 0
+                if size > pos:
+                    with open(EVENTS) as f:
+                        f.seek(pos)
+                        for line in f:
+                            line = line.strip()
+                            if line:
+                                self.wfile.write(f"data: {line}\n\n".encode())
+                    pos = size
+                    self.wfile.flush()
+                _time.sleep(1)
+                ticks += 1
+                if ticks % 15 == 0:  # heartbeat keeps proxies from closing the stream
+                    self.wfile.write(b": ping\n\n")
+                    self.wfile.flush()
+        except (BrokenPipeError, ConnectionResetError):
+            return  # client disconnected
 
     def do_POST(self):
         u = urlparse(self.path)
@@ -243,7 +278,7 @@ def main():
         return
     port = int(os.environ.get("PORT", "8088"))
     print(f"Fabric Data Model API on http://localhost:{port}  (Ctrl-C to stop)")
-    HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+    ThreadingHTTPServer(("0.0.0.0", port), Handler).serve_forever()
 
 
 if __name__ == "__main__":

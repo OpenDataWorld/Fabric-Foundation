@@ -94,6 +94,28 @@
       if (cy) cy.layout({ name: "cose", animate: true, nodeRepulsion: 9000, idealEdgeLength: 90 }).run();
     });
     load();
+
+    // Live updates via Server-Sent Events (mirrors SurrealDB LIVE SELECT).
+    function subscribe() {
+      try {
+        const es = new EventSource(API_BASE + "/stream");
+        es.onmessage = ev => {
+          if (!cy) return;
+          let e; try { e = JSON.parse(ev.data); } catch { return; }
+          const id = e.actor || e.id;
+          if (id && cy.getElementById(id).length === 0) {
+            cy.add({ data: { id, label: (e.type || "event").split(".").pop() } });
+            if (cy.getElementById("identity").length)
+              cy.add({ data: { id: "live-" + id, source: id, target: "identity", label: e.type || "live" } });
+            cy.getElementById(id).addClass("hi");
+            cy.layout({ name: "cose", animate: true, nodeRepulsion: 9000, idealEdgeLength: 90 }).run();
+            const s = document.getElementById("stat");
+            if (s) s.innerHTML += " · <span style='color:var(--brand-2)'>live ▲ " + (e.type || "event") + "</span>";
+          }
+        };
+      } catch (e) { /* streaming optional */ }
+    }
+    subscribe();
   </script>
 </body>
 </html>
