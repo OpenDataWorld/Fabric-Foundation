@@ -1,0 +1,44 @@
+# Changelog
+
+All notable changes to OpenDataWorld Fabric are documented here.
+Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
+
+## [0.1.0-alpha] — 2026-06-03
+
+First alpha. **Alpha means: the model, generators, API, and identity connectors
+are real and runnable; the data-plane runtime (Fabric DB, ingestion/governance
+execution) is design-stage.** APIs and schemas may change without notice.
+
+### Added — works today
+- **Canonical data model** — 35 nodes (14 root primitives + identity, XDM
+  composition, and domain nodes), one clean graph (93 edges, 0 dangling).
+- **Data Model API** (`api/server.py`) — schema registry over the primitives:
+  `/classes`, `/schemas/{name}`, `/graph`, `/resolve/{name}`. Zero-dependency,
+  selftest passing.
+- **Code generator** (`codegen/`) — emits Python, TypeScript, JSON Schema, SQL,
+  and SurrealDB graph schema from the primitives.
+- **Identity Fabric** skill — 14 provider connectors (Google, GitHub, Microsoft,
+  Apple, LinkedIn, Twitter, Logto, Okta, Auth0, Ping, Keycloak, SailPoint,
+  CyberArk, custom OIDC); RESOLVE / ENRICH / AUDIT modes; native Okta IdP
+  federation.
+- **Catalogs** — Products, Features, Solutions with per-item landing pages,
+  Gartner market tags, and a governed feature-lifecycle stepper.
+- **Marketing site** — landing page + contact form.
+- **Proto contract** for the primitives.
+- **Research report** — cited data-fabric landscape analysis (key figures
+  verified against primary sources).
+- **Standards alignment** — Adobe XDM mapping; governed feature lifecycle.
+
+### Known limitations (design-stage, not in alpha runtime)
+- **Fabric DB** is a thesis, not an engine — no storage/query runtime yet.
+- **Connect → Catalog → Govern → Activate** data plane is specified, not wired
+  end-to-end (no live ingestion/governance execution).
+- Most catalog products are `Planned` / `In design`, not generally available.
+- The identity `SKILL.md` hardcodes a SurrealDB endpoint — move to config
+  before production use.
+
+### Components (composition, not reimplementation)
+SurrealDB (engine) · Apache SeaTunnel (integration) · OpenMetadata (catalog) ·
+OpenLineage (lineage).
+
+[0.1.0-alpha]: https://github.com/opendataworld/fabric/releases/tag/v0.1.0-alpha

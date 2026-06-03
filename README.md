@@ -1,5 +1,9 @@
 # Fabric — Foundation Primitive Layer
 
+> **Status: `v0.1.0-alpha`** — the model, generators, API, and identity
+> connectors are real and runnable; the data-plane runtime (Fabric DB,
+> ingestion/governance execution) is design-stage. See [CHANGELOG](CHANGELOG.md).
+
 Fabric is the canonical semantic foundation for the OpenDataWorld platform:
 an open, schema.org-aligned model from which schemas, entities, knowledge,
 identities, governance, datasets, agents, and publishing are all composed.
