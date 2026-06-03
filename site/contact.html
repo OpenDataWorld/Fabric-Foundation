@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact us — Fabric</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><span class="brand-mark"></span>
+      <span>Fabric<small>by OpenDataWorld</small></span></a>
+    <nav class="nav-links">
+      <a href="catalog/index.html">Catalog</a>
+      <a href="model.html">Model</a>
+      <a href="signup.html" class="btn btn-ghost">Sign up</a>
+    </nav>
+  </header>
+
+  <section class="section" style="max-width:640px;">
+    <p class="eyebrow">Contact us</p>
+    <h1 style="font-weight:300;">Talk to the Fabric team</h1>
+    <p class="lede">
+      Questions about the data fabric, a deployment, or partnering? Send a note and
+      we'll get back to you. Or email
+      <a href="mailto:thefractionalpm@gmail.com">thefractionalpm@gmail.com</a>.
+    </p>
+
+    <form class="contact-form" id="contactForm" novalidate>
+      <div class="field"><label for="name">Name</label>
+        <input id="name" name="name" required autocomplete="name" /></div>
+      <div class="field"><label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email" /></div>
+      <div class="field"><label for="company">Company (optional)</label>
+        <input id="company" name="company" autocomplete="organization" /></div>
+      <div class="field"><label for="topic">Topic</label>
+        <input id="topic" name="topic" placeholder="e.g. deployment, partnership, demo" /></div>
+      <div class="field"><label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea></div>
+      <button type="submit" class="btn btn-primary btn-block">Send message</button>
+      <p class="form-status" id="status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <footer class="footer"><p>© <span id="y"></span> OpenDataWorld · Fabric</p></footer>
+
+  <script src="config.js"></script>
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+    // Optional form backend (e.g. Formspree, or your edge function /contact).
+    const CONTACT_ENDPOINT = window.FABRIC_CONTACT_ENDPOINT || "";
+    const FALLBACK_EMAIL = "thefractionalpm@gmail.com";
+    const form = document.getElementById("contactForm");
+    const statusEl = document.getElementById("status");
+
+    function setStatus(msg, kind) { statusEl.textContent = msg; statusEl.className = "form-status" + (kind ? " " + kind : ""); }
+    function valid() {
+      let ok = true;
+      for (const el of form.querySelectorAll("input,textarea")) {
+        const bad = (el.required && !el.value.trim()) ||
+          (el.type === "email" && el.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value));
+        el.classList.toggle("invalid", !!bad); if (bad) ok = false;
+      }
+      return ok;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!valid()) return setStatus("Please complete the required fields with a valid email.", "err");
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (CONTACT_ENDPOINT) {
+        setStatus("Sending…");
+        try {
+          const r = await fetch(CONTACT_ENDPOINT, { method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify(data) });
+          if (!r.ok) throw new Error(r.statusText);
+          form.reset(); setStatus("Thanks — we'll be in touch shortly.", "ok");
+        } catch (err) { setStatus("Something went wrong. Please email " + FALLBACK_EMAIL + ".", "err"); }
+        return;
+      }
+      // No backend configured → hand off to the visitor's mail client.
+      const subject = encodeURIComponent("Fabric enquiry from " + (data.name || "a visitor"));
+      const body = encodeURIComponent(
+        `Name: ${data.name || ""}\nEmail: ${data.email || ""}\nCompany: ${data.company || ""}\nTopic: ${data.topic || ""}\n\n${data.message || ""}`);
+      window.location.href = `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
+      setStatus("Opening your email client…", "ok");
+    });
+  </script>
+</body>
+</html>

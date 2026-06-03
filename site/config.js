@@ -9,3 +9,4 @@
 //   returns {reply} or OpenAI-style {choices}). Empty = command-only agent.
 window.FABRIC_API_BASE = "";   // e.g. "https://fabric-edge.<you>.workers.dev"
 window.FABRIC_LLM_URL  = "";   // e.g. "https://<your-tinyllm-agent>/chat"
+window.FABRIC_CONTACT_ENDPOINT = ""; // e.g. Formspree URL; empty = mailto fallback
