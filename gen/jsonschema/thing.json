@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/thing.json",
+  "title": "Thing",
+  "description": "The most general primitive. Anything that can be named, referenced, governed, or related to anything else is a Thing. All other primitives (Identity, Time, Location, Event, Capability, ...) are specializations of Thing. This mirrors schema.org's root type of the same name.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Canonical, stable identifier for this thing."
+    },
+    "type": {
+      "type": "string",
+      "description": "The primitive or domain type of this thing."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable label."
+    },
+    "description": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Open key/value bag for domain-specific extension."
+    }
+  },
+  "required": [
+    "id",
+    "type"
+  ]
+}

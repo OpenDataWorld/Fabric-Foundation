@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/capability.json",
+  "title": "Capability",
+  "description": "A unit of \"can do\": what an Identity (person, agent, service, organization, product, or system) is able to perform, under Policy, given context, tools, resources, and evidence. Capabilities are held by Identities, packaged by Products, composed by Solutions, constrained by Policy, and recorded by Events.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "verb": {
+      "type": "string",
+      "description": "The core action, e.g. classify, publish, approve, query, ingest."
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Required inputs/parameters to exercise the capability."
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "requiresTools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tools or services needed to perform the capability."
+    },
+    "requiresResources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Resources (compute, budget, data) consumed."
+    },
+    "maturity": {
+      "type": "string",
+      "description": "experimental | supported | deprecated"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "verb"
+  ]
+}

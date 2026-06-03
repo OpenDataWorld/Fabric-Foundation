@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/event.json",
+  "title": "Event",
+  "description": "An immutable record that something occurred at a point in Time, optionally at a Location, involving one or more Identities. Events drive State transitions, record Capability executions, and form the audit trail of the platform.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "description": "Event type, e.g. capability.executed, state.transitioned, policy.evaluated."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor": {
+      "type": "string",
+      "description": "Identity that caused the event."
+    },
+    "subject": {
+      "type": "string",
+      "description": "Thing the event is about."
+    },
+    "location": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-specific data."
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "occurredAt"
+  ]
+}

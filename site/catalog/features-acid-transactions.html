@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACID Transactions — Fabric DB</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="catalog.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><span class="brand-mark"></span>
+      <span>OpenDataWorld<small>Catalog</small></span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="features.html">Features</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="../index.html" class="btn btn-ghost">Home</a>
+    </nav>
+  </header>
+  
+  <section class="hero hero-sm"><div class="hero-inner">
+    <p class="eyebrow">Deployment &amp; Scale</p>
+    <h1>ACID Transactions <span class="badge badge-core">Core</span></h1>
+    
+    <p class="lede">Correctness under concurrency.</p>
+    <div class="hero-cta">
+      <a href="../index.html#contact" class="btn btn-primary">Talk to us</a>
+      <a href="features.html" class="btn btn-ghost">← All features</a>
+    </div>
+  </div></section>
+  <main class="section product-body">
+    <p class="product-desc">Full ACID transactions across documents and graph edges.</p>
+    <div class="product-cols">
+      <div class="card"><h3>Highlights</h3><ul class="ticks"><li>Multi-statement transactions</li><li>Isolation guarantees</li><li>Consistent writes</li></ul></div>
+      <div class="card"><h3>Why it matters</h3><p>Guarantees governed writes are atomic.</p></div>
+    </div>
+    <section class="related"><h3>Related in Deployment &amp; Scale</h3>
+      <div class="related-grid"><a class="related-chip" href="features-embedded.html">Embedded Engine<span>Run in-process, no server.</span></a><a class="related-chip" href="features-distributed.html">Distributed Cluster<span>Scale out on a KV backend.</span></a><a class="related-chip" href="features-cloud.html">Managed Cloud<span>Fully managed Fabric DB.</span></a></div></section>
+  </main>
+  <footer class="footer"><p>© <span id="y"></span> OpenDataWorld · Catalog</p></footer>
+  <script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+</body>
+</html>

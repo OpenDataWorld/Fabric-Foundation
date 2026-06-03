@@ -1,0 +1,216 @@
+#!/usr/bin/env python3
+"""Fabric data model generator.
+
+Reads the canonical foundation primitives (the `*/<name>-model.yaml` files) and
+generates concrete data models in multiple targets:
+
+    python      -> dataclasses
+    typescript  -> interfaces
+    jsonschema  -> one JSON Schema per primitive
+    sql         -> CREATE TABLE DDL
+
+This turns the canonical spec into real, usable artifacts. One source of truth
+(the primitives), many generated outputs.
+
+Usage:
+    python codegen/generate_models.py --target all --out gen
+    python codegen/generate_models.py --target python
+"""
+from __future__ import annotations
+
+import argparse
+import glob
+import json
+import os
+import re
+
+try:
+    import yaml
+except ImportError:
+    raise SystemExit("PyYAML required: pip install pyyaml")
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# ── load primitives ────────────────────────────────────────────────────────────
+
+def load_primitives() -> list[dict]:
+    prims = []
+    for path in sorted(glob.glob(os.path.join(REPO, "*", "*-model.yaml"))):
+        if os.path.basename(os.path.dirname(path)) == "meta":
+            continue
+        m = yaml.safe_load(open(path))
+        if isinstance(m, dict) and str(m.get("id", "")).startswith("fabric:primitive:"):
+            prims.append(m)
+    return prims
+
+
+def class_name(primitive: dict) -> str:
+    return primitive["name"].replace(" ", "")
+
+
+def attrs(primitive: dict) -> list[dict]:
+    return primitive.get("attributes", [])
+
+
+# ── type mapping ────────────────────────────────────────────────────────────────
+# Fabric attribute types -> per-target types.
+
+def _base(fabric_type: str) -> str:
+    t = fabric_type.strip().lower()
+    m = re.match(r"list<(.+)>", t)
+    return m.group(1) if m else t
+
+
+def _is_list(fabric_type: str) -> bool:
+    return fabric_type.strip().lower().startswith("list<")
+
+
+PY = {
+    "string": "str", "uri": "str", "iso8601-duration": "str", "geojson": "str",
+    "ref": "str", "enum": "str", "param": "dict", "metric": "dict",
+    "datetime": "datetime", "number": "float", "integer": "int",
+    "boolean": "bool", "map": "dict",
+}
+TS = {
+    "string": "string", "uri": "string", "iso8601-duration": "string", "geojson": "string",
+    "ref": "string", "enum": "string", "param": "Record<string, unknown>",
+    "metric": "Record<string, unknown>", "datetime": "string", "number": "number",
+    "integer": "number", "boolean": "boolean", "map": "Record<string, unknown>",
+}
+JS = {  # json schema
+    "string": {"type": "string"}, "uri": {"type": "string", "format": "uri"},
+    "iso8601-duration": {"type": "string"}, "geojson": {"type": "string"},
+    "ref": {"type": "string"}, "enum": {"type": "string"},
+    "param": {"type": "object"}, "metric": {"type": "object"},
+    "datetime": {"type": "string", "format": "date-time"},
+    "number": {"type": "number"}, "integer": {"type": "integer"},
+    "boolean": {"type": "boolean"}, "map": {"type": "object"},
+}
+SQL = {
+    "string": "TEXT", "uri": "TEXT", "iso8601-duration": "TEXT", "geojson": "JSONB",
+    "ref": "TEXT", "enum": "TEXT", "param": "JSONB", "metric": "JSONB",
+    "datetime": "TIMESTAMPTZ", "number": "DOUBLE PRECISION", "integer": "INTEGER",
+    "boolean": "BOOLEAN", "map": "JSONB",
+}
+
+
+# ── generators ──────────────────────────────────────────────────────────────────
+
+def gen_python(prims: list[dict]) -> str:
+    out = ['"""Generated from Fabric primitives — DO NOT EDIT BY HAND."""',
+           "from __future__ import annotations", "",
+           "from dataclasses import dataclass, field",
+           "from datetime import datetime", "from typing import Optional", "", ""]
+    for p in prims:
+        out.append("@dataclass")
+        out.append(f"class {class_name(p)}:")
+        out.append(f'    """{p.get("question","")}  ({p["id"]})"""')
+        required, optional = [], []
+        for a in attrs(p):
+            base = PY.get(_base(a["type"]), "str")
+            ty = f"list[{base}]" if _is_list(a["type"]) else base
+            if a.get("required"):
+                required.append(f"    {a['name']}: {ty}")
+            else:
+                default = "field(default_factory=list)" if _is_list(a["type"]) else "None"
+                opt_ty = f"list[{base}]" if _is_list(a["type"]) else f"Optional[{ty}]"
+                optional.append(f"    {a['name']}: {opt_ty} = {default}")
+        body = required + optional
+        out.extend(body if body else ["    pass"])
+        out.append("")
+        out.append("")
+    return "\n".join(out)
+
+
+def gen_typescript(prims: list[dict]) -> str:
+    out = ["// Generated from Fabric primitives — DO NOT EDIT BY HAND.", ""]
+    for p in prims:
+        out.append(f"/** {p.get('question','')}  ({p['id']}) */")
+        out.append(f"export interface {class_name(p)} {{")
+        for a in attrs(p):
+            base = TS.get(_base(a["type"]), "string")
+            ty = f"{base}[]" if _is_list(a["type"]) else base
+            opt = "" if a.get("required") else "?"
+            out.append(f"  {a['name']}{opt}: {ty};")
+        out.append("}")
+        out.append("")
+    return "\n".join(out)
+
+
+def gen_jsonschema(p: dict) -> dict:
+    props, required = {}, []
+    for a in attrs(p):
+        base = JS.get(_base(a["type"]), {"type": "string"})
+        schema = {"type": "array", "items": base} if _is_list(a["type"]) else dict(base)
+        if a.get("description"):
+            schema["description"] = a["description"]
+        props[a["name"]] = schema
+        if a.get("required"):
+            required.append(a["name"])
+    out = {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": f"https://opendataworld.org/fabric/schema/{p['id'].split(':')[-1]}.json",
+        "title": p["name"], "description": p.get("description", "").strip(),
+        "type": "object", "properties": props,
+    }
+    if required:
+        out["required"] = required
+    return out
+
+
+def gen_sql(prims: list[dict]) -> str:
+    out = ["-- Generated from Fabric primitives — DO NOT EDIT BY HAND.", ""]
+    for p in prims:
+        table = re.sub(r"[^a-z0-9]+", "_", p["name"].lower())
+        out.append(f"CREATE TABLE IF NOT EXISTS {table} (")
+        cols = []
+        for a in attrs(p):
+            col = SQL.get(_base(a["type"]), "TEXT")
+            if _is_list(a["type"]):
+                col = "JSONB"
+            constraint = " NOT NULL" if a.get("required") else ""
+            pk = " PRIMARY KEY" if a["name"] == "id" else ""
+            cols.append(f"    {a['name']} {col}{pk}{constraint}")
+        out.append(",\n".join(cols))
+        out.append(");")
+        out.append("")
+    return "\n".join(out)
+
+
+# ── driver ──────────────────────────────────────────────────────────────────────
+
+def write(path: str, content: str):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    open(path, "w").write(content)
+    print(f"  wrote {os.path.relpath(path, REPO)}")
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Fabric data model generator")
+    ap.add_argument("--target", choices=["python", "typescript", "jsonschema", "sql", "all"],
+                    default="all")
+    ap.add_argument("--out", default="gen")
+    args = ap.parse_args()
+
+    prims = load_primitives()
+    out = os.path.join(REPO, args.out)
+    print(f"Loaded {len(prims)} primitives. Generating target={args.target}")
+
+    t = args.target
+    if t in ("python", "all"):
+        write(os.path.join(out, "python", "models.py"), gen_python(prims))
+    if t in ("typescript", "all"):
+        write(os.path.join(out, "typescript", "models.ts"), gen_typescript(prims))
+    if t in ("jsonschema", "all"):
+        for p in prims:
+            name = p["id"].split(":")[-1]
+            write(os.path.join(out, "jsonschema", f"{name}.json"),
+                  json.dumps(gen_jsonschema(p), indent=2) + "\n")
+    if t in ("sql", "all"):
+        write(os.path.join(out, "sql", "schema.sql"), gen_sql(prims))
+    print("Done.")
+
+
+if __name__ == "__main__":
+    main()

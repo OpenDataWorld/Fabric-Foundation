@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/location.json",
+  "title": "Location",
+  "description": "The spatial primitive: physical places, geo-coordinates, regions, logical addresses, and digital locations (URLs, network endpoints, data residency zones). Location grounds boundary Constraints and data-governance rules.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "place | coordinates | region | address | digital | residency-zone"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "geometry": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "Digital location / endpoint."
+    }
+  },
+  "required": [
+    "id",
+    "kind"
+  ]
+}

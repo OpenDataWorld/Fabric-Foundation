@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/state.json",
+  "title": "State",
+  "description": "The current (or historical) condition of a Thing within a defined lifecycle. State reflects Capability availability, governs allowable transitions, and is advanced by Events. A sequence of States over Time forms a Journey.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string",
+      "description": "The Thing whose state this describes."
+    },
+    "value": {
+      "type": "string",
+      "description": "Current state value, e.g. draft, active, suspended, retired."
+    },
+    "lifecycle": {
+      "type": "string",
+      "description": "Named state machine this value belongs to."
+    },
+    "since": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "allowedTransitions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "States reachable from this value."
+    }
+  },
+  "required": [
+    "id",
+    "subject",
+    "value"
+  ]
+}

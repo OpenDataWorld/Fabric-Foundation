@@ -1,0 +1,81 @@
+{
+  "brand": "OpenDataWorld",
+  "kind": "solutions",
+  "title": "Solution Catalog",
+  "tagline": "Outcomes you can buy — composed from the platform's products.",
+  "second_heading": "Built on",
+  "categories": [
+    {
+      "name": "Data Intelligence",
+      "blurb": "Turn scattered data into a trusted, unified view.",
+      "products": [
+        { "slug": "customer-360", "name": "Customer 360 / CDP", "status": "Available", "tagline": "One trusted view of every customer.",
+          "description": "A Customer Data Platform: resolve identities across social and corporate IdPs into a unified, governed profile. Maps to the Gartner CDP market.",
+          "features": ["Identity resolution across 13 providers", "Unified, governed profile", "Real-time profile sync"],
+          "connects": "Identity Fabric · Fabric DB · Knowledge Graph" },
+        { "slug": "real-time-analytics", "name": "Real-time Analytics", "status": "In design", "tagline": "Analytics on live, governed data.",
+          "description": "Dashboards and metrics that update the instant data changes, via live queries over the fabric.",
+          "features": ["Live-query dashboards", "Governed metrics layer", "Historical + streaming"],
+          "connects": "Analytics · Fabric DB · Data Integration" },
+        { "slug": "master-data-management", "name": "Master Data Management", "status": "Planned", "tagline": "One golden record per entity.",
+          "description": "Canonical, deduplicated master records governed by policy across all source systems.",
+          "features": ["Golden records", "Survivorship rules", "Stewardship workflows"],
+          "connects": "Entity Registry · Governance Platform · Fabric DB" },
+        { "slug": "entity-resolution", "name": "Entity Resolution", "status": "Planned", "tagline": "Link records that mean the same thing.",
+          "description": "Probabilistic and deterministic matching to resolve duplicates across datasets — for risk, fraud, and 360 views.",
+          "features": ["Confidence-scored matching", "Graph-based linkage", "Human-in-the-loop review"],
+          "connects": "Identity Fabric · Knowledge Graph · Entity Registry" }
+      ]
+    },
+    {
+      "name": "Governance & Trust",
+      "blurb": "Prove compliance and trust your data by construction.",
+      "products": [
+        { "slug": "data-governance", "name": "Data Governance & Compliance", "status": "In design", "tagline": "GDPR / DPDP by construction.",
+          "description": "Classify, govern, and prove compliance with policy enforced in the engine and an immutable audit trail.",
+          "features": ["Classification & glossary", "Policy enforcement in-engine", "Right-to-erasure"],
+          "connects": "Governance Platform · Data Catalog · Fabric DB" },
+        { "slug": "data-lineage", "name": "Data Lineage & Audit", "status": "In design", "tagline": "Trace every value to its source.",
+          "description": "End-to-end, OpenLineage-compatible lineage with an immutable event log for audit and impact analysis.",
+          "features": ["OpenLineage events", "Column-level lineage", "Immutable audit log"],
+          "connects": "Data Observability · Fabric DB · Governance Platform" },
+        { "slug": "access-audit", "name": "Access Audit / IAM Review", "status": "Available", "tagline": "Who can access what, proven.",
+          "description": "Audit every account, provider, and link for an identity — the AUDIT mode of the Identity Fabric.",
+          "features": ["Full account & edge audit", "Anomaly flags", "Compliance reporting"],
+          "connects": "Identity Fabric · Governance Platform" }
+      ]
+    },
+    {
+      "name": "AI & Agents",
+      "blurb": "Ground AI and agents in governed knowledge.",
+      "products": [
+        { "slug": "knowledge-graph-search", "name": "Knowledge Graph & Search", "status": "Planned", "tagline": "Find data by meaning.",
+          "description": "A semantic knowledge graph with vector + graph search so people and agents find data by intent.",
+          "features": ["Semantic knowledge graph", "Vector + graph search", "schema.org-aligned"],
+          "connects": "Knowledge Graph · Semantic Search · Fabric DB" },
+        { "slug": "ai-agent-platform", "name": "AI Agent Platform", "status": "Planned", "tagline": "Run agents under governance.",
+          "description": "Govern what agents can do (Capability) and why (Objective), with every action policy-gated and audited.",
+          "features": ["Capability execution", "Policy-gated actions", "Objective-based evals"],
+          "connects": "Agent Runtime · Agent Governance · Agent Evals" },
+        { "slug": "graph-rag", "name": "Graph RAG / Grounded AI", "status": "Planned", "tagline": "Trustworthy, traceable answers.",
+          "description": "Ground LLMs in the knowledge graph to reduce hallucination and trace answers to verified sources.",
+          "features": ["KG-grounded retrieval", "Source traceability", "Reduced hallucination"],
+          "connects": "Knowledge Graph · Semantic Search · Agent Runtime" }
+      ]
+    },
+    {
+      "name": "Publishing & Exchange",
+      "blurb": "Publish and monetize governed data.",
+      "products": [
+        { "slug": "open-data-publishing", "name": "Open Data Publishing", "status": "Planned", "tagline": "Share governed data with the world.",
+          "description": "Publish discoverable, schema.org-native open datasets with provenance and licensing.",
+          "features": ["schema.org-native publishing", "Provenance & licensing", "Search-engine discoverable"],
+          "connects": "Open Data World · Dataset Registry · Governance Platform" },
+        { "slug": "data-exchange", "name": "Data Marketplace & Exchange", "status": "Planned", "tagline": "Buy and sell data products.",
+          "description": "A governed marketplace for licensed data products with usage policy and provenance enforced.",
+          "features": ["Licensed data products", "Usage policy enforcement", "Provenance tracking"],
+          "connects": "Data Marketplace · Governance Platform · Fabric DB" }
+      ]
+    }
+  ]
+}

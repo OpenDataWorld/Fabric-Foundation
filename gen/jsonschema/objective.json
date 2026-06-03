@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/objective.json",
+  "title": "Objective",
+  "description": "The intent primitive. Capability says what can be done; Objective says what should be achieved and how success is measured. Objective is the anchor for Goals, KPIs, Outcomes, Strategies, Plans, Projects, Roadmaps, agent objectives, and decision intelligence. Capabilities serve Objectives; Constraints bound them; Events provide evidence of progress.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "goal | outcome | kpi | strategy | okr | agent-objective"
+    },
+    "statement": {
+      "type": "string",
+      "description": "What success looks like, in plain language."
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Measurable indicators with targets, e.g. {name, target, unit}."
+    },
+    "targetDate": {
+      "type": "string",
+      "description": "Time primitive for the objective horizon."
+    },
+    "priority": {
+      "type": "string",
+      "description": "low | medium | high | critical"
+    },
+    "status": {
+      "type": "string",
+      "description": "State primitive: not-started | in-progress | achieved | abandoned."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "kind",
+    "statement"
+  ]
+}

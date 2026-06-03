@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/relationship.json",
+  "title": "Relationship",
+  "description": "A typed, directed (optionally qualified) edge between two Things. The Relationship primitive turns the catalog of things into a knowledge graph: ownership, membership, dependency, derivation, delegation, and more.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "predicate": {
+      "type": "string",
+      "description": "The relationship type, e.g. owns, partOf, dependsOn, derivedFrom."
+    },
+    "source": {
+      "type": "string",
+      "description": "Subject Thing (edge tail)."
+    },
+    "target": {
+      "type": "string",
+      "description": "Object Thing (edge head)."
+    },
+    "directed": {
+      "type": "boolean",
+      "description": "Whether the edge is directional (default true)."
+    },
+    "validDuring": {
+      "type": "string",
+      "description": "Time primitive bounding when the relationship holds."
+    },
+    "weight": {
+      "type": "number",
+      "description": "Optional strength/confidence of the relationship."
+    }
+  },
+  "required": [
+    "id",
+    "predicate",
+    "source",
+    "target"
+  ]
+}

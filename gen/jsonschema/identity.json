@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/identity.json",
+  "title": "Identity",
+  "description": "A distinguishable, addressable subject: a person, organization, agent, service, device, or dataset. Identity anchors authentication, attribution, ownership, and the holding of Capabilities. Aligns with DID/VC concepts layered on top of schema.org agent types.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Canonical identifier, often a DID."
+    },
+    "kind": {
+      "type": "string",
+      "description": "person | organization | agent | service | device | dataset"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "controller": {
+      "type": "string",
+      "description": "Identity that controls this identity (delegation/custody)."
+    },
+    "credentials": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Verifiable credentials asserted about this identity."
+    }
+  },
+  "required": [
+    "id",
+    "kind"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/policy.json",
+  "title": "Policy",
+  "description": "A governed bundle of Constraints plus combination logic that decides whether an action is permitted. Policy is where Constraints become enforceable governance: access control, data handling, approval workflows, safety rules. Because a Policy is composed of Constraints, the Constraint primitive is the deeper one; Policy adds authorship, scope, precedence, and enforcement.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "effect": {
+      "type": "string",
+      "description": "permit | deny | require-approval"
+    },
+    "combine": {
+      "type": "string",
+      "description": "How member constraints combine: all | any | weighted"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The Constraints this policy is composed of."
+    },
+    "scope": {
+      "type": "object",
+      "description": "What the policy applies to (identities, capabilities, resources)."
+    },
+    "precedence": {
+      "type": "integer",
+      "description": "Higher precedence wins on conflict."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Identity accountable for the policy."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "effect",
+    "constraints"
+  ]
+}

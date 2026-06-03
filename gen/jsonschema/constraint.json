@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/constraint.json",
+  "title": "Constraint",
+  "description": "A single, evaluable condition that limits what is permitted. Constraint is more fundamental than Policy: a Policy is a collection of Constraints, a Control is an enforceable Constraint, Validation is the evaluation of a Constraint, and Eligibility, Approval Gates, Boundaries, Budgets, and Rate Limits are all specializations of Constraint.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "value | temporal | spatial | resource | rate | eligibility | approval | safety"
+    },
+    "expression": {
+      "type": "string",
+      "description": "Declarative predicate over a target, e.g. 'amount <= budget.remaining'."
+    },
+    "target": {
+      "type": "string",
+      "description": "The Thing/attribute the constraint is evaluated against."
+    },
+    "severity": {
+      "type": "string",
+      "description": "advisory | enforced | blocking"
+    },
+    "onViolation": {
+      "type": "string",
+      "description": "Action when violated, e.g. deny, warn, require-approval, throttle."
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "expression"
+  ]
+}

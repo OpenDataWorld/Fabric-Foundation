@@ -1,0 +1,137 @@
+{
+  "brand": "Fabric DB",
+  "kind": "features",
+  "title": "Feature Catalog",
+  "tagline": "Every capability of the multi-model data engine that powers Fabric DB.",
+  "second_heading": "Why it matters",
+  "categories": [
+    {
+      "name": "Multi-Model Data",
+      "blurb": "One engine, every shape of data — no glue between databases.",
+      "products": [
+        { "slug": "document-model", "name": "Document Model", "status": "Core", "tagline": "Store rich, nested JSON documents.",
+          "description": "Schemaless or schemafull document storage with deeply nested objects and arrays — no ORM impedance.",
+          "features": ["Nested objects & arrays", "Schemafull or schemaless", "Per-field typing"],
+          "connects": "Maps directly to Fabric's Thing/Asset records." },
+        { "slug": "graph-model", "name": "Graph Model", "status": "Core", "tagline": "Native graph relations with RELATE.",
+          "description": "First-class record links and graph edges traversed in-query — the Relationship primitive, natively.",
+          "features": ["RELATE edges with properties", "Multi-hop traversal in SurrealQL", "No separate graph DB"],
+          "connects": "Materializes the Relationship primitive without a second store." },
+        { "slug": "relational-tables", "name": "Relational Tables", "status": "Core", "tagline": "Tables, fields, and constraints.",
+          "description": "Define tables with typed fields, assertions, and defaults — relational rigor when you want it.",
+          "features": ["Typed fields & assertions", "Defaults & computed fields", "Foreign record links"],
+          "connects": "Backs the generated SQL data models." },
+        { "slug": "vector-embeddings", "name": "Vector & Embeddings", "status": "Core", "tagline": "Store and search vectors.",
+          "description": "Native vector fields with HNSW/MTREE indexes for similarity search alongside your data.",
+          "features": ["Vector data type", "HNSW / MTREE indexes", "kNN search in SurrealQL"],
+          "connects": "Powers Semantic Search on cataloged assets." },
+        { "slug": "geospatial", "name": "Geospatial", "status": "Core", "tagline": "Points, polygons, and geo queries.",
+          "description": "Native GeoJSON types and spatial functions for proximity and containment.",
+          "features": ["GeoJSON types", "Distance & containment", "Spatial indexes"],
+          "connects": "Grounds the Location primitive and residency boundaries." }
+      ]
+    },
+    {
+      "name": "Query & Compute",
+      "blurb": "SurrealQL — one language for documents, graphs, and vectors.",
+      "products": [
+        { "slug": "surrealql", "name": "SurrealQL", "status": "Core", "tagline": "A SQL-like language for every model.",
+          "description": "Query documents, graphs, and vectors in one expressive, familiar language.",
+          "features": ["SQL-like syntax", "Graph + document in one query", "Subqueries & record links"],
+          "connects": "The query surface for the whole fabric." },
+        { "slug": "functions", "name": "Functions", "status": "Core", "tagline": "Built-in and custom functions.",
+          "description": "Hundreds of built-in functions plus DEFINE FUNCTION for reusable server-side logic.",
+          "features": ["100s of built-ins", "Custom DEFINE FUNCTION", "Server-side logic"],
+          "connects": "Implements Constraint expressions in-engine." },
+        { "slug": "full-text-search", "name": "Full-Text Search", "status": "Core", "tagline": "Search text without a second system.",
+          "description": "Built-in full-text indexing with analyzers, scoring, and highlighting.",
+          "features": ["Analyzers & tokenizers", "BM25 relevance scoring", "Highlighting"],
+          "connects": "Part of the Activate plane — no external search engine." },
+        { "slug": "computed-fields", "name": "Computed Fields & Futures", "status": "Core", "tagline": "Values computed on read.",
+          "description": "Define fields whose values are computed at query time from other data.",
+          "features": ["Futures (lazy compute)", "Derived values", "No stale duplication"],
+          "connects": "Keeps derived State consistent." }
+      ]
+    },
+    {
+      "name": "Real-time & Sync",
+      "blurb": "Live data that pushes to clients and services.",
+      "products": [
+        { "slug": "data-sync", "name": "Live Queries (Data Sync)", "status": "Core", "tagline": "Subscribe to changes in real time.",
+          "description": "LIVE SELECT pushes inserts, updates, and deletes to subscribers the instant they happen — data sync without polling.",
+          "features": ["LIVE SELECT subscriptions", "Push on insert/update/delete", "WebSocket streaming"],
+          "connects": "Streams Event changes to downstream modules." },
+        { "slug": "change-feeds", "name": "Change Feeds (CDC)", "status": "Core", "tagline": "An ordered log of every change.",
+          "description": "Change data capture so you can replay, sync, or audit the full history of a table.",
+          "features": ["Ordered change log", "Replay from a timestamp", "Downstream sync"],
+          "connects": "Feeds the immutable Event audit trail." },
+        { "slug": "events-triggers", "name": "Events & Triggers", "status": "Core", "tagline": "React to data changes server-side.",
+          "description": "DEFINE EVENT runs logic when records change — enforce policy and emit audit events.",
+          "features": ["DEFINE EVENT triggers", "On create/update/delete", "Policy enforcement hooks"],
+          "connects": "Enforces Policy and emits Events automatically." }
+      ]
+    },
+    {
+      "name": "Security & Governance",
+      "blurb": "Governance built into the engine, not bolted on.",
+      "products": [
+        { "slug": "record-permissions", "name": "Row-Level Permissions", "status": "Core", "tagline": "Per-record access control.",
+          "description": "PERMISSIONS clauses enforce row-level security in the database, evaluated per query.",
+          "features": ["Row-level PERMISSIONS", "Per-operation rules", "Evaluated in-engine"],
+          "connects": "Where Policy/Constraint become enforcement." },
+        { "slug": "authentication", "name": "Authentication", "status": "Core", "tagline": "Built-in record & scope auth.",
+          "description": "Native authentication with record users, scopes, and JWT — no separate auth service required.",
+          "features": ["Record & system users", "JWT / token auth", "Scopes & sessions"],
+          "connects": "Resolves the Identity primitive at the data layer." },
+        { "slug": "multi-tenancy", "name": "Multi-Tenancy", "status": "Core", "tagline": "Namespaces & databases for isolation.",
+          "description": "Hierarchical namespaces and databases give clean tenant isolation in one cluster.",
+          "features": ["Namespace / database hierarchy", "Tenant data isolation", "Per-tenant policy"],
+          "connects": "Isolates each customer's fabric." },
+        { "slug": "schema-control", "name": "Schemafull / Schemaless", "status": "Core", "tagline": "Strict or flexible, per table.",
+          "description": "Choose SCHEMAFULL for governed tables and SCHEMALESS for fast iteration — per table.",
+          "features": ["SCHEMAFULL governance", "SCHEMALESS agility", "Field-level assertions"],
+          "connects": "Enforces the generated primitive schemas." }
+      ]
+    },
+    {
+      "name": "Deployment & Scale",
+      "blurb": "From embedded to globally distributed.",
+      "products": [
+        { "slug": "embedded", "name": "Embedded Engine", "status": "Core", "tagline": "Run in-process, no server.",
+          "description": "Embed SurrealDB in your app (in-memory or on-disk) for edge and local-first use.",
+          "features": ["In-memory or RocksDB", "Local-first / edge", "Zero ops"],
+          "connects": "Lets Fabric DB run anywhere." },
+        { "slug": "distributed", "name": "Distributed Cluster", "status": "Core", "tagline": "Scale out on a KV backend.",
+          "description": "Run distributed on TiKV/FoundationDB for horizontal scale and high availability — the cloud-native path.",
+          "features": ["TiKV / FoundationDB backend", "Horizontal scale", "High availability"],
+          "connects": "The CNCF-aligned production deployment." },
+        { "slug": "acid-transactions", "name": "ACID Transactions", "status": "Core", "tagline": "Correctness under concurrency.",
+          "description": "Full ACID transactions across documents and graph edges.",
+          "features": ["Multi-statement transactions", "Isolation guarantees", "Consistent writes"],
+          "connects": "Guarantees governed writes are atomic." },
+        { "slug": "cloud", "name": "Managed Cloud", "status": "Cloud", "tagline": "Fully managed Fabric DB.",
+          "description": "A managed, hosted deployment with backups, scaling, and monitoring — the DBaaS offering.",
+          "features": ["Managed hosting", "Backups & scaling", "Monitoring"],
+          "connects": "How Fabric DB ships as a service." }
+      ]
+    },
+    {
+      "name": "Developer Experience",
+      "blurb": "Build fast in any language.",
+      "products": [
+        { "slug": "sdks", "name": "SDKs", "status": "Core", "tagline": "Clients for every stack.",
+          "description": "Official SDKs for Rust, JavaScript/TypeScript, Python, Go, .NET, Java, and PHP.",
+          "features": ["7+ official SDKs", "Typed clients", "Live-query support"],
+          "connects": "Pairs with the generated primitive models." },
+        { "slug": "apis", "name": "HTTP, RPC & GraphQL", "status": "Core", "tagline": "Connect over any protocol.",
+          "description": "Query over HTTP REST, WebSocket RPC, or GraphQL out of the box.",
+          "features": ["HTTP REST", "WebSocket RPC", "GraphQL endpoint"],
+          "connects": "Exposes Fabric DB to apps and agents." },
+        { "slug": "studio", "name": "Studio (Surrealist)", "status": "Core", "tagline": "A visual query & schema workbench.",
+          "description": "Explore data, design schema, and run queries in a visual studio.",
+          "features": ["Visual query editor", "Schema designer", "Graph explorer"],
+          "connects": "The console over Fabric DB." }
+      ]
+    }
+  ]
+}
