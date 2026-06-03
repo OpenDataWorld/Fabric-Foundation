@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabric Data Model</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .model-wrap { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .model-head { text-align: center; margin-bottom: 24px; }
+    .model-head input { margin-top: 14px; padding: 10px 14px; width: min(420px, 90%);
+      border-radius: 10px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font: inherit; }
+    .node-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 18px 20px; margin-bottom: 14px; }
+    .node-card h3 { margin: 0 0 2px; }
+    .node-card .q { color: var(--muted); font-size: .9rem; margin: 0 0 10px; }
+    .rels { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+    .rels li { font-size: .82rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+    .rels b { color: var(--brand-2); font-weight: 600; }
+    .rels a { color: var(--brand); }
+    .count { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><span class="brand-mark"></span>
+      <span>Fabric<small>Data Model</small></span></a>
+    <nav class="nav-links"><a href="graph.html">Graph</a><a href="catalog/index.html">Catalog</a></nav>
+  </header>
+
+  <div class="model-wrap">
+    <div class="model-head">
+      <p class="eyebrow">Published canonical model</p>
+      <h1>Fabric Data Model</h1>
+      <p class="count" id="count">Loading…</p>
+      <input id="filter" placeholder="Filter nodes…" autocomplete="off" />
+    </div>
+    <div id="nodes"></div>
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    const API_BASE = window.FABRIC_API_BASE || "http://localhost:8088";
+    const nodesEl = document.getElementById("nodes");
+    const countEl = document.getElementById("count");
+    let model;
+
+    async function getModel() {
+      try { const r = await fetch(API_BASE + "/graph"); if (r.ok) {
+        const g = await r.json();
+        const cls = await fetch(API_BASE + "/classes").then(r => r.ok ? r.json() : []);
+        return { nodes: g.nodes, edges: g.edges, classes: cls };
+      } } catch (e) {}
+      return fetch("./data/model.json").then(r => r.json()); // static fallback
+    }
+    function esc(s){return (s||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+    function render(q = "") {
+      const byId = Object.fromEntries(model.nodes.map(n => [n.id, n.name]));
+      const ql = q.toLowerCase();
+      const shown = model.nodes.filter(n => !q || n.name.toLowerCase().includes(ql) || n.id.includes(ql));
+      countEl.innerHTML = "<b>" + model.nodes.length + "</b> nodes · <b>" + model.edges.length + "</b> relationships";
+      nodesEl.innerHTML = shown.map(n => {
+        const cls = (model.classes || []).find(c => c.id === n.id);
+        const rels = model.edges.filter(e => e.from === n.id)
+          .map(e => `<li><b>${esc(e.rel)}</b> → <a href="#${e.to}">${esc(byId[e.to] || e.to)}</a></li>`).join("");
+        return `<div class="node-card" id="${esc(n.id)}">
+          <h3>${esc(n.name)}</h3>
+          <p class="q">${esc(cls && cls.question || "")}</p>
+          <ul class="rels">${rels || "<li>(no outgoing relationships)</li>"}</ul></div>`;
+      }).join("");
+    }
+
+    getModel().then(m => { model = m; render(); });
+    document.getElementById("filter").addEventListener("input", e => model && render(e.target.value.trim()));
+  </script>
+</body>
+</html>

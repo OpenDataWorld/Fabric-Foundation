@@ -1,0 +1,9 @@
+# Netlify deploy config — publishes the static Fabric site.
+[build]
+  publish = "site"
+  command = ""
+
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
