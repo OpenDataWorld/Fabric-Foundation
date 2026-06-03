@@ -1,0 +1,267 @@
+// Fabric foundation primitives — canonical data contract.
+//
+// These messages are the wire/contract form of the YAML primitive models under
+// the repo root. Every OpenDataWorld module composes these types instead of
+// redefining its own. This is a contract (IDL), not an implementation.
+syntax = "proto3";
+
+package fabric.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+option java_package = "world.opendata.fabric.v1";
+option java_multiple_files = true;
+option go_package = "github.com/opendataworld/fabric/gen/fabric/v1;fabricv1";
+
+// ---------------------------------------------------------------------------
+// Thing — the universal root. Every other primitive embeds a Thing.
+// Answers: "What is it?"  (schema:Thing)
+// ---------------------------------------------------------------------------
+message Thing {
+  string id = 1;                              // schema:identifier (required)
+  string type = 2;                            // primitive/domain @type (required)
+  string name = 3;                            // schema:name
+  string description = 4;                     // schema:description
+  google.protobuf.Timestamp created_at = 5;   // schema:dateCreated
+  google.protobuf.Struct metadata = 6;        // open extension bag
+}
+
+// ---------------------------------------------------------------------------
+// Identity — "Who or what is it?"  (schema:Person/Organization/...)
+// ---------------------------------------------------------------------------
+message Identity {
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    PERSON = 1;
+    ORGANIZATION = 2;
+    AGENT = 3;
+    SERVICE = 4;
+    DEVICE = 5;
+    DATASET = 6;
+  }
+  Thing thing = 1;
+  Kind kind = 2;                  // required
+  string display_name = 3;        // schema:name
+  string controller = 4;          // controlling Identity id (delegation/custody)
+  repeated string credentials = 5;// verifiable credential ids
+}
+
+// ---------------------------------------------------------------------------
+// Time — "When?"  (schema:DateTime / Duration / Schedule)
+// ---------------------------------------------------------------------------
+message TimeSpec {
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    INSTANT = 1;
+    INTERVAL = 2;
+    DURATION = 3;
+    RECURRENCE = 4;
+    WINDOW = 5;
+  }
+  Thing thing = 1;
+  Kind kind = 2;                              // required
+  google.protobuf.Timestamp instant = 3;
+  google.protobuf.Timestamp start = 4;        // schema:startDate
+  google.protobuf.Timestamp end = 5;          // schema:endDate
+  string duration = 6;                        // ISO-8601 duration (schema:Duration)
+  string timezone = 7;                        // IANA tz, default UTC
+}
+
+// ---------------------------------------------------------------------------
+// Location — "Where?"  (schema:Place / GeoCoordinates / GeoShape)
+// ---------------------------------------------------------------------------
+message Location {
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    PLACE = 1;
+    COORDINATES = 2;
+    REGION = 3;
+    ADDRESS = 4;
+    DIGITAL = 5;
+    RESIDENCY_ZONE = 6;
+  }
+  Thing thing = 1;
+  Kind kind = 2;                  // required
+  double latitude = 3;            // schema:latitude  [-90,90]
+  double longitude = 4;           // schema:longitude [-180,180]
+  string geometry = 5;            // GeoJSON (schema:GeoShape)
+  string address = 6;             // schema:address
+  string uri = 7;                 // digital location / endpoint (schema:url)
+}
+
+// ---------------------------------------------------------------------------
+// Relationship — "How are things connected?"  (reified schema:Role edge)
+// ---------------------------------------------------------------------------
+message Relationship {
+  Thing thing = 1;
+  string predicate = 2;           // owns | partOf | dependsOn | derivedFrom ... (required)
+  string source = 3;              // subject Thing id (required)
+  string target = 4;              // object Thing id  (required)
+  bool directed = 5;              // default true
+  string valid_during = 6;        // TimeSpec id bounding validity
+  double weight = 7;              // strength/confidence
+}
+
+// ---------------------------------------------------------------------------
+// State — "What condition is it in now?"  (governed lifecycle)
+// ---------------------------------------------------------------------------
+message State {
+  Thing thing = 1;
+  string subject = 2;                       // Thing id this state describes (required)
+  string value = 3;                         // draft|active|suspended|retired... (required)
+  string lifecycle = 4;                     // named state machine
+  google.protobuf.Timestamp since = 5;      // schema:dateModified
+  repeated string allowed_transitions = 6;  // reachable state values
+}
+
+// ---------------------------------------------------------------------------
+// Event — "What happened?"  (append-only; schema:Event)
+// ---------------------------------------------------------------------------
+message Event {
+  Thing thing = 1;
+  string type = 2;                          // capability.executed | state.transitioned ... (required)
+  google.protobuf.Timestamp occurred_at = 3;// required
+  string actor = 4;                         // Identity id that caused it
+  string subject = 5;                       // Thing id the event is about
+  string location = 6;                      // Location id (schema:location)
+  google.protobuf.Struct payload = 7;       // event-specific data
+}
+
+// ---------------------------------------------------------------------------
+// Capability — "What can this thing do?"  (potential schema:Action)
+// ---------------------------------------------------------------------------
+message Capability {
+  enum Maturity {
+    MATURITY_UNSPECIFIED = 0;
+    EXPERIMENTAL = 1;
+    SUPPORTED = 2;
+    DEPRECATED = 3;
+  }
+  message Param {
+    string name = 1;
+    string type = 2;
+    bool required = 3;
+  }
+  Thing thing = 1;
+  string name = 2;                    // required
+  string verb = 3;                    // classify|publish|approve|query|ingest (required)
+  repeated Param inputs = 4;
+  repeated Param outputs = 5;
+  repeated string requires_tools = 6;     // tool/service ids
+  repeated string requires_resources = 7; // resource ids consumed
+  Maturity maturity = 8;
+  repeated string serves_objectives = 9;  // Objective ids advanced
+}
+
+// ---------------------------------------------------------------------------
+// Constraint — "What must hold or is forbidden?"  (deeper than Policy)
+// ---------------------------------------------------------------------------
+message Constraint {
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    VALUE = 1;
+    TEMPORAL = 2;
+    SPATIAL = 3;
+    RESOURCE = 4;
+    RATE = 5;
+    ELIGIBILITY = 6;
+    APPROVAL = 7;
+    SAFETY = 8;
+  }
+  enum Severity {
+    SEVERITY_UNSPECIFIED = 0;
+    ADVISORY = 1;
+    ENFORCED = 2;
+    BLOCKING = 3;
+  }
+  Thing thing = 1;
+  Kind kind = 2;            // required
+  string expression = 3;   // declarative predicate (required)
+  string target = 4;       // Thing/attribute evaluated against
+  Severity severity = 5;
+  string on_violation = 6; // deny | warn | require-approval | throttle
+}
+
+// ---------------------------------------------------------------------------
+// Policy — "What is allowed, and under what conditions?"  (set of Constraints)
+// ---------------------------------------------------------------------------
+message Policy {
+  enum Effect {
+    EFFECT_UNSPECIFIED = 0;
+    PERMIT = 1;
+    DENY = 2;
+    REQUIRE_APPROVAL = 3;
+  }
+  enum Combine {
+    COMBINE_UNSPECIFIED = 0;
+    ALL = 1;
+    ANY = 2;
+    WEIGHTED = 3;
+  }
+  Thing thing = 1;
+  string name = 2;                  // required
+  Effect effect = 3;                // required
+  Combine combine = 4;
+  repeated string constraints = 5;  // Constraint ids (required, >=1)
+  google.protobuf.Struct scope = 6; // identities/capabilities/resources it applies to
+  int32 precedence = 7;             // higher wins on conflict
+  string owner = 8;                 // accountable Identity id
+}
+
+// ---------------------------------------------------------------------------
+// Objective — "Why are we doing it, and how is success judged?"
+// ---------------------------------------------------------------------------
+message Objective {
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    GOAL = 1;
+    OUTCOME = 2;
+    KPI = 3;
+    STRATEGY = 4;
+    OKR = 5;
+    AGENT_OBJECTIVE = 6;
+  }
+  enum Priority {
+    PRIORITY_UNSPECIFIED = 0;
+    LOW = 1;
+    MEDIUM = 2;
+    HIGH = 3;
+    CRITICAL = 4;
+  }
+  message Metric {
+    string name = 1;
+    double target = 2;
+    string unit = 3;
+  }
+  Thing thing = 1;
+  string name = 2;                 // required
+  Kind kind = 3;                   // required
+  string statement = 4;            // what success looks like (required)
+  repeated Metric metrics = 5;
+  string target_date = 6;          // TimeSpec id
+  Priority priority = 7;
+  string status = 8;               // State id
+  repeated string served_by = 9;   // Capability ids
+  repeated string bounded_by = 10; // Constraint ids
+  string sub_objective_of = 11;    // parent Objective id (OKR hierarchy)
+}
+
+// ---------------------------------------------------------------------------
+// Asset — any primitive, as carried inside a Fabric composition.
+// ---------------------------------------------------------------------------
+message Asset {
+  oneof primitive {
+    Thing thing = 1;
+    Identity identity = 2;
+    TimeSpec time = 3;
+    Location location = 4;
+    Relationship relationship = 5;
+    State state = 6;
+    Event event = 7;
+    Capability capability = 8;
+    Constraint constraint = 9;
+    Policy policy = 10;
+    Objective objective = 11;
+  }
+}

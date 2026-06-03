@@ -1,0 +1,11 @@
+# Proof-of-use validator — kept on disk, intentionally not committed
+tools/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Env / secrets
+.env
+*.local

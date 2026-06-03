@@ -1,0 +1,59 @@
+# Example: a data fabric created from the foundation primitives.
+#
+# Run it:
+#   python tools/fabric.py create examples/acme-fabric/fabric.yaml
+fabric:
+  id: "fabric:instance:acme"
+  name: "Acme Customer Data Fabric"
+  description: >
+    A small, governed fabric over Acme's customer dataset with EU data
+    residency enforced and a governed query capability.
+
+  assets:
+    # --- Connect plane ---
+    - id: "dataset:acme:customers"
+      type: "fabric:primitive:thing"
+      name: "Customers"
+      description: "Master customer records."
+    - id: "location:acme:eu"
+      type: "fabric:primitive:location"
+      kind: "residency-zone"
+      name: "EU Residency Zone"
+
+    # --- Catalog plane ---
+    - id: "did:fabric:org:acme"
+      type: "fabric:primitive:identity"
+      kind: "organization"
+      displayName: "Acme Corp"
+    - id: "rel:owns:acme-customers"
+      type: "fabric:primitive:relationship"
+      predicate: "owns"
+      source: "did:fabric:org:acme"
+      target: "dataset:acme:customers"
+    - id: "state:dataset:acme:customers"
+      type: "fabric:primitive:state"
+      subject: "dataset:acme:customers"
+      value: "active"
+
+    # --- Govern plane ---
+    - id: "constraint:acme:eu-residency"
+      type: "fabric:primitive:constraint"
+      kind: "spatial"
+      expression: "data.region == 'eu'"
+      severity: "blocking"
+    - id: "policy:acme:customer-access"
+      type: "fabric:primitive:policy"
+      name: "Customer Access Policy"
+      effect: "require-approval"
+      constraints: ["constraint:acme:eu-residency"]
+
+    # --- Activate plane ---
+    - id: "capability:acme:query-customers"
+      type: "fabric:primitive:capability"
+      name: "Query Customers"
+      verb: "query"
+    - id: "objective:acme:trusted-customer-360"
+      type: "fabric:primitive:objective"
+      name: "Trusted Customer 360"
+      kind: "outcome"
+      statement: "Provide a governed, single view of the customer."
