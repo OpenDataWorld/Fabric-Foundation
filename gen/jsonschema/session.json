@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/session.json",
+  "title": "Session",
+  "description": "An authenticated session for an Account, optionally from a Device, bounded in Time. Sessions are evidence of access for audit.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "started": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ip": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id"
+  ]
+}

@@ -1,15 +1,27 @@
 graph LR
+  Account -->|ownedBy| Identity
+  Account -->|fromSource| Source
+  Account -->|linkedTo| Account
+  Account -->|hasSession| Session
   Capability -->|heldBy| Identity
   Capability -->|constrainedBy| Constraint
   Capability -->|governedBy| Policy
   Capability -->|servesObjective| Objective
   Constraint -->|composesInto| Policy
   Constraint -->|limits| Capability
+  Credential -->|assertedAbout| Identity
+  Credential -->|issuedBy| Identity
+  Credential -->|evidencedBy| Evidence
+  DataType -->|usedBy| FieldGroup
+  Device -->|usedBy| Identity
+  Device -->|locatedAt| Location
   Event -->|records| Capability
   Event -->|triggers| State
   Evidence -->|substantiates| Objective
   Evidence -->|derivedFrom| Event
   Evidence -->|supports| Policy
+  FieldGroup -->|usesDataType| DataType
+  FieldGroup -->|composedInto| Schema
   Identity -->|holds| Capability
   Identity -->|subjectTo| Policy
   Identity -->|locatedAt| Location
@@ -29,6 +41,15 @@ graph LR
   Risk -->|mitigatedBy| Constraint
   Risk -->|governedBy| Policy
   Risk -->|evidencedBy| Evidence
+  Schema -->|basedOnClass| Thing
+  Schema -->|includesFieldGroup| FieldGroup
+  Schema -->|governedBy| Policy
+  Session -->|forAccount| Account
+  Session -->|onDevice| Device
+  Session -->|during| Time
+  Source -->|provides| Account
+  Source -->|governedBy| Policy
+  Source -->|locatedAt| Location
   State -->|advancedBy| Event
   State -->|gatedBy| Constraint
   Thing -->|relatedTo| Thing

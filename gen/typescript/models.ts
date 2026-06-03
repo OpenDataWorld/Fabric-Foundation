@@ -1,5 +1,14 @@
 // Generated from Fabric primitives — DO NOT EDIT BY HAND.
 
+/** Which provider account is this?  (fabric:primitive:account) */
+export interface Account {
+  id: string;
+  provider: string;
+  provider_sub: string;
+  email?: string;
+  username?: string;
+}
+
 /** What can this thing do?  (fabric:primitive:capability) */
 export interface Capability {
   id: string;
@@ -22,6 +31,28 @@ export interface Constraint {
   onViolation?: string;
 }
 
+/** What is verifiably asserted about an identity?  (fabric:primitive:credential) */
+export interface Credential {
+  id: string;
+  type: string;
+  claim?: Record<string, unknown>;
+  proof?: string;
+}
+
+/** What reusable structure does this field hold?  (fabric:primitive:datatype) */
+export interface DataType {
+  id: string;
+  name: string;
+  fields?: Record<string, unknown>[];
+}
+
+/** What endpoint was used?  (fabric:primitive:device) */
+export interface Device {
+  id: string;
+  kind: string;
+  fingerprint?: string;
+}
+
 /** What happened?  (fabric:primitive:event) */
 export interface Event {
   id: string;
@@ -42,6 +73,13 @@ export interface Evidence {
   uri?: string;
   hash?: string;
   collectedAt?: string;
+}
+
+/** Which reusable set of fields extends a class?  (fabric:primitive:fieldgroup) */
+export interface FieldGroup {
+  id: string;
+  name: string;
+  fields?: Record<string, unknown>[];
 }
 
 /** Who or what is it?  (fabric:primitive:identity) */
@@ -118,6 +156,28 @@ export interface Risk {
   impact?: string;
   severity?: string;
   status?: string;
+}
+
+/** How is this entity's structure composed?  (fabric:primitive:schema) */
+export interface Schema {
+  id: string;
+  name: string;
+  baseClass: string;
+}
+
+/** When and how was access established?  (fabric:primitive:session) */
+export interface Session {
+  id: string;
+  started?: string;
+  ip?: string;
+}
+
+/** Where does this data or account come from?  (fabric:primitive:source) */
+export interface Source {
+  id: string;
+  kind: string;
+  name: string;
+  endpoint?: string;
 }
 
 /** What condition is it in now?  (fabric:primitive:state) */

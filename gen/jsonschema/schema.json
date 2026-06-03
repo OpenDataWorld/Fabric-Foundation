@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/schema.json",
+  "title": "Schema",
+  "description": "A concrete, instantiable type composed from a base class (a primitive) plus reusable Field Groups \u2014 mirroring Adobe XDM's schema = class + field groups.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "baseClass": {
+      "type": "string",
+      "description": "The primitive (class) this schema is built on."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "baseClass"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/fieldgroup.json",
+  "title": "Field Group",
+  "description": "A reusable group of fields that extends a class, composed into Schemas \u2014 the XDM field-group concept. The missing modular layer between primitives and concrete schemas.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name"
+  ]
+}

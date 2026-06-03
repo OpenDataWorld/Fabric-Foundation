@@ -1,0 +1,36 @@
+# Device — a physical or virtual endpoint
+id: "fabric:primitive:device"
+name: "Device"
+version: "1.0.0"
+layer: "foundation"
+question: "What endpoint was used?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A device or endpoint an Identity uses to access the platform — phone, laptop,
+  server, or agent host. Devices appear in Sessions and access decisions.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: kind
+    type: enum
+    required: true
+    description: "mobile | desktop | server | iot | agent-host"
+  - name: fingerprint
+    type: string
+    required: false
+relationships:
+  - name: usedBy
+    target: "fabric:primitive:identity"
+    cardinality: "0..*"
+  - name: locatedAt
+    target: "fabric:primitive:location"
+    cardinality: "0..1"
+invariants:
+  - "A Device has a stable fingerprint or id."
+examples:
+  - id: "device:laptop:7f3a"
+    kind: "desktop"

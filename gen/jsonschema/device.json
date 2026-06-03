@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/device.json",
+  "title": "Device",
+  "description": "A device or endpoint an Identity uses to access the platform \u2014 phone, laptop, server, or agent host. Devices appear in Sessions and access decisions.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "mobile | desktop | server | iot | agent-host"
+    },
+    "fingerprint": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "kind"
+  ]
+}

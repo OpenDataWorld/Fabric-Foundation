@@ -30,7 +30,11 @@ schema.org-aligned YAML model conforming to
 | **Evidence** | What proves it? | [`evidence/evidence-model.yaml`](evidence/evidence-model.yaml) |
 | **Risk** | What could go wrong? | [`risks/risk-model.yaml`](risks/risk-model.yaml) |
 
-The model forms a clean graph — **14 nodes, 34 edges, 0 dangling** (verified by
+**Extended nodes** (grounded in the identity integrations and XDM alignment):
+`Account` · `Source` · `Credential` · `Session` · `Device` (identity graph) and
+`Schema` · `FieldGroup` · `DataType` (XDM-style composition).
+
+The model forms a clean graph — **22 nodes, 55 edges, 0 dangling** (verified by
 `codegen/generate_models.py --target graph`).
 
 ## How the primitives compose
@@ -57,8 +61,8 @@ Key design realizations carried over from the design notes:
 
 ## Root layer status
 
-The root layer is complete: `Resource`, `Evidence`, and `Risk` have been added,
-bringing the foundation to **14 primitives**.
+The root layer is complete (`Resource`, `Evidence`, `Risk` added), and the graph
+has been extended with identity and composition nodes — **22 primitives total**.
 
 ## Layout
 

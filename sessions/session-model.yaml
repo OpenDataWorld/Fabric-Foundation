@@ -1,0 +1,38 @@
+# Session — an authenticated interaction window
+id: "fabric:primitive:session"
+name: "Session"
+version: "1.0.0"
+layer: "foundation"
+question: "When and how was access established?"
+extends: ["fabric:primitive:thing"]
+description: >
+  An authenticated session for an Account, optionally from a Device, bounded in
+  Time. Sessions are evidence of access for audit.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: started
+    type: datetime
+    required: false
+  - name: ip
+    type: string
+    required: false
+relationships:
+  - name: forAccount
+    target: "fabric:primitive:account"
+    cardinality: "1"
+  - name: onDevice
+    target: "fabric:primitive:device"
+    cardinality: "0..1"
+  - name: during
+    target: "fabric:primitive:time"
+    cardinality: "0..1"
+invariants:
+  - "A Session belongs to exactly one Account."
+examples:
+  - id: "session:abc123"
+    ip: "203.0.113.10"

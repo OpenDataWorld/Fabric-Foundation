@@ -1,0 +1,36 @@
+# Field Group — a reusable bundle of fields (XDM-style)
+id: "fabric:primitive:fieldgroup"
+name: "Field Group"
+version: "1.0.0"
+layer: "foundation"
+question: "Which reusable set of fields extends a class?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A reusable group of fields that extends a class, composed into Schemas — the
+  XDM field-group concept. The missing modular layer between primitives and
+  concrete schemas.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: name
+    type: string
+    required: true
+  - name: fields
+    type: list<param>
+    required: false
+relationships:
+  - name: usesDataType
+    target: "fabric:primitive:datatype"
+    cardinality: "0..*"
+  - name: composedInto
+    target: "fabric:primitive:schema"
+    cardinality: "0..*"
+invariants:
+  - "A Field Group is reusable across Schemas."
+examples:
+  - id: "fieldgroup:contact-details"
+    name: "Contact Details"

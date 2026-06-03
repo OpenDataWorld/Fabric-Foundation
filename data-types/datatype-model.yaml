@@ -1,0 +1,32 @@
+# Data Type — a reusable multi-field structure (XDM-style)
+id: "fabric:primitive:datatype"
+name: "Data Type"
+version: "1.0.0"
+layer: "foundation"
+question: "What reusable structure does this field hold?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A reusable, multi-field structure used inside Field Groups (e.g. Address,
+  Person Name) — the XDM data-type concept.
+schemaOrg:
+  type: "schema:StructuredValue"
+  url: "https://schema.org/StructuredValue"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: name
+    type: string
+    required: true
+  - name: fields
+    type: list<param>
+    required: false
+relationships:
+  - name: usedBy
+    target: "fabric:primitive:fieldgroup"
+    cardinality: "0..*"
+invariants:
+  - "A Data Type is reusable across Field Groups."
+examples:
+  - id: "datatype:address"
+    name: "Address"

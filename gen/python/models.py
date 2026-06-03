@@ -7,6 +7,16 @@ from typing import Optional
 
 
 @dataclass
+class Account:
+    """Which provider account is this?  (fabric:primitive:account)"""
+    id: str
+    provider: str
+    provider_sub: str
+    email: Optional[str] = None
+    username: Optional[str] = None
+
+
+@dataclass
 class Capability:
     """What can this thing do?  (fabric:primitive:capability)"""
     id: str
@@ -31,6 +41,31 @@ class Constraint:
 
 
 @dataclass
+class Credential:
+    """What is verifiably asserted about an identity?  (fabric:primitive:credential)"""
+    id: str
+    type: str
+    claim: Optional[dict] = None
+    proof: Optional[str] = None
+
+
+@dataclass
+class DataType:
+    """What reusable structure does this field hold?  (fabric:primitive:datatype)"""
+    id: str
+    name: str
+    fields: list[dict] = field(default_factory=list)
+
+
+@dataclass
+class Device:
+    """What endpoint was used?  (fabric:primitive:device)"""
+    id: str
+    kind: str
+    fingerprint: Optional[str] = None
+
+
+@dataclass
 class Event:
     """What happened?  (fabric:primitive:event)"""
     id: str
@@ -52,6 +87,14 @@ class Evidence:
     uri: Optional[str] = None
     hash: Optional[str] = None
     collectedAt: Optional[datetime] = None
+
+
+@dataclass
+class FieldGroup:
+    """Which reusable set of fields extends a class?  (fabric:primitive:fieldgroup)"""
+    id: str
+    name: str
+    fields: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -135,6 +178,31 @@ class Risk:
     impact: Optional[str] = None
     severity: Optional[str] = None
     status: Optional[str] = None
+
+
+@dataclass
+class Schema:
+    """How is this entity's structure composed?  (fabric:primitive:schema)"""
+    id: str
+    name: str
+    baseClass: str
+
+
+@dataclass
+class Session:
+    """When and how was access established?  (fabric:primitive:session)"""
+    id: str
+    started: Optional[datetime] = None
+    ip: Optional[str] = None
+
+
+@dataclass
+class Source:
+    """Where does this data or account come from?  (fabric:primitive:source)"""
+    id: str
+    kind: str
+    name: str
+    endpoint: Optional[str] = None
 
 
 @dataclass

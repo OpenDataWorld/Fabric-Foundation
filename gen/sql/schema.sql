@@ -1,5 +1,13 @@
 -- Generated from Fabric primitives — DO NOT EDIT BY HAND.
 
+CREATE TABLE IF NOT EXISTS account (
+    id TEXT PRIMARY KEY NOT NULL,
+    provider TEXT NOT NULL,
+    provider_sub TEXT NOT NULL,
+    email TEXT,
+    username TEXT
+);
+
 CREATE TABLE IF NOT EXISTS capability (
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
@@ -20,6 +28,25 @@ CREATE TABLE IF NOT EXISTS constraint (
     onViolation TEXT
 );
 
+CREATE TABLE IF NOT EXISTS credential (
+    id TEXT PRIMARY KEY NOT NULL,
+    type TEXT NOT NULL,
+    claim JSONB,
+    proof TEXT
+);
+
+CREATE TABLE IF NOT EXISTS data_type (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    fields JSONB
+);
+
+CREATE TABLE IF NOT EXISTS device (
+    id TEXT PRIMARY KEY NOT NULL,
+    kind TEXT NOT NULL,
+    fingerprint TEXT
+);
+
 CREATE TABLE IF NOT EXISTS event (
     id TEXT PRIMARY KEY NOT NULL,
     type TEXT NOT NULL,
@@ -38,6 +65,12 @@ CREATE TABLE IF NOT EXISTS evidence (
     uri TEXT,
     hash TEXT,
     collectedAt TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS field_group (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    fields JSONB
 );
 
 CREATE TABLE IF NOT EXISTS identity (
@@ -107,6 +140,25 @@ CREATE TABLE IF NOT EXISTS risk (
     impact TEXT,
     severity TEXT,
     status TEXT
+);
+
+CREATE TABLE IF NOT EXISTS schema (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    baseClass TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS session (
+    id TEXT PRIMARY KEY NOT NULL,
+    started TIMESTAMPTZ,
+    ip TEXT
+);
+
+CREATE TABLE IF NOT EXISTS source (
+    id TEXT PRIMARY KEY NOT NULL,
+    kind TEXT NOT NULL,
+    name TEXT NOT NULL,
+    endpoint TEXT
 );
 
 CREATE TABLE IF NOT EXISTS state (

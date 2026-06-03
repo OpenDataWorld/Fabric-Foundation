@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/account.json",
+  "title": "Account",
+  "description": "A single account at one provider (the IdentityNode the connectors return). Many Accounts resolve to one Identity; Accounts link to each other via shared signals to form the identity graph.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string",
+      "description": "google | okta | sailpoint | cyberark | ..."
+    },
+    "provider_sub": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "provider",
+    "provider_sub"
+  ]
+}

@@ -1,0 +1,51 @@
+# Account — a provider-specific identity record
+id: "fabric:primitive:account"
+name: "Account"
+version: "1.0.0"
+layer: "foundation"
+question: "Which provider account is this?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A single account at one provider (the IdentityNode the connectors return).
+  Many Accounts resolve to one Identity; Accounts link to each other via shared
+  signals to form the identity graph.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: provider
+    type: string
+    required: true
+    description: "google | okta | sailpoint | cyberark | ..."
+  - name: provider_sub
+    type: string
+    required: true
+  - name: email
+    type: string
+    required: false
+  - name: username
+    type: string
+    required: false
+relationships:
+  - name: ownedBy
+    target: "fabric:primitive:identity"
+    cardinality: "0..1"
+  - name: fromSource
+    target: "fabric:primitive:source"
+    cardinality: "0..1"
+  - name: linkedTo
+    target: "fabric:primitive:account"
+    cardinality: "0..*"
+    description: "Cross-provider linkage (shared email/phone/token)."
+  - name: hasSession
+    target: "fabric:primitive:session"
+    cardinality: "0..*"
+invariants:
+  - "An Account belongs to exactly one provider."
+examples:
+  - id: "account:google|sub|103xxx"
+    provider: "google"
+    provider_sub: "103xxx"

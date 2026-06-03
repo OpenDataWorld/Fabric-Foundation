@@ -1,0 +1,43 @@
+# Source — a connected system or provider
+id: "fabric:primitive:source"
+name: "Source"
+version: "1.0.0"
+layer: "foundation"
+question: "Where does this data or account come from?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A connected external system: an identity provider, data source, or API that
+  the platform ingests from. Sources provide Accounts and data, and are governed.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: kind
+    type: enum
+    required: true
+    description: "idp | database | api | file | stream"
+  - name: name
+    type: string
+    required: true
+  - name: endpoint
+    type: uri
+    required: false
+relationships:
+  - name: provides
+    target: "fabric:primitive:account"
+    cardinality: "0..*"
+  - name: governedBy
+    target: "fabric:primitive:policy"
+    cardinality: "0..*"
+  - name: locatedAt
+    target: "fabric:primitive:location"
+    cardinality: "0..1"
+invariants:
+  - "A Source has a resolvable endpoint or connector."
+examples:
+  - id: "source:okta:acme"
+    kind: "idp"
+    name: "Acme Okta"

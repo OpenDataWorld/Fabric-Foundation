@@ -1,0 +1,40 @@
+# Schema — a composed type (class + field groups), XDM-style
+id: "fabric:primitive:schema"
+name: "Schema"
+version: "1.0.0"
+layer: "foundation"
+question: "How is this entity's structure composed?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A concrete, instantiable type composed from a base class (a primitive) plus
+  reusable Field Groups — mirroring Adobe XDM's schema = class + field groups.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: name
+    type: string
+    required: true
+  - name: baseClass
+    type: ref
+    required: true
+    description: "The primitive (class) this schema is built on."
+relationships:
+  - name: basedOnClass
+    target: "fabric:primitive:thing"
+    cardinality: "1"
+  - name: includesFieldGroup
+    target: "fabric:primitive:fieldgroup"
+    cardinality: "0..*"
+  - name: governedBy
+    target: "fabric:primitive:policy"
+    cardinality: "0..*"
+invariants:
+  - "A Schema references exactly one base class."
+examples:
+  - id: "schema:CustomerProfile"
+    name: "Customer Profile"
+    baseClass: "fabric:primitive:identity"

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/source.json",
+  "title": "Source",
+  "description": "A connected external system: an identity provider, data source, or API that the platform ingests from. Sources provide Accounts and data, and are governed.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "idp | database | api | file | stream"
+    },
+    "name": {
+      "type": "string"
+    },
+    "endpoint": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "name"
+  ]
+}
