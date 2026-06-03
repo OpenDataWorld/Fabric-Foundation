@@ -28,6 +28,8 @@ from .okta       import OktaConnector
 from .auth0      import Auth0Connector
 from .ping       import PingConnector
 from .keycloak   import KeycloakConnector
+from .sailpoint   import SailPointConnector
+from .cyberark    import CyberArkConnector
 from .custom_oidc import CustomOIDCConnector
 
 __all__ = [
@@ -37,7 +39,8 @@ __all__ = [
     "GoogleConnector", "GitHubConnector", "MicrosoftConnector",
     "AppleConnector", "LinkedInConnector", "TwitterConnector",
     "LogtoConnector", "OktaConnector", "Auth0Connector",
-    "PingConnector", "KeycloakConnector", "CustomOIDCConnector",
+    "PingConnector", "KeycloakConnector", "SailPointConnector",
+    "CyberArkConnector", "CustomOIDCConnector",
     # Registry helpers
     "registry", "get_connector", "run_health_checks",
 ]
@@ -81,6 +84,18 @@ def _build_default_registry() -> dict[str, BaseConnector]:
             "realm":               os.environ.get("KEYCLOAK_REALM", "master"),
             "admin_client_id":     os.environ.get("KEYCLOAK_ADMIN_CLIENT_ID", ""),
             "admin_client_secret": os.environ.get("KEYCLOAK_ADMIN_CLIENT_SECRET", ""),
+        }),
+        ("sailpoint", SailPointConnector, {
+            "tenant":        os.environ.get("SAILPOINT_TENANT", ""),
+            "base_url":      os.environ.get("SAILPOINT_BASE_URL", ""),
+            "client_id":     os.environ.get("SAILPOINT_CLIENT_ID", ""),
+            "client_secret": os.environ.get("SAILPOINT_CLIENT_SECRET", ""),
+        }),
+        ("cyberark",  CyberArkConnector,  {
+            "base_url":    os.environ.get("CYBERARK_BASE_URL", ""),
+            "auth_method": os.environ.get("CYBERARK_AUTH_METHOD", "CyberArk"),
+            "username":    os.environ.get("CYBERARK_USERNAME", ""),
+            "password":    os.environ.get("CYBERARK_PASSWORD", ""),
         }),
     ]
 

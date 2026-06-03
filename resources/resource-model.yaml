@@ -1,0 +1,64 @@
+# Resource — What is consumed or required
+id: "fabric:primitive:resource"
+name: "Resource"
+version: "1.0.0"
+layer: "foundation"
+question: "What is consumed, allocated, or required?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A finite, allocatable asset that Capabilities consume and Constraints bound:
+  compute, storage, budget, tokens, API quota, seats, or data volume. Resource
+  is what budgets, rate limits, and cost controls are expressed over.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+  note: >
+    No native schema.org resource type; closest analogs are schema:QuantitativeValue
+    for measured amounts and schema:MonetaryAmount for budget.
+jsonldContext:
+  resource: "fabric:Resource"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: kind
+    type: enum
+    required: true
+    description: "compute | storage | budget | quota | seats | tokens | data"
+  - name: unit
+    type: string
+    required: true
+    description: "Unit of measure, e.g. vCPU-hours, GB, USD, requests."
+  - name: capacity
+    type: number
+    required: false
+    description: "Total available amount."
+  - name: consumed
+    type: number
+    required: false
+    description: "Amount currently used."
+  - name: owner
+    type: ref
+    required: false
+    description: "Identity that owns/funds the resource."
+relationships:
+  - name: consumedBy
+    target: "fabric:primitive:capability"
+    cardinality: "0..*"
+    description: "Capabilities that draw on this resource."
+  - name: boundedBy
+    target: "fabric:primitive:constraint"
+    cardinality: "0..*"
+    description: "Budget / rate / quota constraints over this resource."
+  - name: ownedBy
+    target: "fabric:primitive:identity"
+    cardinality: "0..1"
+invariants:
+  - "consumed <= capacity when both are present."
+  - "Resource consumption is recorded as Events."
+examples:
+  - id: "resource:budget:monthly-usd"
+    kind: "budget"
+    unit: "USD"
+    capacity: 10000
+    consumed: 3200

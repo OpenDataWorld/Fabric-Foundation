@@ -1,0 +1,73 @@
+# Risk — What could go wrong
+id: "fabric:primitive:risk"
+name: "Risk"
+version: "1.0.0"
+layer: "foundation"
+question: "What could go wrong, and how bad?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A potential adverse outcome with a likelihood and impact, attached to the
+  thing it threatens. Risk is what Constraints and Policies mitigate, what
+  Objectives weigh, and what governance and safety reviews track over time.
+schemaOrg:
+  type: "schema:Thing"
+  url: "https://schema.org/Thing"
+  note: >
+    No native schema.org risk type; modeled as a measurable potential outcome
+    with likelihood and impact scoring.
+jsonldContext:
+  risk: "fabric:Risk"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: category
+    type: enum
+    required: true
+    description: "security | privacy | compliance | operational | financial | safety"
+  - name: statement
+    type: string
+    required: true
+    description: "What could go wrong."
+  - name: likelihood
+    type: enum
+    required: false
+    description: "rare | unlikely | possible | likely | almost-certain"
+  - name: impact
+    type: enum
+    required: false
+    description: "negligible | minor | moderate | major | severe"
+  - name: severity
+    type: enum
+    required: false
+    description: "Derived score: low | medium | high | critical"
+  - name: status
+    type: ref
+    required: false
+    description: "State: identified | mitigating | accepted | closed."
+relationships:
+  - name: threatens
+    target: "fabric:primitive:thing"
+    cardinality: "1..*"
+    description: "The asset(s) the risk endangers."
+  - name: mitigatedBy
+    target: "fabric:primitive:constraint"
+    cardinality: "0..*"
+    description: "Constraints/controls that reduce the risk."
+  - name: governedBy
+    target: "fabric:primitive:policy"
+    cardinality: "0..*"
+  - name: evidencedBy
+    target: "fabric:primitive:evidence"
+    cardinality: "0..*"
+    description: "Evidence of occurrence or mitigation."
+invariants:
+  - "A Risk names at least one Thing it threatens."
+  - "Risk status changes are recorded as Events."
+examples:
+  - id: "risk:privacy:pii-exposure"
+    category: "privacy"
+    statement: "Unauthorized access to PII via over-broad permissions."
+    likelihood: "possible"
+    impact: "major"
+    severity: "high"

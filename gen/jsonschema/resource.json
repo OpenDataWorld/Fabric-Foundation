@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/resource.json",
+  "title": "Resource",
+  "description": "A finite, allocatable asset that Capabilities consume and Constraints bound: compute, storage, budget, tokens, API quota, seats, or data volume. Resource is what budgets, rate limits, and cost controls are expressed over.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "compute | storage | budget | quota | seats | tokens | data"
+    },
+    "unit": {
+      "type": "string",
+      "description": "Unit of measure, e.g. vCPU-hours, GB, USD, requests."
+    },
+    "capacity": {
+      "type": "number",
+      "description": "Total available amount."
+    },
+    "consumed": {
+      "type": "number",
+      "description": "Amount currently used."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Identity that owns/funds the resource."
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "unit"
+  ]
+}

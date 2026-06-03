@@ -26,6 +26,12 @@ schema.org-aligned YAML model conforming to
 | **Constraint** | What is limited? | [`constraints/constraint-model.yaml`](constraints/constraint-model.yaml) |
 | **Policy** | What is allowed? | [`policies/policy-model.yaml`](policies/policy-model.yaml) |
 | **Objective** | Why? | [`objectives/objective-model.yaml`](objectives/objective-model.yaml) |
+| **Resource** | What is consumed? | [`resources/resource-model.yaml`](resources/resource-model.yaml) |
+| **Evidence** | What proves it? | [`evidence/evidence-model.yaml`](evidence/evidence-model.yaml) |
+| **Risk** | What could go wrong? | [`risks/risk-model.yaml`](risks/risk-model.yaml) |
+
+The model forms a clean graph — **14 nodes, 34 edges, 0 dangling** (verified by
+`codegen/generate_models.py --target graph`).
 
 ## How the primitives compose
 
@@ -49,9 +55,10 @@ Key design realizations carried over from the design notes:
   with the who/when/where/how/what primitives they form a complete semantic
   operating system rather than a loose collection of schemas.
 
-## Remaining root gaps (queued)
+## Root layer status
 
-`Resource` · `Evidence` · `Risk` — to be added next.
+The root layer is complete: `Resource`, `Evidence`, and `Risk` have been added,
+bringing the foundation to **14 primitives**.
 
 ## Layout
 

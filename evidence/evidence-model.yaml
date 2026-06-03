@@ -1,0 +1,67 @@
+# Evidence — What proves a claim
+id: "fabric:primitive:evidence"
+name: "Evidence"
+version: "1.0.0"
+layer: "foundation"
+question: "What proves this is true?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A verifiable artifact that substantiates a claim: a signed Event, a document,
+  a measurement, a credential, or an attestation. Evidence is what makes the
+  platform's assertions auditable rather than asserted — it grounds compliance,
+  objective progress, and trust.
+schemaOrg:
+  type: "schema:CreativeWork"
+  url: "https://schema.org/CreativeWork"
+  note: >
+    Maps loosely to schema:CreativeWork / schema:Claim; verifiable credentials
+    extend the concept with cryptographic proof.
+jsonldContext:
+  evidence: "fabric:Evidence"
+attributes:
+  - name: id
+    type: string
+    required: true
+  - name: kind
+    type: enum
+    required: true
+    description: "event | document | measurement | credential | attestation"
+  - name: claim
+    type: string
+    required: true
+    description: "The statement this evidence supports."
+  - name: source
+    type: ref
+    required: false
+    description: "Identity or system that produced the evidence."
+  - name: uri
+    type: uri
+    required: false
+    description: "Where the artifact is retrievable."
+  - name: hash
+    type: string
+    required: false
+    description: "Content hash / signature for tamper-evidence."
+  - name: collectedAt
+    type: datetime
+    required: false
+relationships:
+  - name: substantiates
+    target: "fabric:primitive:objective"
+    cardinality: "0..*"
+    description: "Objectives whose progress this evidence proves."
+  - name: derivedFrom
+    target: "fabric:primitive:event"
+    cardinality: "0..*"
+    description: "Events the evidence is drawn from."
+  - name: supports
+    target: "fabric:primitive:policy"
+    cardinality: "0..*"
+    description: "Policy/compliance assertions this evidence backs."
+invariants:
+  - "Evidence is immutable once collected; corrections add new Evidence."
+  - "Every progress or compliance claim cites at least one Evidence."
+examples:
+  - id: "evidence:audit:2026-q2-access-review"
+    kind: "attestation"
+    claim: "All privileged accounts were reviewed in Q2 2026."

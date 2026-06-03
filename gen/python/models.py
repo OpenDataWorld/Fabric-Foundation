@@ -43,6 +43,18 @@ class Event:
 
 
 @dataclass
+class Evidence:
+    """What proves this is true?  (fabric:primitive:evidence)"""
+    id: str
+    kind: str
+    claim: str
+    source: Optional[str] = None
+    uri: Optional[str] = None
+    hash: Optional[str] = None
+    collectedAt: Optional[datetime] = None
+
+
+@dataclass
 class Identity:
     """Who or what is it?  (fabric:primitive:identity)"""
     id: str
@@ -100,6 +112,29 @@ class Relationship:
     directed: Optional[bool] = None
     validDuring: Optional[str] = None
     weight: Optional[float] = None
+
+
+@dataclass
+class Resource:
+    """What is consumed, allocated, or required?  (fabric:primitive:resource)"""
+    id: str
+    kind: str
+    unit: str
+    capacity: Optional[float] = None
+    consumed: Optional[float] = None
+    owner: Optional[str] = None
+
+
+@dataclass
+class Risk:
+    """What could go wrong, and how bad?  (fabric:primitive:risk)"""
+    id: str
+    category: str
+    statement: str
+    likelihood: Optional[str] = None
+    impact: Optional[str] = None
+    severity: Optional[str] = None
+    status: Optional[str] = None
 
 
 @dataclass

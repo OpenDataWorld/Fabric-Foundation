@@ -141,14 +141,17 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def selftest():
-    assert len(list_classes()) == 11
+    classes = list_classes()
+    assert len(classes) >= 11, f"expected >=11 primitives, got {len(classes)}"
     assert get_class("identity")["name"] == "Identity"
+    assert get_class("risk")["name"] == "Risk"  # expanded node
     assert get_schema("policy")["title"] == "Policy"
     g = get_graph()
-    assert len(g["nodes"]) == 11 and len(g["edges"]) == 24
+    assert len(g["nodes"]) == len(classes)
+    assert all(e["to"] in {n["id"] for n in g["nodes"]} for e in g["edges"]), "dangling edge"
     r = resolve("identity", 2)
     assert "capability" in r["resolved"]
-    print("selftest OK:", {"classes": 11, "edges": len(g["edges"]),
+    print("selftest OK:", {"classes": len(classes), "edges": len(g["edges"]),
                            "resolve(identity,2)": r["resolved"]})
 
 

@@ -33,6 +33,17 @@ export interface Event {
   payload?: Record<string, unknown>;
 }
 
+/** What proves this is true?  (fabric:primitive:evidence) */
+export interface Evidence {
+  id: string;
+  kind: string;
+  claim: string;
+  source?: string;
+  uri?: string;
+  hash?: string;
+  collectedAt?: string;
+}
+
 /** Who or what is it?  (fabric:primitive:identity) */
 export interface Identity {
   id: string;
@@ -86,6 +97,27 @@ export interface Relationship {
   directed?: boolean;
   validDuring?: string;
   weight?: number;
+}
+
+/** What is consumed, allocated, or required?  (fabric:primitive:resource) */
+export interface Resource {
+  id: string;
+  kind: string;
+  unit: string;
+  capacity?: number;
+  consumed?: number;
+  owner?: string;
+}
+
+/** What could go wrong, and how bad?  (fabric:primitive:risk) */
+export interface Risk {
+  id: string;
+  category: string;
+  statement: string;
+  likelihood?: string;
+  impact?: string;
+  severity?: string;
+  status?: string;
 }
 
 /** What condition is it in now?  (fabric:primitive:state) */

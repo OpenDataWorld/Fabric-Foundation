@@ -7,8 +7,8 @@
       "blurb": "The canonical model and governed services everything else composes from.",
       "products": [
         { "slug": "fabric", "name": "Fabric", "status": "Available", "tagline": "The semantic foundation of the platform.",
-          "description": "The canonical, schema.org-aligned primitive layer — 11 root primitives that bind every module into one governed, connected model.",
-          "features": ["11 schema.org-aligned root primitives", "Shared meta-schema & proto contract", "The weave through every other module"],
+          "description": "The canonical, schema.org-aligned primitive layer — 14 root primitives that bind every module into one governed, connected model.",
+          "features": ["14 schema.org-aligned root primitives", "Shared meta-schema & proto contract", "The weave through every other module"],
           "connects": "Defines the vocabulary (Identity, Policy, Event, Capability…) every other product uses." },
         { "slug": "data-model", "name": "Data Model", "status": "Available", "tagline": "The canonical, composable, XDM-aligned data model.",
           "description": "The data model as a product: classes (primitives), reusable field groups, and data types — composed into governed schemas and exported to Python, TypeScript, JSON Schema, SQL, and graph. Interoperable with Adobe XDM.",

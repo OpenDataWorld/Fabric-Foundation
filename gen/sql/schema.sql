@@ -30,6 +30,16 @@ CREATE TABLE IF NOT EXISTS event (
     payload JSONB
 );
 
+CREATE TABLE IF NOT EXISTS evidence (
+    id TEXT PRIMARY KEY NOT NULL,
+    kind TEXT NOT NULL,
+    claim TEXT NOT NULL,
+    source TEXT,
+    uri TEXT,
+    hash TEXT,
+    collectedAt TIMESTAMPTZ
+);
+
 CREATE TABLE IF NOT EXISTS identity (
     id TEXT PRIMARY KEY NOT NULL,
     kind TEXT NOT NULL,
@@ -78,6 +88,25 @@ CREATE TABLE IF NOT EXISTS relationship (
     directed BOOLEAN,
     validDuring TEXT,
     weight DOUBLE PRECISION
+);
+
+CREATE TABLE IF NOT EXISTS resource (
+    id TEXT PRIMARY KEY NOT NULL,
+    kind TEXT NOT NULL,
+    unit TEXT NOT NULL,
+    capacity DOUBLE PRECISION,
+    consumed DOUBLE PRECISION,
+    owner TEXT
+);
+
+CREATE TABLE IF NOT EXISTS risk (
+    id TEXT PRIMARY KEY NOT NULL,
+    category TEXT NOT NULL,
+    statement TEXT NOT NULL,
+    likelihood TEXT,
+    impact TEXT,
+    severity TEXT,
+    status TEXT
 );
 
 CREATE TABLE IF NOT EXISTS state (

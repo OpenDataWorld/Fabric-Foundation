@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/risk.json",
+  "title": "Risk",
+  "description": "A potential adverse outcome with a likelihood and impact, attached to the thing it threatens. Risk is what Constraints and Policies mitigate, what Objectives weigh, and what governance and safety reviews track over time.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "description": "security | privacy | compliance | operational | financial | safety"
+    },
+    "statement": {
+      "type": "string",
+      "description": "What could go wrong."
+    },
+    "likelihood": {
+      "type": "string",
+      "description": "rare | unlikely | possible | likely | almost-certain"
+    },
+    "impact": {
+      "type": "string",
+      "description": "negligible | minor | moderate | major | severe"
+    },
+    "severity": {
+      "type": "string",
+      "description": "Derived score: low | medium | high | critical"
+    },
+    "status": {
+      "type": "string",
+      "description": "State: identified | mitigating | accepted | closed."
+    }
+  },
+  "required": [
+    "id",
+    "category",
+    "statement"
+  ]
+}

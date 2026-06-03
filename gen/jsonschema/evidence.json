@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/evidence.json",
+  "title": "Evidence",
+  "description": "A verifiable artifact that substantiates a claim: a signed Event, a document, a measurement, a credential, or an attestation. Evidence is what makes the platform's assertions auditable rather than asserted \u2014 it grounds compliance, objective progress, and trust.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "event | document | measurement | credential | attestation"
+    },
+    "claim": {
+      "type": "string",
+      "description": "The statement this evidence supports."
+    },
+    "source": {
+      "type": "string",
+      "description": "Identity or system that produced the evidence."
+    },
+    "uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "Where the artifact is retrievable."
+    },
+    "hash": {
+      "type": "string",
+      "description": "Content hash / signature for tamper-evidence."
+    },
+    "collectedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "claim"
+  ]
+}
