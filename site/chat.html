@@ -49,8 +49,12 @@
     </form>
   </div>
 
+  <script src="config.js"></script>
   <script>
     const API_BASE = window.FABRIC_API_BASE || "http://localhost:8088";
+    // Point this at your packed tinyLLM agent (any endpoint taking {messages} ->
+    // {reply} or OpenAI-style {choices}). Leave empty for command-only mode.
+    const LLM_URL = window.FABRIC_LLM_URL || "";
     const log = document.getElementById("log");
     const form = document.getElementById("form");
     const input = document.getElementById("input");
@@ -63,7 +67,27 @@
       return el;
     }
     function escapeHtml(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
-    async function api(path){ const r = await fetch(API_BASE+path); if(!r.ok) throw new Error((await r.json()).error||r.statusText); return r.json(); }
+    async function api(path){
+      try { const r = await fetch(API_BASE+path); if(!r.ok) throw new Error((await r.json()).error||r.statusText); return r.json(); }
+      catch(e){ // zero-backend fallback for read-only model endpoints
+        const m = await fetch("./data/model.json").then(r=>r.json()).catch(()=>null);
+        if(m){ if(path==="/classes") return m.classes; if(path==="/graph") return {nodes:m.nodes,edges:m.edges}; }
+        throw e;
+      }
+    }
+    async function askLLM(text){
+      if(!LLM_URL) return false;
+      const el = add("…thinking", "bot");
+      try{
+        const r = await fetch(LLM_URL, { method:"POST", headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({ messages:[
+            {role:"system", content:"You are Fabric Agent, a concise assistant for the OpenDataWorld data fabric."},
+            {role:"user", content:text}] }) });
+        const d = await r.json();
+        el.innerHTML = escapeHtml(d.reply || d.choices?.[0]?.message?.content || JSON.stringify(d));
+      }catch(e){ el.innerHTML = "⚠️ tinyLLM agent unreachable ("+e.message+") at "+LLM_URL; }
+      return true;
+    }
 
     const HELP = `I'm Fabric Agent, powered by the Data Model API. Try:
 • <code>list classes</code> — all primitives
@@ -90,6 +114,7 @@
           return add("Graph: <b>"+g.nodes.length+"</b> nodes, <b>"+g.edges.length+"</b> edges.","bot"); }
         if (cmd==="signups") { const s = await api("/signups");
           return add("<b>"+s.registered+"</b> alpha tester(s) registered.","bot"); }
+        if (await askLLM(text)) return;   // hand off freeform to the tinyLLM agent
         add("I didn't catch that. "+HELP, "bot");
       } catch(e){ add("⚠️ "+e.message+" — is the Fabric API running at "+API_BASE+"?", "bot"); }
     }

@@ -237,6 +237,20 @@ def gen_graph_cypher(prims: list[dict]) -> str:
     return "\n".join(out) + "\n"
 
 
+def gen_model_json(prims: list[dict]) -> dict:
+    """Static model export so the frontend can run with zero backend."""
+    known = {p["id"] for p in prims}
+    classes = [{"id": short(p["id"]), "name": p["name"], "question": p.get("question", "")}
+               for p in prims]
+    nodes = [{"id": short(p["id"]), "name": p["name"]} for p in prims]
+    edges = []
+    for p in prims:
+        for r in p.get("relationships", []):
+            if r["target"] in known:
+                edges.append({"from": short(p["id"]), "rel": r["name"], "to": short(r["target"])})
+    return {"classes": classes, "nodes": nodes, "edges": edges}
+
+
 def graph_fit_report(prims: list[dict]) -> tuple[int, int, list[str]]:
     """Returns (nodes, edges, dangling) — does the model fit a graph cleanly?"""
     known = {p["id"] for p in prims}
@@ -261,7 +275,7 @@ def write(path: str, content: str):
 def main():
     ap = argparse.ArgumentParser(description="Fabric data model generator")
     ap.add_argument("--target",
-                    choices=["python", "typescript", "jsonschema", "sql", "graph", "all"],
+                    choices=["python", "typescript", "jsonschema", "sql", "graph", "json", "all"],
                     default="all")
     ap.add_argument("--out", default="gen")
     args = ap.parse_args()
@@ -286,6 +300,12 @@ def main():
         write(os.path.join(out, "graph", "schema.surql"), gen_graph_surql(prims))
         write(os.path.join(out, "graph", "model.mmd"), gen_graph_mermaid(prims))
         write(os.path.join(out, "graph", "model.cypher"), gen_graph_cypher(prims))
+    if t in ("json", "all"):
+        model = gen_model_json(prims)
+        doc = json.dumps(model, indent=2) + "\n"
+        write(os.path.join(out, "model.json"), doc)
+        # Also emit into the site so it can run fully static (no backend).
+        write(os.path.join(REPO, "site", "data", "model.json"), doc)
         nodes, edges, dangling = graph_fit_report(prims)
         print(f"  graph fit: {nodes} nodes, {edges} edges, {len(dangling)} dangling")
         for d in dangling:

@@ -1,0 +1,879 @@
+{
+  "classes": [
+    {
+      "id": "account",
+      "name": "Account",
+      "question": "Which provider account is this?"
+    },
+    {
+      "id": "agent",
+      "name": "Agent",
+      "question": "What autonomous actor is this?"
+    },
+    {
+      "id": "application",
+      "name": "Application",
+      "question": "What registered app authenticates here?"
+    },
+    {
+      "id": "capability",
+      "name": "Capability",
+      "question": "What can this thing do?"
+    },
+    {
+      "id": "connector",
+      "name": "Connector",
+      "question": "How is a source integrated?"
+    },
+    {
+      "id": "consent",
+      "name": "Consent",
+      "question": "What was permitted by whom?"
+    },
+    {
+      "id": "constraint",
+      "name": "Constraint",
+      "question": "What must hold or is forbidden?"
+    },
+    {
+      "id": "control",
+      "name": "Control",
+      "question": "What enforced safeguard is in place?"
+    },
+    {
+      "id": "credential",
+      "name": "Credential",
+      "question": "What is verifiably asserted about an identity?"
+    },
+    {
+      "id": "datatype",
+      "name": "Data Type",
+      "question": "What reusable structure does this field hold?"
+    },
+    {
+      "id": "dataset",
+      "name": "Dataset",
+      "question": "What collection of data is this?"
+    },
+    {
+      "id": "device",
+      "name": "Device",
+      "question": "What endpoint was used?"
+    },
+    {
+      "id": "event",
+      "name": "Event",
+      "question": "What happened?"
+    },
+    {
+      "id": "evidence",
+      "name": "Evidence",
+      "question": "What proves this is true?"
+    },
+    {
+      "id": "feature",
+      "name": "Feature",
+      "question": "What product capability is this?"
+    },
+    {
+      "id": "fieldgroup",
+      "name": "Field Group",
+      "question": "Which reusable set of fields extends a class?"
+    },
+    {
+      "id": "group",
+      "name": "Group",
+      "question": "Which identities are grouped together?"
+    },
+    {
+      "id": "identity",
+      "name": "Identity",
+      "question": "Who or what is it?"
+    },
+    {
+      "id": "journey",
+      "name": "Journey",
+      "question": "What path did this thing take?"
+    },
+    {
+      "id": "location",
+      "name": "Location",
+      "question": "Where is it?"
+    },
+    {
+      "id": "market",
+      "name": "Market",
+      "question": "What market category is this?"
+    },
+    {
+      "id": "metric",
+      "name": "Metric",
+      "question": "What is measured?"
+    },
+    {
+      "id": "objective",
+      "name": "Objective",
+      "question": "Why are we doing it, and how is success judged?"
+    },
+    {
+      "id": "permission",
+      "name": "Permission",
+      "question": "What action is allowed on what?"
+    },
+    {
+      "id": "pipeline",
+      "name": "Pipeline",
+      "question": "How does data move?"
+    },
+    {
+      "id": "policy",
+      "name": "Policy",
+      "question": "What is allowed, and under what conditions?"
+    },
+    {
+      "id": "product",
+      "name": "Product",
+      "question": "What packaged offering is this?"
+    },
+    {
+      "id": "relationship",
+      "name": "Relationship",
+      "question": "How are things connected?"
+    },
+    {
+      "id": "resource",
+      "name": "Resource",
+      "question": "What is consumed, allocated, or required?"
+    },
+    {
+      "id": "risk",
+      "name": "Risk",
+      "question": "What could go wrong, and how bad?"
+    },
+    {
+      "id": "role",
+      "name": "Role",
+      "question": "What set of permissions is granted?"
+    },
+    {
+      "id": "schema",
+      "name": "Schema",
+      "question": "How is this entity's structure composed?"
+    },
+    {
+      "id": "session",
+      "name": "Session",
+      "question": "When and how was access established?"
+    },
+    {
+      "id": "solution",
+      "name": "Solution",
+      "question": "What outcome does this compose?"
+    },
+    {
+      "id": "source",
+      "name": "Source",
+      "question": "Where does this data or account come from?"
+    },
+    {
+      "id": "state",
+      "name": "State",
+      "question": "What condition is it in now?"
+    },
+    {
+      "id": "tenant",
+      "name": "Tenant",
+      "question": "Whose isolated space is this?"
+    },
+    {
+      "id": "thing",
+      "name": "Thing",
+      "question": "What is it?"
+    },
+    {
+      "id": "time",
+      "name": "Time",
+      "question": "When does it occur or apply?"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "account",
+      "name": "Account"
+    },
+    {
+      "id": "agent",
+      "name": "Agent"
+    },
+    {
+      "id": "application",
+      "name": "Application"
+    },
+    {
+      "id": "capability",
+      "name": "Capability"
+    },
+    {
+      "id": "connector",
+      "name": "Connector"
+    },
+    {
+      "id": "consent",
+      "name": "Consent"
+    },
+    {
+      "id": "constraint",
+      "name": "Constraint"
+    },
+    {
+      "id": "control",
+      "name": "Control"
+    },
+    {
+      "id": "credential",
+      "name": "Credential"
+    },
+    {
+      "id": "datatype",
+      "name": "Data Type"
+    },
+    {
+      "id": "dataset",
+      "name": "Dataset"
+    },
+    {
+      "id": "device",
+      "name": "Device"
+    },
+    {
+      "id": "event",
+      "name": "Event"
+    },
+    {
+      "id": "evidence",
+      "name": "Evidence"
+    },
+    {
+      "id": "feature",
+      "name": "Feature"
+    },
+    {
+      "id": "fieldgroup",
+      "name": "Field Group"
+    },
+    {
+      "id": "group",
+      "name": "Group"
+    },
+    {
+      "id": "identity",
+      "name": "Identity"
+    },
+    {
+      "id": "journey",
+      "name": "Journey"
+    },
+    {
+      "id": "location",
+      "name": "Location"
+    },
+    {
+      "id": "market",
+      "name": "Market"
+    },
+    {
+      "id": "metric",
+      "name": "Metric"
+    },
+    {
+      "id": "objective",
+      "name": "Objective"
+    },
+    {
+      "id": "permission",
+      "name": "Permission"
+    },
+    {
+      "id": "pipeline",
+      "name": "Pipeline"
+    },
+    {
+      "id": "policy",
+      "name": "Policy"
+    },
+    {
+      "id": "product",
+      "name": "Product"
+    },
+    {
+      "id": "relationship",
+      "name": "Relationship"
+    },
+    {
+      "id": "resource",
+      "name": "Resource"
+    },
+    {
+      "id": "risk",
+      "name": "Risk"
+    },
+    {
+      "id": "role",
+      "name": "Role"
+    },
+    {
+      "id": "schema",
+      "name": "Schema"
+    },
+    {
+      "id": "session",
+      "name": "Session"
+    },
+    {
+      "id": "solution",
+      "name": "Solution"
+    },
+    {
+      "id": "source",
+      "name": "Source"
+    },
+    {
+      "id": "state",
+      "name": "State"
+    },
+    {
+      "id": "tenant",
+      "name": "Tenant"
+    },
+    {
+      "id": "thing",
+      "name": "Thing"
+    },
+    {
+      "id": "time",
+      "name": "Time"
+    }
+  ],
+  "edges": [
+    {
+      "from": "account",
+      "rel": "ownedBy",
+      "to": "identity"
+    },
+    {
+      "from": "account",
+      "rel": "fromSource",
+      "to": "source"
+    },
+    {
+      "from": "account",
+      "rel": "linkedTo",
+      "to": "account"
+    },
+    {
+      "from": "account",
+      "rel": "hasSession",
+      "to": "session"
+    },
+    {
+      "from": "agent",
+      "rel": "executes",
+      "to": "capability"
+    },
+    {
+      "from": "agent",
+      "rel": "pursues",
+      "to": "objective"
+    },
+    {
+      "from": "agent",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "agent",
+      "rel": "hasMemory",
+      "to": "event"
+    },
+    {
+      "from": "application",
+      "rel": "authenticates",
+      "to": "account"
+    },
+    {
+      "from": "application",
+      "rel": "registeredIn",
+      "to": "tenant"
+    },
+    {
+      "from": "application",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "capability",
+      "rel": "heldBy",
+      "to": "identity"
+    },
+    {
+      "from": "capability",
+      "rel": "constrainedBy",
+      "to": "constraint"
+    },
+    {
+      "from": "capability",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "capability",
+      "rel": "servesObjective",
+      "to": "objective"
+    },
+    {
+      "from": "connector",
+      "rel": "integrates",
+      "to": "source"
+    },
+    {
+      "from": "connector",
+      "rel": "implements",
+      "to": "capability"
+    },
+    {
+      "from": "consent",
+      "rel": "grantedBy",
+      "to": "identity"
+    },
+    {
+      "from": "consent",
+      "rel": "coversData",
+      "to": "dataset"
+    },
+    {
+      "from": "consent",
+      "rel": "enforcedBy",
+      "to": "policy"
+    },
+    {
+      "from": "constraint",
+      "rel": "composesInto",
+      "to": "policy"
+    },
+    {
+      "from": "constraint",
+      "rel": "limits",
+      "to": "capability"
+    },
+    {
+      "from": "control",
+      "rel": "enforces",
+      "to": "constraint"
+    },
+    {
+      "from": "control",
+      "rel": "mitigates",
+      "to": "risk"
+    },
+    {
+      "from": "control",
+      "rel": "evidencedBy",
+      "to": "evidence"
+    },
+    {
+      "from": "credential",
+      "rel": "assertedAbout",
+      "to": "identity"
+    },
+    {
+      "from": "credential",
+      "rel": "issuedBy",
+      "to": "identity"
+    },
+    {
+      "from": "credential",
+      "rel": "evidencedBy",
+      "to": "evidence"
+    },
+    {
+      "from": "datatype",
+      "rel": "usedBy",
+      "to": "fieldgroup"
+    },
+    {
+      "from": "dataset",
+      "rel": "conformsTo",
+      "to": "schema"
+    },
+    {
+      "from": "dataset",
+      "rel": "derivedFrom",
+      "to": "source"
+    },
+    {
+      "from": "dataset",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "dataset",
+      "rel": "hasState",
+      "to": "state"
+    },
+    {
+      "from": "device",
+      "rel": "usedBy",
+      "to": "identity"
+    },
+    {
+      "from": "device",
+      "rel": "locatedAt",
+      "to": "location"
+    },
+    {
+      "from": "event",
+      "rel": "records",
+      "to": "capability"
+    },
+    {
+      "from": "event",
+      "rel": "triggers",
+      "to": "state"
+    },
+    {
+      "from": "evidence",
+      "rel": "substantiates",
+      "to": "objective"
+    },
+    {
+      "from": "evidence",
+      "rel": "derivedFrom",
+      "to": "event"
+    },
+    {
+      "from": "evidence",
+      "rel": "supports",
+      "to": "policy"
+    },
+    {
+      "from": "feature",
+      "rel": "partOf",
+      "to": "product"
+    },
+    {
+      "from": "feature",
+      "rel": "realizes",
+      "to": "capability"
+    },
+    {
+      "from": "feature",
+      "rel": "hasState",
+      "to": "state"
+    },
+    {
+      "from": "fieldgroup",
+      "rel": "usesDataType",
+      "to": "datatype"
+    },
+    {
+      "from": "fieldgroup",
+      "rel": "composedInto",
+      "to": "schema"
+    },
+    {
+      "from": "group",
+      "rel": "contains",
+      "to": "identity"
+    },
+    {
+      "from": "group",
+      "rel": "hasRole",
+      "to": "role"
+    },
+    {
+      "from": "group",
+      "rel": "withinTenant",
+      "to": "tenant"
+    },
+    {
+      "from": "identity",
+      "rel": "holds",
+      "to": "capability"
+    },
+    {
+      "from": "identity",
+      "rel": "subjectTo",
+      "to": "policy"
+    },
+    {
+      "from": "identity",
+      "rel": "locatedAt",
+      "to": "location"
+    },
+    {
+      "from": "journey",
+      "rel": "sequenceOf",
+      "to": "state"
+    },
+    {
+      "from": "journey",
+      "rel": "forIdentity",
+      "to": "identity"
+    },
+    {
+      "from": "journey",
+      "rel": "over",
+      "to": "time"
+    },
+    {
+      "from": "location",
+      "rel": "bounds",
+      "to": "constraint"
+    },
+    {
+      "from": "market",
+      "rel": "categorizes",
+      "to": "product"
+    },
+    {
+      "from": "metric",
+      "rel": "measures",
+      "to": "objective"
+    },
+    {
+      "from": "metric",
+      "rel": "evidencedBy",
+      "to": "evidence"
+    },
+    {
+      "from": "objective",
+      "rel": "servedBy",
+      "to": "capability"
+    },
+    {
+      "from": "objective",
+      "rel": "boundedBy",
+      "to": "constraint"
+    },
+    {
+      "from": "objective",
+      "rel": "measuredBy",
+      "to": "event"
+    },
+    {
+      "from": "objective",
+      "rel": "subObjectiveOf",
+      "to": "objective"
+    },
+    {
+      "from": "permission",
+      "rel": "permits",
+      "to": "capability"
+    },
+    {
+      "from": "permission",
+      "rel": "over",
+      "to": "resource"
+    },
+    {
+      "from": "permission",
+      "rel": "composesInto",
+      "to": "policy"
+    },
+    {
+      "from": "pipeline",
+      "rel": "from",
+      "to": "source"
+    },
+    {
+      "from": "pipeline",
+      "rel": "produces",
+      "to": "dataset"
+    },
+    {
+      "from": "pipeline",
+      "rel": "emits",
+      "to": "event"
+    },
+    {
+      "from": "pipeline",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "policy",
+      "rel": "composedOf",
+      "to": "constraint"
+    },
+    {
+      "from": "policy",
+      "rel": "governs",
+      "to": "capability"
+    },
+    {
+      "from": "policy",
+      "rel": "appliesTo",
+      "to": "identity"
+    },
+    {
+      "from": "product",
+      "rel": "packages",
+      "to": "capability"
+    },
+    {
+      "from": "product",
+      "rel": "addresses",
+      "to": "market"
+    },
+    {
+      "from": "product",
+      "rel": "hasState",
+      "to": "state"
+    },
+    {
+      "from": "relationship",
+      "rel": "connects",
+      "to": "thing"
+    },
+    {
+      "from": "resource",
+      "rel": "consumedBy",
+      "to": "capability"
+    },
+    {
+      "from": "resource",
+      "rel": "boundedBy",
+      "to": "constraint"
+    },
+    {
+      "from": "resource",
+      "rel": "ownedBy",
+      "to": "identity"
+    },
+    {
+      "from": "risk",
+      "rel": "threatens",
+      "to": "thing"
+    },
+    {
+      "from": "risk",
+      "rel": "mitigatedBy",
+      "to": "constraint"
+    },
+    {
+      "from": "risk",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "risk",
+      "rel": "evidencedBy",
+      "to": "evidence"
+    },
+    {
+      "from": "role",
+      "rel": "grants",
+      "to": "permission"
+    },
+    {
+      "from": "role",
+      "rel": "assignedTo",
+      "to": "identity"
+    },
+    {
+      "from": "schema",
+      "rel": "basedOnClass",
+      "to": "thing"
+    },
+    {
+      "from": "schema",
+      "rel": "includesFieldGroup",
+      "to": "fieldgroup"
+    },
+    {
+      "from": "schema",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "session",
+      "rel": "forAccount",
+      "to": "account"
+    },
+    {
+      "from": "session",
+      "rel": "onDevice",
+      "to": "device"
+    },
+    {
+      "from": "session",
+      "rel": "during",
+      "to": "time"
+    },
+    {
+      "from": "solution",
+      "rel": "composes",
+      "to": "product"
+    },
+    {
+      "from": "solution",
+      "rel": "addresses",
+      "to": "market"
+    },
+    {
+      "from": "solution",
+      "rel": "servesObjective",
+      "to": "objective"
+    },
+    {
+      "from": "source",
+      "rel": "provides",
+      "to": "account"
+    },
+    {
+      "from": "source",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "source",
+      "rel": "locatedAt",
+      "to": "location"
+    },
+    {
+      "from": "state",
+      "rel": "advancedBy",
+      "to": "event"
+    },
+    {
+      "from": "state",
+      "rel": "gatedBy",
+      "to": "constraint"
+    },
+    {
+      "from": "tenant",
+      "rel": "isolates",
+      "to": "identity"
+    },
+    {
+      "from": "tenant",
+      "rel": "owns",
+      "to": "resource"
+    },
+    {
+      "from": "tenant",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "thing",
+      "rel": "relatedTo",
+      "to": "thing"
+    },
+    {
+      "from": "time",
+      "rel": "scopes",
+      "to": "constraint"
+    }
+  ]
+}

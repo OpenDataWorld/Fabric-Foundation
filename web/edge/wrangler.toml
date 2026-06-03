@@ -1,0 +1,13 @@
+name = "fabric-edge"
+main = "worker.ts"
+compatibility_date = "2026-01-01"
+
+# Non-secret defaults; set secrets with `wrangler secret put SURREAL_URL` etc.
+[vars]
+SURREAL_NS = "fabric"
+SURREAL_DB = "fabric"
+
+# Secrets (do NOT put real values here — use `wrangler secret put`):
+#   SURREAL_URL   wss://<host>.surreal.cloud
+#   SURREAL_USER  <user>
+#   SURREAL_PASS  <pass>
