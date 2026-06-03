@@ -1,0 +1,16 @@
+# Tenant — an isolation boundary
+id: "fabric:primitive:tenant"
+name: "Tenant"
+version: "1.0.0"
+layer: "domain"
+question: "Whose isolated space is this?"
+extends: ["fabric:primitive:thing"]
+description: "A tenant boundary that isolates identities, data, and resources in the fabric."
+schemaOrg: { type: "schema:Organization", url: "https://schema.org/Organization" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+relationships:
+  - { name: isolates, target: "fabric:primitive:identity", cardinality: "0..*" }
+  - { name: owns, target: "fabric:primitive:resource", cardinality: "0..*" }
+  - { name: governedBy, target: "fabric:primitive:policy", cardinality: "0..*" }

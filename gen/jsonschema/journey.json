@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/journey.json",
+  "title": "Journey",
+  "description": "An ordered sequence of States over Time for a subject (a Thing or Identity).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "subject"
+  ]
+}

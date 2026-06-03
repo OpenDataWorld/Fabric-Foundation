@@ -9,6 +9,12 @@ export interface Account {
   username?: string;
 }
 
+/** What autonomous actor is this?  (fabric:primitive:agent) */
+export interface Agent {
+  id: string;
+  name: string;
+}
+
 /** What can this thing do?  (fabric:primitive:capability) */
 export interface Capability {
   id: string;
@@ -21,6 +27,19 @@ export interface Capability {
   maturity?: string;
 }
 
+/** How is a source integrated?  (fabric:primitive:connector) */
+export interface Connector {
+  id: string;
+  name: string;
+}
+
+/** What was permitted by whom?  (fabric:primitive:consent) */
+export interface Consent {
+  id: string;
+  purpose: string;
+  granted?: boolean;
+}
+
 /** What must hold or is forbidden?  (fabric:primitive:constraint) */
 export interface Constraint {
   id: string;
@@ -29,6 +48,12 @@ export interface Constraint {
   target?: string;
   severity?: string;
   onViolation?: string;
+}
+
+/** What enforced safeguard is in place?  (fabric:primitive:control) */
+export interface Control {
+  id: string;
+  name: string;
 }
 
 /** What is verifiably asserted about an identity?  (fabric:primitive:credential) */
@@ -44,6 +69,13 @@ export interface DataType {
   id: string;
   name: string;
   fields?: Record<string, unknown>[];
+}
+
+/** What collection of data is this?  (fabric:primitive:dataset) */
+export interface Dataset {
+  id: string;
+  name: string;
+  format?: string;
 }
 
 /** What endpoint was used?  (fabric:primitive:device) */
@@ -75,6 +107,13 @@ export interface Evidence {
   collectedAt?: string;
 }
 
+/** What product capability is this?  (fabric:primitive:feature) */
+export interface Feature {
+  id: string;
+  name: string;
+  status?: string;
+}
+
 /** Which reusable set of fields extends a class?  (fabric:primitive:fieldgroup) */
 export interface FieldGroup {
   id: string;
@@ -91,6 +130,12 @@ export interface Identity {
   credentials?: string[];
 }
 
+/** What path did this thing take?  (fabric:primitive:journey) */
+export interface Journey {
+  id: string;
+  subject: string;
+}
+
 /** Where is it?  (fabric:primitive:location) */
 export interface Location {
   id: string;
@@ -100,6 +145,20 @@ export interface Location {
   geometry?: string;
   address?: string;
   uri?: string;
+}
+
+/** What market category is this?  (fabric:primitive:market) */
+export interface Market {
+  id: string;
+  name: string;
+}
+
+/** What is measured?  (fabric:primitive:metric) */
+export interface Metric {
+  id: string;
+  name: string;
+  value?: number;
+  unit?: string;
 }
 
 /** Why are we doing it, and how is success judged?  (fabric:primitive:objective) */
@@ -114,6 +173,13 @@ export interface Objective {
   status?: string;
 }
 
+/** How does data move?  (fabric:primitive:pipeline) */
+export interface Pipeline {
+  id: string;
+  name: string;
+  mode?: string;
+}
+
 /** What is allowed, and under what conditions?  (fabric:primitive:policy) */
 export interface Policy {
   id: string;
@@ -124,6 +190,13 @@ export interface Policy {
   scope?: Record<string, unknown>;
   precedence?: number;
   owner?: string;
+}
+
+/** What packaged offering is this?  (fabric:primitive:product) */
+export interface Product {
+  id: string;
+  name: string;
+  status?: string;
 }
 
 /** How are things connected?  (fabric:primitive:relationship) */
@@ -172,6 +245,12 @@ export interface Session {
   ip?: string;
 }
 
+/** What outcome does this compose?  (fabric:primitive:solution) */
+export interface Solution {
+  id: string;
+  name: string;
+}
+
 /** Where does this data or account come from?  (fabric:primitive:source) */
 export interface Source {
   id: string;
@@ -188,6 +267,12 @@ export interface State {
   lifecycle?: string;
   since?: string;
   allowedTransitions?: string[];
+}
+
+/** Whose isolated space is this?  (fabric:primitive:tenant) */
+export interface Tenant {
+  id: string;
+  name: string;
 }
 
 /** What is it?  (fabric:primitive:thing) */

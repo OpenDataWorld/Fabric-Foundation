@@ -34,7 +34,11 @@ schema.org-aligned YAML model conforming to
 `Account` · `Source` · `Credential` · `Session` · `Device` (identity graph) and
 `Schema` · `FieldGroup` · `DataType` (XDM-style composition).
 
-The model forms a clean graph — **22 nodes, 55 edges, 0 dangling** (verified by
+**Domain nodes** (the platform describes itself — *everything is data*):
+`Dataset` · `Product` · `Solution` · `Feature` · `Market` · `Connector` ·
+`Pipeline` · `Agent` · `Journey` · `Metric` · `Tenant` · `Consent` · `Control`.
+
+The model forms a clean graph — **35 nodes, 93 edges, 0 dangling** (verified by
 `codegen/generate_models.py --target graph`).
 
 ## How the primitives compose
@@ -61,8 +65,8 @@ Key design realizations carried over from the design notes:
 
 ## Root layer status
 
-The root layer is complete (`Resource`, `Evidence`, `Risk` added), and the graph
-has been extended with identity and composition nodes — **22 primitives total**.
+The root layer is complete, and the graph has been extended with identity,
+composition, and domain nodes so the platform is self-describing — **35 nodes total**.
 
 ## Layout
 

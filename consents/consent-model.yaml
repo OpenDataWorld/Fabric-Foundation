@@ -1,0 +1,17 @@
+# Consent — a privacy grant
+id: "fabric:primitive:consent"
+name: "Consent"
+version: "1.0.0"
+layer: "domain"
+question: "What was permitted by whom?"
+extends: ["fabric:primitive:thing"]
+description: "A consent grant by an Identity governing how their data may be used (GDPR/DPDP)."
+schemaOrg: { type: "schema:Thing", url: "https://schema.org/Thing" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: purpose, type: string, required: true }
+  - { name: granted, type: boolean, required: false }
+relationships:
+  - { name: grantedBy, target: "fabric:primitive:identity", cardinality: "1" }
+  - { name: coversData, target: "fabric:primitive:dataset", cardinality: "0..*" }
+  - { name: enforcedBy, target: "fabric:primitive:policy", cardinality: "0..*" }

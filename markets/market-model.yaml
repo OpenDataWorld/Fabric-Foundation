@@ -1,0 +1,14 @@
+# Market — a category of demand
+id: "fabric:primitive:market"
+name: "Market"
+version: "1.0.0"
+layer: "domain"
+question: "What market category is this?"
+extends: ["fabric:primitive:thing"]
+description: "A market category (e.g. a Gartner Peer Insights market) an offering competes in."
+schemaOrg: { type: "schema:Thing", url: "https://schema.org/Thing" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+relationships:
+  - { name: categorizes, target: "fabric:primitive:product", cardinality: "0..*" }

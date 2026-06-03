@@ -1,0 +1,17 @@
+# Metric — a measured indicator
+id: "fabric:primitive:metric"
+name: "Metric"
+version: "1.0.0"
+layer: "domain"
+question: "What is measured?"
+extends: ["fabric:primitive:thing"]
+description: "A measurable indicator with a value and unit, used to judge Objectives."
+schemaOrg: { type: "schema:Observation", url: "https://schema.org/Observation" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+  - { name: value, type: number, required: false }
+  - { name: unit, type: string, required: false }
+relationships:
+  - { name: measures, target: "fabric:primitive:objective", cardinality: "0..*" }
+  - { name: evidencedBy, target: "fabric:primitive:evidence", cardinality: "0..*" }

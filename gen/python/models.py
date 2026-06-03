@@ -17,6 +17,13 @@ class Account:
 
 
 @dataclass
+class Agent:
+    """What autonomous actor is this?  (fabric:primitive:agent)"""
+    id: str
+    name: str
+
+
+@dataclass
 class Capability:
     """What can this thing do?  (fabric:primitive:capability)"""
     id: str
@@ -30,6 +37,21 @@ class Capability:
 
 
 @dataclass
+class Connector:
+    """How is a source integrated?  (fabric:primitive:connector)"""
+    id: str
+    name: str
+
+
+@dataclass
+class Consent:
+    """What was permitted by whom?  (fabric:primitive:consent)"""
+    id: str
+    purpose: str
+    granted: Optional[bool] = None
+
+
+@dataclass
 class Constraint:
     """What must hold or is forbidden?  (fabric:primitive:constraint)"""
     id: str
@@ -38,6 +60,13 @@ class Constraint:
     target: Optional[str] = None
     severity: Optional[str] = None
     onViolation: Optional[str] = None
+
+
+@dataclass
+class Control:
+    """What enforced safeguard is in place?  (fabric:primitive:control)"""
+    id: str
+    name: str
 
 
 @dataclass
@@ -55,6 +84,14 @@ class DataType:
     id: str
     name: str
     fields: list[dict] = field(default_factory=list)
+
+
+@dataclass
+class Dataset:
+    """What collection of data is this?  (fabric:primitive:dataset)"""
+    id: str
+    name: str
+    format: Optional[str] = None
 
 
 @dataclass
@@ -90,6 +127,14 @@ class Evidence:
 
 
 @dataclass
+class Feature:
+    """What product capability is this?  (fabric:primitive:feature)"""
+    id: str
+    name: str
+    status: Optional[str] = None
+
+
+@dataclass
 class FieldGroup:
     """Which reusable set of fields extends a class?  (fabric:primitive:fieldgroup)"""
     id: str
@@ -108,6 +153,13 @@ class Identity:
 
 
 @dataclass
+class Journey:
+    """What path did this thing take?  (fabric:primitive:journey)"""
+    id: str
+    subject: str
+
+
+@dataclass
 class Location:
     """Where is it?  (fabric:primitive:location)"""
     id: str
@@ -117,6 +169,22 @@ class Location:
     geometry: Optional[str] = None
     address: Optional[str] = None
     uri: Optional[str] = None
+
+
+@dataclass
+class Market:
+    """What market category is this?  (fabric:primitive:market)"""
+    id: str
+    name: str
+
+
+@dataclass
+class Metric:
+    """What is measured?  (fabric:primitive:metric)"""
+    id: str
+    name: str
+    value: Optional[float] = None
+    unit: Optional[str] = None
 
 
 @dataclass
@@ -133,6 +201,14 @@ class Objective:
 
 
 @dataclass
+class Pipeline:
+    """How does data move?  (fabric:primitive:pipeline)"""
+    id: str
+    name: str
+    mode: Optional[str] = None
+
+
+@dataclass
 class Policy:
     """What is allowed, and under what conditions?  (fabric:primitive:policy)"""
     id: str
@@ -143,6 +219,14 @@ class Policy:
     scope: Optional[dict] = None
     precedence: Optional[int] = None
     owner: Optional[str] = None
+
+
+@dataclass
+class Product:
+    """What packaged offering is this?  (fabric:primitive:product)"""
+    id: str
+    name: str
+    status: Optional[str] = None
 
 
 @dataclass
@@ -197,6 +281,13 @@ class Session:
 
 
 @dataclass
+class Solution:
+    """What outcome does this compose?  (fabric:primitive:solution)"""
+    id: str
+    name: str
+
+
+@dataclass
 class Source:
     """Where does this data or account come from?  (fabric:primitive:source)"""
     id: str
@@ -214,6 +305,13 @@ class State:
     lifecycle: Optional[str] = None
     since: Optional[datetime] = None
     allowedTransitions: list[str] = field(default_factory=list)
+
+
+@dataclass
+class Tenant:
+    """Whose isolated space is this?  (fabric:primitive:tenant)"""
+    id: str
+    name: str
 
 
 @dataclass

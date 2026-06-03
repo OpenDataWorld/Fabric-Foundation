@@ -1,0 +1,18 @@
+# Pipeline — a governed data flow
+id: "fabric:primitive:pipeline"
+name: "Pipeline"
+version: "1.0.0"
+layer: "domain"
+question: "How does data move?"
+extends: ["fabric:primitive:thing"]
+description: "A batch or streaming flow that moves and transforms data between sources and datasets."
+schemaOrg: { type: "schema:Action", url: "https://schema.org/Action" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+  - { name: mode, type: enum, required: false }
+relationships:
+  - { name: from, target: "fabric:primitive:source", cardinality: "1..*" }
+  - { name: produces, target: "fabric:primitive:dataset", cardinality: "0..*" }
+  - { name: emits, target: "fabric:primitive:event", cardinality: "0..*" }
+  - { name: governedBy, target: "fabric:primitive:policy", cardinality: "0..*" }

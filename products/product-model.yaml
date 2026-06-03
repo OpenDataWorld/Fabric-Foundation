@@ -1,0 +1,17 @@
+# Product — a packaged, sellable offering
+id: "fabric:primitive:product"
+name: "Product"
+version: "1.0.0"
+layer: "domain"
+question: "What packaged offering is this?"
+extends: ["fabric:primitive:thing"]
+description: "A catalog product that packages capabilities for a market (everything is an asset)."
+schemaOrg: { type: "schema:Product", url: "https://schema.org/Product" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+  - { name: status, type: string, required: false }
+relationships:
+  - { name: packages, target: "fabric:primitive:capability", cardinality: "0..*" }
+  - { name: addresses, target: "fabric:primitive:market", cardinality: "0..*" }
+  - { name: hasState, target: "fabric:primitive:state", cardinality: "0..1" }

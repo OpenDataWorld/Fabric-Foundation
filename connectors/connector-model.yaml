@@ -1,0 +1,15 @@
+# Connector — an integration to a source
+id: "fabric:primitive:connector"
+name: "Connector"
+version: "1.0.0"
+layer: "domain"
+question: "How is a source integrated?"
+extends: ["fabric:primitive:thing"]
+description: "An integration that connects a Source and implements a Capability (e.g. an identity connector)."
+schemaOrg: { type: "schema:SoftwareApplication", url: "https://schema.org/SoftwareApplication" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+relationships:
+  - { name: integrates, target: "fabric:primitive:source", cardinality: "1" }
+  - { name: implements, target: "fabric:primitive:capability", cardinality: "0..*" }

@@ -3,16 +3,32 @@ graph LR
   Account -->|fromSource| Source
   Account -->|linkedTo| Account
   Account -->|hasSession| Session
+  Agent -->|executes| Capability
+  Agent -->|pursues| Objective
+  Agent -->|governedBy| Policy
+  Agent -->|hasMemory| Event
   Capability -->|heldBy| Identity
   Capability -->|constrainedBy| Constraint
   Capability -->|governedBy| Policy
   Capability -->|servesObjective| Objective
+  Connector -->|integrates| Source
+  Connector -->|implements| Capability
+  Consent -->|grantedBy| Identity
+  Consent -->|coversData| Dataset
+  Consent -->|enforcedBy| Policy
   Constraint -->|composesInto| Policy
   Constraint -->|limits| Capability
+  Control -->|enforces| Constraint
+  Control -->|mitigates| Risk
+  Control -->|evidencedBy| Evidence
   Credential -->|assertedAbout| Identity
   Credential -->|issuedBy| Identity
   Credential -->|evidencedBy| Evidence
   DataType -->|usedBy| FieldGroup
+  Dataset -->|conformsTo| Schema
+  Dataset -->|derivedFrom| Source
+  Dataset -->|governedBy| Policy
+  Dataset -->|hasState| State
   Device -->|usedBy| Identity
   Device -->|locatedAt| Location
   Event -->|records| Capability
@@ -20,19 +36,35 @@ graph LR
   Evidence -->|substantiates| Objective
   Evidence -->|derivedFrom| Event
   Evidence -->|supports| Policy
+  Feature -->|partOf| Product
+  Feature -->|realizes| Capability
+  Feature -->|hasState| State
   FieldGroup -->|usesDataType| DataType
   FieldGroup -->|composedInto| Schema
   Identity -->|holds| Capability
   Identity -->|subjectTo| Policy
   Identity -->|locatedAt| Location
+  Journey -->|sequenceOf| State
+  Journey -->|forIdentity| Identity
+  Journey -->|over| Time
   Location -->|bounds| Constraint
+  Market -->|categorizes| Product
+  Metric -->|measures| Objective
+  Metric -->|evidencedBy| Evidence
   Objective -->|servedBy| Capability
   Objective -->|boundedBy| Constraint
   Objective -->|measuredBy| Event
   Objective -->|subObjectiveOf| Objective
+  Pipeline -->|from| Source
+  Pipeline -->|produces| Dataset
+  Pipeline -->|emits| Event
+  Pipeline -->|governedBy| Policy
   Policy -->|composedOf| Constraint
   Policy -->|governs| Capability
   Policy -->|appliesTo| Identity
+  Product -->|packages| Capability
+  Product -->|addresses| Market
+  Product -->|hasState| State
   Relationship -->|connects| Thing
   Resource -->|consumedBy| Capability
   Resource -->|boundedBy| Constraint
@@ -47,10 +79,16 @@ graph LR
   Session -->|forAccount| Account
   Session -->|onDevice| Device
   Session -->|during| Time
+  Solution -->|composes| Product
+  Solution -->|addresses| Market
+  Solution -->|servesObjective| Objective
   Source -->|provides| Account
   Source -->|governedBy| Policy
   Source -->|locatedAt| Location
   State -->|advancedBy| Event
   State -->|gatedBy| Constraint
+  Tenant -->|isolates| Identity
+  Tenant -->|owns| Resource
+  Tenant -->|governedBy| Policy
   Thing -->|relatedTo| Thing
   Time -->|scopes| Constraint

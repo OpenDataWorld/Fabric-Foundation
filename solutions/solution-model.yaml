@@ -1,0 +1,16 @@
+# Solution — a composed outcome
+id: "fabric:primitive:solution"
+name: "Solution"
+version: "1.0.0"
+layer: "domain"
+question: "What outcome does this compose?"
+extends: ["fabric:primitive:thing"]
+description: "A solution composing products to deliver a buyable outcome."
+schemaOrg: { type: "schema:Service", url: "https://schema.org/Service" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+relationships:
+  - { name: composes, target: "fabric:primitive:product", cardinality: "1..*" }
+  - { name: addresses, target: "fabric:primitive:market", cardinality: "0..*" }
+  - { name: servesObjective, target: "fabric:primitive:objective", cardinality: "0..*" }

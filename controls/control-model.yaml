@@ -1,0 +1,16 @@
+# Control — an enforceable constraint mitigating risk
+id: "fabric:primitive:control"
+name: "Control"
+version: "1.0.0"
+layer: "domain"
+question: "What enforced safeguard is in place?"
+extends: ["fabric:primitive:constraint"]
+description: "An enforceable control (a Constraint instance) that mitigates a Risk and proves compliance."
+schemaOrg: { type: "schema:Thing", url: "https://schema.org/Thing" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+relationships:
+  - { name: enforces, target: "fabric:primitive:constraint", cardinality: "1" }
+  - { name: mitigates, target: "fabric:primitive:risk", cardinality: "0..*" }
+  - { name: evidencedBy, target: "fabric:primitive:evidence", cardinality: "0..*" }

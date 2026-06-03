@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/consent.json",
+  "title": "Consent",
+  "description": "A consent grant by an Identity governing how their data may be used (GDPR/DPDP).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "granted": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "purpose"
+  ]
+}

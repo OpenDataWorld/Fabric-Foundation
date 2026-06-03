@@ -1,0 +1,17 @@
+# Agent — an autonomous actor
+id: "fabric:primitive:agent"
+name: "Agent"
+version: "1.0.0"
+layer: "domain"
+question: "What autonomous actor is this?"
+extends: ["fabric:primitive:identity"]
+description: "An autonomous agent that executes Capabilities under Policy to pursue Objectives."
+schemaOrg: { type: "schema:SoftwareApplication", url: "https://schema.org/SoftwareApplication" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: name, type: string, required: true }
+relationships:
+  - { name: executes, target: "fabric:primitive:capability", cardinality: "0..*" }
+  - { name: pursues, target: "fabric:primitive:objective", cardinality: "0..*" }
+  - { name: governedBy, target: "fabric:primitive:policy", cardinality: "0..*" }
+  - { name: hasMemory, target: "fabric:primitive:event", cardinality: "0..*" }

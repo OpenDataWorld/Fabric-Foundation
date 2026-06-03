@@ -8,6 +8,11 @@ CREATE TABLE IF NOT EXISTS account (
     username TEXT
 );
 
+CREATE TABLE IF NOT EXISTS agent (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS capability (
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
@@ -19,6 +24,17 @@ CREATE TABLE IF NOT EXISTS capability (
     maturity TEXT
 );
 
+CREATE TABLE IF NOT EXISTS connector (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS consent (
+    id TEXT PRIMARY KEY NOT NULL,
+    purpose TEXT NOT NULL,
+    granted BOOLEAN
+);
+
 CREATE TABLE IF NOT EXISTS constraint (
     id TEXT PRIMARY KEY NOT NULL,
     kind TEXT NOT NULL,
@@ -26,6 +42,11 @@ CREATE TABLE IF NOT EXISTS constraint (
     target TEXT,
     severity TEXT,
     onViolation TEXT
+);
+
+CREATE TABLE IF NOT EXISTS control (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS credential (
@@ -39,6 +60,12 @@ CREATE TABLE IF NOT EXISTS data_type (
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
     fields JSONB
+);
+
+CREATE TABLE IF NOT EXISTS dataset (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    format TEXT
 );
 
 CREATE TABLE IF NOT EXISTS device (
@@ -67,6 +94,12 @@ CREATE TABLE IF NOT EXISTS evidence (
     collectedAt TIMESTAMPTZ
 );
 
+CREATE TABLE IF NOT EXISTS feature (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    status TEXT
+);
+
 CREATE TABLE IF NOT EXISTS field_group (
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
@@ -81,6 +114,11 @@ CREATE TABLE IF NOT EXISTS identity (
     credentials JSONB
 );
 
+CREATE TABLE IF NOT EXISTS journey (
+    id TEXT PRIMARY KEY NOT NULL,
+    subject TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS location (
     id TEXT PRIMARY KEY NOT NULL,
     kind TEXT NOT NULL,
@@ -89,6 +127,18 @@ CREATE TABLE IF NOT EXISTS location (
     geometry JSONB,
     address TEXT,
     uri TEXT
+);
+
+CREATE TABLE IF NOT EXISTS market (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS metric (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    value DOUBLE PRECISION,
+    unit TEXT
 );
 
 CREATE TABLE IF NOT EXISTS objective (
@@ -102,6 +152,12 @@ CREATE TABLE IF NOT EXISTS objective (
     status TEXT
 );
 
+CREATE TABLE IF NOT EXISTS pipeline (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    mode TEXT
+);
+
 CREATE TABLE IF NOT EXISTS policy (
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
@@ -111,6 +167,12 @@ CREATE TABLE IF NOT EXISTS policy (
     scope JSONB,
     precedence INTEGER,
     owner TEXT
+);
+
+CREATE TABLE IF NOT EXISTS product (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    status TEXT
 );
 
 CREATE TABLE IF NOT EXISTS relationship (
@@ -154,6 +216,11 @@ CREATE TABLE IF NOT EXISTS session (
     ip TEXT
 );
 
+CREATE TABLE IF NOT EXISTS solution (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS source (
     id TEXT PRIMARY KEY NOT NULL,
     kind TEXT NOT NULL,
@@ -168,6 +235,11 @@ CREATE TABLE IF NOT EXISTS state (
     lifecycle TEXT,
     since TIMESTAMPTZ,
     allowedTransitions JSONB
+);
+
+CREATE TABLE IF NOT EXISTS tenant (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS thing (

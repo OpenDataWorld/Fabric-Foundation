@@ -1,0 +1,16 @@
+# Journey — a sequence of states over time
+id: "fabric:primitive:journey"
+name: "Journey"
+version: "1.0.0"
+layer: "domain"
+question: "What path did this thing take?"
+extends: ["fabric:primitive:thing"]
+description: "An ordered sequence of States over Time for a subject (a Thing or Identity)."
+schemaOrg: { type: "schema:Thing", url: "https://schema.org/Thing" }
+attributes:
+  - { name: id, type: string, required: true }
+  - { name: subject, type: ref, required: true }
+relationships:
+  - { name: sequenceOf, target: "fabric:primitive:state", cardinality: "1..*" }
+  - { name: forIdentity, target: "fabric:primitive:identity", cardinality: "0..1" }
+  - { name: over, target: "fabric:primitive:time", cardinality: "0..1" }
