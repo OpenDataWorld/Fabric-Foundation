@@ -1,0 +1,165 @@
+#!/usr/bin/env python3
+"""Fabric Data Model API — a schema registry over the canonical primitives.
+
+Inspired by the Adobe XDM Schema Registry API: classes, schemas, and graph as
+addressable resources. Zero dependencies beyond PyYAML (reuses codegen).
+
+Endpoints:
+    GET /                      API index
+    GET /health               liveness
+    GET /classes              list primitives (classes)
+    GET /classes/{name}       full primitive model
+    GET /schemas/{name}       JSON Schema for a primitive
+    GET /graph                {nodes, edges} of the whole model
+    GET /resolve/{name}?depth=2   traverse the graph from a node
+
+Run:
+    python api/server.py                 # serve on :8088
+    python api/server.py --selftest      # in-process checks, no socket
+"""
+from __future__ import annotations
+
+import json
+import os
+import sys
+from collections import deque
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse, parse_qs
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "codegen"))
+import generate_models as gm  # noqa: E402
+
+
+def short(pid: str) -> str:
+    return pid.split(":")[-1]
+
+
+def _index():
+    prims = gm.load_primitives()
+    return {p["id"]: p for p in prims}, {short(p["id"]): p for p in prims}
+
+
+def list_classes():
+    prims = gm.load_primitives()
+    return [{"id": p["id"], "name": p["name"], "question": p.get("question", ""),
+             "schemaOrg": p.get("schemaOrg", {}).get("type")} for p in prims]
+
+
+def get_class(name: str):
+    _, by_short = _index()
+    return by_short.get(name)
+
+
+def get_schema(name: str):
+    p = get_class(name)
+    return gm.gen_jsonschema(p) if p else None
+
+
+def get_graph():
+    prims = gm.load_primitives()
+    known = {p["id"] for p in prims}
+    nodes = [{"id": short(p["id"]), "name": p["name"]} for p in prims]
+    edges = []
+    for p in prims:
+        for r in p.get("relationships", []):
+            if r["target"] in known:
+                edges.append({"from": short(p["id"]), "rel": r["name"],
+                              "to": short(r["target"]), "cardinality": r.get("cardinality")})
+    return {"nodes": nodes, "edges": edges}
+
+
+def resolve(name: str, depth: int = 2):
+    """BFS the relationship graph from `name`, returning the connected subgraph."""
+    graph = get_graph()
+    if name not in {n["id"] for n in graph["nodes"]}:
+        return None
+    adj = {}
+    for e in graph["edges"]:
+        adj.setdefault(e["from"], []).append(e)
+    visited, path = {name}, []
+    q = deque([(name, 0)])
+    while q:
+        node, d = q.popleft()
+        if d >= depth:
+            continue
+        for e in adj.get(node, []):
+            path.append(e)
+            if e["to"] not in visited:
+                visited.add(e["to"])
+                q.append((e["to"], d + 1))
+    return {"start": name, "depth": depth, "resolved": sorted(visited), "edges": path}
+
+
+ROUTES_DOC = {
+    "/": "this index",
+    "/health": "liveness",
+    "/classes": "list primitives (classes)",
+    "/classes/{name}": "full primitive model",
+    "/schemas/{name}": "JSON Schema for a primitive",
+    "/graph": "nodes + edges of the model",
+    "/resolve/{name}?depth=N": "traverse the graph from a node",
+}
+
+
+def route(path: str, query: dict):
+    parts = [p for p in path.split("/") if p]
+    if not parts:
+        return 200, {"service": "fabric-data-model-api", "routes": ROUTES_DOC}
+    head = parts[0]
+    if head == "health":
+        return 200, {"status": "ok"}
+    if head == "classes":
+        if len(parts) == 1:
+            return 200, list_classes()
+        c = get_class(parts[1])
+        return (200, c) if c else (404, {"error": f"class '{parts[1]}' not found"})
+    if head == "schemas" and len(parts) == 2:
+        s = get_schema(parts[1])
+        return (200, s) if s else (404, {"error": f"schema '{parts[1]}' not found"})
+    if head == "graph":
+        return 200, get_graph()
+    if head == "resolve" and len(parts) == 2:
+        depth = int(query.get("depth", ["2"])[0])
+        r = resolve(parts[1], depth)
+        return (200, r) if r else (404, {"error": f"node '{parts[1]}' not found"})
+    return 404, {"error": "not found", "routes": ROUTES_DOC}
+
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        u = urlparse(self.path)
+        status, body = route(u.path, parse_qs(u.query))
+        payload = json.dumps(body, indent=2).encode()
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
+    def log_message(self, *args):
+        pass  # quiet
+
+
+def selftest():
+    assert len(list_classes()) == 11
+    assert get_class("identity")["name"] == "Identity"
+    assert get_schema("policy")["title"] == "Policy"
+    g = get_graph()
+    assert len(g["nodes"]) == 11 and len(g["edges"]) == 24
+    r = resolve("identity", 2)
+    assert "capability" in r["resolved"]
+    print("selftest OK:", {"classes": 11, "edges": len(g["edges"]),
+                           "resolve(identity,2)": r["resolved"]})
+
+
+def main():
+    if "--selftest" in sys.argv:
+        selftest()
+        return
+    port = int(os.environ.get("PORT", "8088"))
+    print(f"Fabric Data Model API on http://localhost:{port}  (Ctrl-C to stop)")
+    HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+
+
+if __name__ == "__main__":
+    main()

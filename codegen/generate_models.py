@@ -178,6 +178,53 @@ def gen_sql(prims: list[dict]) -> str:
     return "\n".join(out)
 
 
+def _table(name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", name.lower())
+
+
+def gen_graph_surql(prims: list[dict]) -> str:
+    id2table = {p["id"]: _table(p["name"]) for p in prims}
+    out = ["-- Graph schema generated from Fabric primitives — DO NOT EDIT BY HAND.",
+           "-- Nodes = primitives; edges = RELATION tables from each relationship.", ""]
+    for p in prims:
+        out.append(f"DEFINE TABLE {id2table[p['id']]} SCHEMAFULL;")
+    out.append("")
+    out.append("-- Relationship edges")
+    for p in prims:
+        src = id2table[p["id"]]
+        for r in p.get("relationships", []):
+            tgt = id2table.get(r["target"])
+            if not tgt:
+                continue
+            out.append(f"DEFINE TABLE {_table(r['name'])} TYPE RELATION IN {src} OUT {tgt};")
+    return "\n".join(out) + "\n"
+
+
+def gen_graph_mermaid(prims: list[dict]) -> str:
+    id2name = {p["id"]: p["name"].replace(" ", "") for p in prims}
+    out = ["graph LR"]
+    for p in prims:
+        src = p["name"].replace(" ", "")
+        for r in p.get("relationships", []):
+            tgt = id2name.get(r["target"])
+            if tgt:
+                out.append(f"  {src} -->|{r['name']}| {tgt}")
+    return "\n".join(out) + "\n"
+
+
+def graph_fit_report(prims: list[dict]) -> tuple[int, int, list[str]]:
+    """Returns (nodes, edges, dangling) — does the model fit a graph cleanly?"""
+    known = {p["id"] for p in prims}
+    edges, dangling = 0, []
+    for p in prims:
+        for r in p.get("relationships", []):
+            if r["target"] in known:
+                edges += 1
+            else:
+                dangling.append(f"{p['id']} --{r['name']}--> {r['target']} (unknown target)")
+    return len(prims), edges, dangling
+
+
 # ── driver ──────────────────────────────────────────────────────────────────────
 
 def write(path: str, content: str):
@@ -188,7 +235,8 @@ def write(path: str, content: str):
 
 def main():
     ap = argparse.ArgumentParser(description="Fabric data model generator")
-    ap.add_argument("--target", choices=["python", "typescript", "jsonschema", "sql", "all"],
+    ap.add_argument("--target",
+                    choices=["python", "typescript", "jsonschema", "sql", "graph", "all"],
                     default="all")
     ap.add_argument("--out", default="gen")
     args = ap.parse_args()
@@ -209,6 +257,13 @@ def main():
                   json.dumps(gen_jsonschema(p), indent=2) + "\n")
     if t in ("sql", "all"):
         write(os.path.join(out, "sql", "schema.sql"), gen_sql(prims))
+    if t in ("graph", "all"):
+        write(os.path.join(out, "graph", "schema.surql"), gen_graph_surql(prims))
+        write(os.path.join(out, "graph", "model.mmd"), gen_graph_mermaid(prims))
+        nodes, edges, dangling = graph_fit_report(prims)
+        print(f"  graph fit: {nodes} nodes, {edges} edges, {len(dangling)} dangling")
+        for d in dangling:
+            print(f"    ! {d}")
     print("Done.")
 
 
