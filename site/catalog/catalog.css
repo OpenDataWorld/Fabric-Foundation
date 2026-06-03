@@ -20,4 +20,10 @@
 .product-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .ticks { margin: 0; padding-left: 1.1em; }
 .ticks li { margin-bottom: 6px; color: var(--muted); }
+.related { margin-top: 36px; }
+.related h3 { font-size: 1.05rem; color: var(--muted); margin-bottom: 14px; }
+.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.related-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; transition: border-color .2s ease; }
+.related-chip:hover { border-color: var(--brand); }
+.related-chip span { color: var(--muted); font-size: .82rem; margin-top: 3px; }
 @media (max-width: 720px) { .product-cols { grid-template-columns: 1fr; } }

@@ -78,8 +78,18 @@ def build_index(data):
     return page(f"{data['brand']} — Product Catalog", body)
 
 
-def build_product(p, cat_name):
+def build_product(p, cat_name, siblings):
     feats = "".join(f"<li>{esc(f)}</li>" for f in p["features"])
+    related = "".join(
+        f'<a class="related-chip" href="{esc(s["slug"])}.html">{esc(s["name"])}'
+        f'<span>{esc(s["tagline"])}</span></a>'
+        for s in siblings
+    )
+    related_block = f"""
+    <section class="related">
+      <h3>Related in {esc(cat_name)}</h3>
+      <div class="related-grid">{related}</div>
+    </section>""" if related else ""
     body = f"""
   <section class="hero hero-sm">
     <div class="hero-inner">
@@ -97,7 +107,7 @@ def build_product(p, cat_name):
     <div class="product-cols">
       <div class="card"><h3>Highlights</h3><ul class="ticks">{feats}</ul></div>
       <div class="card"><h3>How it connects</h3><p>{esc(p['connects'])}</p></div>
-    </div>
+    </div>{related_block}
   </main>"""
     return page(f"{p['name']} — {p['brand_suffix']}", body)
 
@@ -110,7 +120,9 @@ def main():
     for cat in data["categories"]:
         for p in cat["products"]:
             p["brand_suffix"] = data["brand"]
-            open(os.path.join(HERE, f"{p['slug']}.html"), "w").write(build_product(p, cat["name"]))
+            siblings = [s for s in cat["products"] if s["slug"] != p["slug"]]
+            open(os.path.join(HERE, f"{p['slug']}.html"), "w").write(
+                build_product(p, cat["name"], siblings))
             count += 1
     # stylesheet additions specific to catalog
     open(os.path.join(HERE, "catalog.css"), "w").write(CATALOG_CSS)
@@ -139,6 +151,12 @@ CATALOG_CSS = """/* Catalog-specific styles, layered on the site's styles.css */
 .product-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .ticks { margin: 0; padding-left: 1.1em; }
 .ticks li { margin-bottom: 6px; color: var(--muted); }
+.related { margin-top: 36px; }
+.related h3 { font-size: 1.05rem; color: var(--muted); margin-bottom: 14px; }
+.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.related-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; transition: border-color .2s ease; }
+.related-chip:hover { border-color: var(--brand); }
+.related-chip span { color: var(--muted); font-size: .82rem; margin-top: 3px; }
 @media (max-width: 720px) { .product-cols { grid-template-columns: 1fr; } }
 """
 
