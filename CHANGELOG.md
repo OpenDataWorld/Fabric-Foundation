@@ -3,6 +3,16 @@
 All notable changes to OpenDataWorld Fabric are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+- **Fabric Runtime** (`runtime/`) — a Go multi-model graph runtime (documents +
+  typed graph edges in one in-memory engine) seeded self-describingly from the
+  canonical model, exposed over a **GraphQL** API with an embedded explorer.
+  Durable append-only log, `signup`/`createRecord`/`relate` mutations,
+  `resolve`/`traverse` queries. The runnable Go sibling to the Rust `fabric-db`
+  scaffold. Tests + `--selftest` passing; deps vendored for offline builds.
+
 ## [0.1.0-alpha] — 2026-06-03
 
 First alpha. **Alpha means: the model, generators, API, and identity connectors
