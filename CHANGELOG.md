@@ -12,6 +12,13 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   Durable append-only log, `signup`/`createRecord`/`relate` mutations,
   `resolve`/`traverse` queries. The runnable Go sibling to the Rust `fabric-db`
   scaffold. Tests + `--selftest` passing; deps vendored for offline builds.
+- **Agent-native fabric** — agents are first-class governed actors in the same
+  graph (`registerAgent`/`agentAct`, wiring the canonical Agent primitive's
+  executes/pursues/governedBy/hasMemory edges; every action audited as an
+  Event). The runtime also speaks **MCP** over stdio (`runtime --mcp`),
+  exposing 11 tools so any MCP-capable agent can operate the fabric directly.
+- **Go CI** (`.github/workflows/go.yml`) — gofmt/vet/test/build/selftest for
+  the runtime.
 
 ## [0.1.0-alpha] — 2026-06-03
 

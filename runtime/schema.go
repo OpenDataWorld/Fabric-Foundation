@@ -259,6 +259,41 @@ func (a *API) BuildSchema() (graphql.Schema, error) {
 					}, true), nil
 				},
 			},
+			"registerAgent": &graphql.Field{
+				Type:        recordType,
+				Description: "Register an autonomous agent as a first-class governed actor.",
+				Args: graphql.FieldConfigArgument{
+					"id":           &graphql.ArgumentConfig{Type: graphql.NewNonNull(graphql.String)},
+					"name":         &graphql.ArgumentConfig{Type: graphql.NewNonNull(graphql.String)},
+					"capabilities": &graphql.ArgumentConfig{Type: graphql.NewList(graphql.String)},
+					"objectives":   &graphql.ArgumentConfig{Type: graphql.NewList(graphql.String)},
+					"policies":     &graphql.ArgumentConfig{Type: graphql.NewList(graphql.String)},
+				},
+				Resolve: func(p graphql.ResolveParams) (any, error) {
+					return a.RegisterAgent(
+						p.Args["id"].(string), p.Args["name"].(string),
+						strList(p.Args["capabilities"]), strList(p.Args["objectives"]), strList(p.Args["policies"]),
+					)
+				},
+			},
+			"agentAct": &graphql.Field{
+				Type:        recordType,
+				Description: "Record an agent action as an audited Event (the agent's memory); optionally apply it.",
+				Args: graphql.FieldConfigArgument{
+					"agent":       &graphql.ArgumentConfig{Type: graphql.NewNonNull(graphql.String)},
+					"action":      &graphql.ArgumentConfig{Type: graphql.NewNonNull(graphql.String)},
+					"targetTable": &graphql.ArgumentConfig{Type: graphql.String},
+					"targetId":    &graphql.ArgumentConfig{Type: graphql.String},
+					"fields":      &graphql.ArgumentConfig{Type: jsonScalar},
+				},
+				Resolve: func(p graphql.ResolveParams) (any, error) {
+					fields, _ := p.Args["fields"].(map[string]any)
+					return a.Act(
+						p.Args["agent"].(string), p.Args["action"].(string),
+						toStr(p.Args["targetTable"]), toStr(p.Args["targetId"]), fields,
+					)
+				},
+			},
 			"relate": &graphql.Field{
 				Type:        edgeType,
 				Description: "Add a directed edge between two records.",
@@ -336,4 +371,19 @@ func toStr(v any) string {
 		return s
 	}
 	return ""
+}
+
+// strList coerces a GraphQL list argument into []string, tolerating nil.
+func strList(v any) []string {
+	items, ok := v.([]any)
+	if !ok {
+		return nil
+	}
+	out := make([]string, 0, len(items))
+	for _, it := range items {
+		if s, ok := it.(string); ok {
+			out = append(out, s)
+		}
+	}
+	return out
 }

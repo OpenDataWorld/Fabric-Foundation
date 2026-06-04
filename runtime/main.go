@@ -62,6 +62,18 @@ func main() {
 	}
 	defer logFile.Close()
 
+	// Agent-native transport: speak MCP over stdio so any agent can use the
+	// fabric as tools. Diagnostics must stay on stderr (stdout is the channel).
+	if len(os.Args) > 1 && os.Args[1] == "--mcp" {
+		st := api.Graph.Stats()
+		log.Printf("Fabric runtime (MCP/stdio): %d primitives, %d records, %d edges",
+			len(api.Model.Classes), st["records"], st["edges"])
+		if err := NewMCPServer(api).Serve(); err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
+
 	srv, err := NewServer(api)
 	if err != nil {
 		log.Fatalf("build schema: %v", err)

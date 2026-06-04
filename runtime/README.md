@@ -71,6 +71,12 @@ mutation {
   signup(name: "Ada Lovelace", email: "ada@example.com") { id table }
   createRecord(table: "dataset", id: "ds:sales", fields: { rows: 42 }) { id }
   relate(from: "did:fabric:user:...", rel: "owns", to: "ds:sales") { rel }
+
+  # agent-native: autonomous actors are first-class, governed records
+  registerAgent(id: "agent:ingestor", name: "Ingestor",
+    capabilities: ["capability"], policies: ["policy:gdpr"]) { id }
+  agentAct(agent: "agent:ingestor", action: "ingested",
+    targetTable: "dataset", targetId: "ds:sales", fields: { rows: 42 }) { id }
 }
 ```
 
@@ -78,6 +84,34 @@ mutation {
 server: it mints a deterministic `did:fabric:user:<sha256(email)[:16]>` Identity
 record, appends an immutable audit `event` record, and links both with graph
 edges.
+
+## Agent-native (MCP)
+
+The runtime is agent-native at the protocol level: it speaks the **Model Context
+Protocol** (JSON-RPC 2.0 over stdio), so any MCP-capable agent can discover and
+call the fabric's tools directly.
+
+```sh
+go run . --mcp        # serve MCP on stdio (stdout = protocol, stderr = logs)
+```
+
+Tools: `fabric_classes`, `fabric_resolve`, `fabric_graph`, `fabric_records`,
+`fabric_get_record`, `fabric_traverse`, `fabric_create_record`, `fabric_relate`,
+`fabric_register_agent`, `fabric_agent_act`, `fabric_signup`.
+
+Agents are modelled on the canonical Agent primitive
+([`agents/agent-model.yaml`](../agents/agent-model.yaml)): an Agent *executes*
+Capabilities, *pursues* Objectives, is *governedBy* Policies, and accrues Events
+as memory (`hasMemory`). `registerAgent` wires those governance edges;
+`agentAct` records every action as an audited Event carrying its governance
+context — so an agent operating the fabric is itself a governed, auditable node
+in the same graph.
+
+Register it with Claude Code, for example:
+
+```sh
+claude mcp add fabric -- go run /path/to/fabric/runtime --mcp
+```
 
 ## Layout
 
@@ -87,5 +121,7 @@ edges.
 | `log.go`    | append-only JSONL write-ahead log + replay |
 | `model.go`  | load/index the canonical model; schema-graph resolve; self-seed |
 | `schema.go` | GraphQL schema, resolvers, and the `signup` domain flow |
+| `agent.go`  | agent-native layer: register agents, record governed actions |
+| `mcp.go`    | Model Context Protocol server (stdio) — the fabric as agent tools |
 | `server.go` | HTTP `/graphql` endpoint + embedded explorer |
-| `main.go`   | wiring, config, lifecycle |
+| `main.go`   | wiring, config, lifecycle (`--mcp`, `--selftest`) |
