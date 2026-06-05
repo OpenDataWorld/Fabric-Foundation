@@ -253,6 +253,17 @@ class Product:
 
 
 @dataclass
+class Protocol:
+    """What are the rules of exchange?  (fabric:primitive:protocol)"""
+    id: str
+    name: str
+    version: Optional[str] = None
+    format: Optional[str] = None
+    spec: Optional[str] = None
+    status: Optional[str] = None
+
+
+@dataclass
 class Relationship:
     """How are things connected?  (fabric:primitive:relationship)"""
     id: str

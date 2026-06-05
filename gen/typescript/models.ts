@@ -219,6 +219,16 @@ export interface Product {
   status?: string;
 }
 
+/** What are the rules of exchange?  (fabric:primitive:protocol) */
+export interface Protocol {
+  id: string;
+  name: string;
+  version?: string;
+  format?: string;
+  spec?: string;
+  status?: string;
+}
+
 /** How are things connected?  (fabric:primitive:relationship) */
 export interface Relationship {
   id: string;

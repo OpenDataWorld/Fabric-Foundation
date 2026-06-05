@@ -74,6 +74,8 @@ graph LR
   Product -->|packages| Capability
   Product -->|addresses| Market
   Product -->|hasState| State
+  Protocol -->|carries| Schema
+  Protocol -->|specifiedBy| Evidence
   Relationship -->|connects| Thing
   Resource -->|consumedBy| Capability
   Resource -->|boundedBy| Constraint
@@ -103,6 +105,7 @@ graph LR
   Tenant -->|governedBy| Policy
   Thing -->|relatedTo| Thing
   Time -->|scopes| Constraint
+  Touchpoint -->|speaks| Protocol
   Touchpoint -->|exposedBy| Capability
   Touchpoint -->|connects| Thing
   Touchpoint -->|securedBy| Credential

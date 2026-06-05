@@ -13,6 +13,7 @@
     "objective": "fabric:Objective",
     "policy": "fabric:Policy",
     "odrl": "http://www.w3.org/ns/odrl/2/",
+    "protocol": "fabric:Protocol",
     "rel": "fabric:Relationship",
     "resource": "fabric:Resource",
     "risk": "fabric:Risk",
@@ -1601,6 +1602,84 @@
       ]
     },
     {
+      "@id": "fabric:primitive:protocol",
+      "@type": "schema:CreativeWork",
+      "rdfs:label": "Protocol",
+      "rdfs:comment": "What are the rules of exchange?",
+      "schema:sameAs": {
+        "@id": "https://schema.org/CreativeWork"
+      },
+      "fabric:attribute": [
+        {
+          "@id": "fabric:protocol.id",
+          "rdfs:label": "id",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:identifier"
+          }
+        },
+        {
+          "@id": "fabric:protocol.name",
+          "rdfs:label": "name",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:name"
+          }
+        },
+        {
+          "@id": "fabric:protocol.version",
+          "rdfs:label": "version",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:version"
+          }
+        },
+        {
+          "@id": "fabric:protocol.format",
+          "rdfs:label": "format",
+          "fabric:dataType": "enum",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:encodingFormat"
+          }
+        },
+        {
+          "@id": "fabric:protocol.spec",
+          "rdfs:label": "spec",
+          "fabric:dataType": "uri",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:url"
+          }
+        },
+        {
+          "@id": "fabric:protocol.status",
+          "rdfs:label": "status",
+          "fabric:dataType": "enum",
+          "fabric:required": false
+        }
+      ],
+      "fabric:relationship": [
+        {
+          "@id": "fabric:carries",
+          "rdfs:label": "carries",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:schema"
+          }
+        },
+        {
+          "@id": "fabric:specifiedby",
+          "rdfs:label": "specifiedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:evidence"
+          }
+        }
+      ]
+    },
+    {
       "@id": "fabric:primitive:relationship",
       "@type": "schema:Role",
       "rdfs:label": "Relationship",
@@ -2393,6 +2472,13 @@
         }
       ],
       "fabric:relationship": [
+        {
+          "@id": "fabric:speaks",
+          "rdfs:label": "speaks",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:protocol"
+          }
+        },
         {
           "@id": "fabric:exposedby",
           "rdfs:label": "exposedBy",

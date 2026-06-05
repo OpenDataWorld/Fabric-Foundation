@@ -50,6 +50,7 @@ attributes:
   - { name: endpoint, type: uri, required: false, schemaOrg: "schema:urlTemplate", description: "Where the touchpoint is reached." }
   - { name: protocolVersion, type: string, required: false, description: "Protocol/contract version, e.g. HTTP/2, gRPC v1, OpenAPI 3.1." }
 relationships:
+  - { name: speaks, target: "fabric:primitive:protocol", cardinality: "1..*", description: "The defined Protocol(s) this touchpoint exchanges over. If none exists for the boundary, a Protocol is defined and referenced here." }
   - { name: exposedBy, target: "fabric:primitive:capability", cardinality: "0..*", description: "Capability that exposes this touchpoint." }
   - { name: connects, target: "fabric:primitive:thing", cardinality: "1..*", description: "The two-or-more things that interact here (it is the junction, not a single edge)." }
   - { name: securedBy, target: "fabric:primitive:credential", cardinality: "0..*", description: "Credential/auth required to use it." }

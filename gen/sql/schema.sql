@@ -192,6 +192,15 @@ CREATE TABLE IF NOT EXISTS product (
     status TEXT
 );
 
+CREATE TABLE IF NOT EXISTS protocol (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    version TEXT,
+    format TEXT,
+    spec TEXT,
+    status TEXT
+);
+
 CREATE TABLE IF NOT EXISTS relationship (
     id TEXT PRIMARY KEY NOT NULL,
     predicate TEXT NOT NULL,

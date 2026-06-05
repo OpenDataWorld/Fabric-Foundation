@@ -136,6 +136,11 @@
       "question": "What packaged offering is this?"
     },
     {
+      "id": "protocol",
+      "name": "Protocol",
+      "question": "What are the rules of exchange?"
+    },
+    {
       "id": "relationship",
       "name": "Relationship",
       "question": "How are things connected?"
@@ -309,6 +314,10 @@
     {
       "id": "product",
       "name": "Product"
+    },
+    {
+      "id": "protocol",
+      "name": "Protocol"
     },
     {
       "id": "relationship",
@@ -740,6 +749,16 @@
       "to": "state"
     },
     {
+      "from": "protocol",
+      "rel": "carries",
+      "to": "schema"
+    },
+    {
+      "from": "protocol",
+      "rel": "specifiedBy",
+      "to": "evidence"
+    },
+    {
       "from": "relationship",
       "rel": "connects",
       "to": "thing"
@@ -883,6 +902,11 @@
       "from": "time",
       "rel": "scopes",
       "to": "constraint"
+    },
+    {
+      "from": "touchpoint",
+      "rel": "speaks",
+      "to": "protocol"
     },
     {
       "from": "touchpoint",

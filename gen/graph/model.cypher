@@ -28,6 +28,7 @@ CREATE (:Primitive {id:'permission', name:'Permission', question:'What action is
 CREATE (:Primitive {id:'pipeline', name:'Pipeline', question:'How does data move?'});
 CREATE (:Primitive {id:'policy', name:'Policy', question:'What is allowed, and under what conditions?'});
 CREATE (:Primitive {id:'product', name:'Product', question:'What packaged offering is this?'});
+CREATE (:Primitive {id:'protocol', name:'Protocol', question:'What are the rules of exchange?'});
 CREATE (:Primitive {id:'relationship', name:'Relationship', question:'How are things connected?'});
 CREATE (:Primitive {id:'resource', name:'Resource', question:'What is consumed, allocated, or required?'});
 CREATE (:Primitive {id:'risk', name:'Risk', question:'What could go wrong, and how bad?'});
@@ -117,6 +118,8 @@ MATCH (a:Primitive {id:'policy'}), (b:Primitive {id:'identity'}) CREATE (a)-[:AP
 MATCH (a:Primitive {id:'product'}), (b:Primitive {id:'capability'}) CREATE (a)-[:PACKAGES]->(b);
 MATCH (a:Primitive {id:'product'}), (b:Primitive {id:'market'}) CREATE (a)-[:ADDRESSES]->(b);
 MATCH (a:Primitive {id:'product'}), (b:Primitive {id:'state'}) CREATE (a)-[:HASSTATE]->(b);
+MATCH (a:Primitive {id:'protocol'}), (b:Primitive {id:'schema'}) CREATE (a)-[:CARRIES]->(b);
+MATCH (a:Primitive {id:'protocol'}), (b:Primitive {id:'evidence'}) CREATE (a)-[:SPECIFIEDBY]->(b);
 MATCH (a:Primitive {id:'relationship'}), (b:Primitive {id:'thing'}) CREATE (a)-[:CONNECTS]->(b);
 MATCH (a:Primitive {id:'resource'}), (b:Primitive {id:'capability'}) CREATE (a)-[:CONSUMEDBY]->(b);
 MATCH (a:Primitive {id:'resource'}), (b:Primitive {id:'constraint'}) CREATE (a)-[:BOUNDEDBY]->(b);
@@ -146,6 +149,7 @@ MATCH (a:Primitive {id:'tenant'}), (b:Primitive {id:'resource'}) CREATE (a)-[:OW
 MATCH (a:Primitive {id:'tenant'}), (b:Primitive {id:'policy'}) CREATE (a)-[:GOVERNEDBY]->(b);
 MATCH (a:Primitive {id:'thing'}), (b:Primitive {id:'thing'}) CREATE (a)-[:RELATEDTO]->(b);
 MATCH (a:Primitive {id:'time'}), (b:Primitive {id:'constraint'}) CREATE (a)-[:SCOPES]->(b);
+MATCH (a:Primitive {id:'touchpoint'}), (b:Primitive {id:'protocol'}) CREATE (a)-[:SPEAKS]->(b);
 MATCH (a:Primitive {id:'touchpoint'}), (b:Primitive {id:'capability'}) CREATE (a)-[:EXPOSEDBY]->(b);
 MATCH (a:Primitive {id:'touchpoint'}), (b:Primitive {id:'thing'}) CREATE (a)-[:CONNECTS]->(b);
 MATCH (a:Primitive {id:'touchpoint'}), (b:Primitive {id:'credential'}) CREATE (a)-[:SECUREDBY]->(b);
