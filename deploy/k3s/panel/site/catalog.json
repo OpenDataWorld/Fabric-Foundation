@@ -1,0 +1,121 @@
+{
+  "title": "k3s Stack Catalog",
+  "subtitle": "Cloud-native components catalogued for this cluster — CNCF-aligned, one-command deployable.",
+  "categories": [
+    {
+      "name": "Application",
+      "items": [
+        {
+          "name": "Nextcloud",
+          "logo": "☁️",
+          "description": "Self-hosted content collaboration / file sync.",
+          "image": "nextcloud:30-apache",
+          "status": "deployed",
+          "cncf": false,
+          "docs": "https://nextcloud.com",
+          "manifest": "../nextcloud"
+        }
+      ]
+    },
+    {
+      "name": "Data & Cache",
+      "items": [
+        {
+          "name": "PostgreSQL",
+          "logo": "🐘",
+          "description": "Primary relational datastore.",
+          "image": "postgres:16-alpine",
+          "status": "deployed",
+          "cncf": false,
+          "docs": "https://www.postgresql.org",
+          "manifest": "../nextcloud/02-postgres.yaml"
+        },
+        {
+          "name": "Redis",
+          "logo": "🔴",
+          "description": "In-memory cache + transactional file locking.",
+          "image": "redis:7-alpine",
+          "status": "deployed",
+          "cncf": false,
+          "docs": "https://redis.io",
+          "manifest": "../nextcloud/03-redis.yaml"
+        }
+      ]
+    },
+    {
+      "name": "Ingress & Certificates",
+      "items": [
+        {
+          "name": "Traefik",
+          "logo": "🚦",
+          "description": "k3s-bundled ingress controller / edge router.",
+          "image": "rancher/mirrored-library-traefik",
+          "status": "deployed",
+          "cncf": true,
+          "docs": "https://traefik.io",
+          "manifest": "../nextcloud/05-ingress.yaml"
+        },
+        {
+          "name": "cert-manager",
+          "logo": "🔐",
+          "description": "Automated X.509 certificates (Let's Encrypt).",
+          "image": "quay.io/jetstack/cert-manager-controller",
+          "status": "available",
+          "cncf": true,
+          "docs": "https://cert-manager.io",
+          "manifest": "../nextcloud/99-cert-manager.example.yaml"
+        }
+      ]
+    },
+    {
+      "name": "Storage",
+      "items": [
+        {
+          "name": "local-path-provisioner",
+          "logo": "💾",
+          "description": "k3s default node-local dynamic PV provisioner.",
+          "image": "rancher/local-path-provisioner",
+          "status": "deployed",
+          "cncf": false,
+          "docs": "https://github.com/rancher/local-path-provisioner",
+          "manifest": ""
+        },
+        {
+          "name": "Longhorn",
+          "logo": "🐮",
+          "description": "Distributed block storage for multi-node durability.",
+          "image": "longhornio/longhorn-manager",
+          "status": "available",
+          "cncf": true,
+          "docs": "https://longhorn.io",
+          "manifest": ""
+        }
+      ]
+    },
+    {
+      "name": "Observability",
+      "items": [
+        {
+          "name": "Prometheus",
+          "logo": "🔥",
+          "description": "Metrics collection + alerting.",
+          "image": "prom/prometheus",
+          "status": "available",
+          "cncf": true,
+          "docs": "https://prometheus.io",
+          "manifest": ""
+        },
+        {
+          "name": "Grafana",
+          "logo": "📈",
+          "description": "Dashboards + visualization.",
+          "image": "grafana/grafana",
+          "status": "available",
+          "cncf": false,
+          "docs": "https://grafana.com",
+          "manifest": ""
+        }
+      ]
+    }
+  ]
+}
