@@ -1,5 +1,6 @@
-# Proof-of-use validator — kept on disk, intentionally not committed
-tools/
+# tools/ is local-only (proof-of-use validator), EXCEPT the platform CLI
+tools/*
+!tools/fabric.py
 
 # Python
 __pycache__/
