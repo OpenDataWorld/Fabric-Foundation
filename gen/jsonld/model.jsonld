@@ -10,7 +10,12 @@
     "identity": "fabric:Identity",
     "did": "https://www.w3.org/ns/did#",
     "geo": "http://www.opengis.net/ont/geosparql#",
+    "marketplace": "fabric:Marketplace",
     "objective": "fabric:Objective",
+    "offer": "fabric:Offer",
+    "operatingModel": "fabric:OperatingModel",
+    "order": "fabric:Order",
+    "payment": "fabric:Payment",
     "policy": "fabric:Policy",
     "odrl": "http://www.w3.org/ns/odrl/2/",
     "protocol": "fabric:Protocol",
@@ -1187,6 +1192,105 @@
       ]
     },
     {
+      "@id": "fabric:primitive:marketplace",
+      "@type": "schema:OnlineStore",
+      "rdfs:label": "Marketplace",
+      "rdfs:comment": "Where do parties list, discover, and transact?",
+      "schema:sameAs": {
+        "@id": "https://schema.org/OnlineStore"
+      },
+      "fabric:attribute": [
+        {
+          "@id": "fabric:marketplace.id",
+          "rdfs:label": "id",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:identifier"
+          }
+        },
+        {
+          "@id": "fabric:marketplace.name",
+          "rdfs:label": "name",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:name"
+          }
+        },
+        {
+          "@id": "fabric:marketplace.status",
+          "rdfs:label": "status",
+          "fabric:dataType": "string",
+          "fabric:required": false
+        },
+        {
+          "@id": "fabric:marketplace.federationId",
+          "rdfs:label": "federationId",
+          "fabric:dataType": "string",
+          "fabric:required": false
+        }
+      ],
+      "fabric:relationship": [
+        {
+          "@id": "fabric:hosts",
+          "rdfs:label": "hosts",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:offer"
+          }
+        },
+        {
+          "@id": "fabric:enables",
+          "rdfs:label": "enables",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:operating-model"
+          }
+        },
+        {
+          "@id": "fabric:federatesvia",
+          "rdfs:label": "federatesVia",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:protocol"
+          }
+        },
+        {
+          "@id": "fabric:transactsvia",
+          "rdfs:label": "transactsVia",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:protocol"
+          }
+        },
+        {
+          "@id": "fabric:exposes",
+          "rdfs:label": "exposes",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:touchpoint"
+          }
+        },
+        {
+          "@id": "fabric:servesmarket",
+          "rdfs:label": "servesMarket",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:market"
+          }
+        },
+        {
+          "@id": "fabric:operatedby",
+          "rdfs:label": "operatedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:tenant"
+          }
+        },
+        {
+          "@id": "fabric:governedby",
+          "rdfs:label": "governedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:policy"
+          }
+        }
+      ]
+    },
+    {
       "@id": "fabric:primitive:market",
       "@type": "schema:Thing",
       "rdfs:label": "Market",
@@ -1357,6 +1461,469 @@
           "rdfs:label": "subObjectiveOf",
           "schema:rangeIncludes": {
             "@id": "fabric:primitive:objective"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "fabric:primitive:offer",
+      "@type": "schema:Offer",
+      "rdfs:label": "Offer",
+      "rdfs:comment": "What is offered for sale, by whom, at what price?",
+      "schema:sameAs": {
+        "@id": "https://schema.org/Offer"
+      },
+      "fabric:attribute": [
+        {
+          "@id": "fabric:offer.id",
+          "rdfs:label": "id",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:identifier"
+          }
+        },
+        {
+          "@id": "fabric:offer.name",
+          "rdfs:label": "name",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:name"
+          }
+        },
+        {
+          "@id": "fabric:offer.price",
+          "rdfs:label": "price",
+          "fabric:dataType": "number",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:price"
+          }
+        },
+        {
+          "@id": "fabric:offer.currency",
+          "rdfs:label": "currency",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:priceCurrency"
+          }
+        },
+        {
+          "@id": "fabric:offer.unit",
+          "rdfs:label": "unit",
+          "fabric:dataType": "string",
+          "fabric:required": false
+        },
+        {
+          "@id": "fabric:offer.status",
+          "rdfs:label": "status",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:availability"
+          }
+        },
+        {
+          "@id": "fabric:offer.sku",
+          "rdfs:label": "sku",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:sku"
+          }
+        }
+      ],
+      "fabric:relationship": [
+        {
+          "@id": "fabric:offeredby",
+          "rdfs:label": "offeredBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:identity"
+          }
+        },
+        {
+          "@id": "fabric:sells",
+          "rdfs:label": "sells",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:product"
+          }
+        },
+        {
+          "@id": "fabric:grants",
+          "rdfs:label": "grants",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:capability"
+          }
+        },
+        {
+          "@id": "fabric:pricedin",
+          "rdfs:label": "pricedIn",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:resource"
+          }
+        },
+        {
+          "@id": "fabric:listedon",
+          "rdfs:label": "listedOn",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:marketplace"
+          }
+        },
+        {
+          "@id": "fabric:soldunder",
+          "rdfs:label": "soldUnder",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:operating-model"
+          }
+        },
+        {
+          "@id": "fabric:transactedvia",
+          "rdfs:label": "transactedVia",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:protocol"
+          }
+        },
+        {
+          "@id": "fabric:constrainedby",
+          "rdfs:label": "constrainedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:constraint"
+          }
+        },
+        {
+          "@id": "fabric:governedby",
+          "rdfs:label": "governedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:policy"
+          }
+        },
+        {
+          "@id": "fabric:hasstate",
+          "rdfs:label": "hasState",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:state"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "fabric:primitive:operating-model",
+      "@type": "schema:BusinessFunction",
+      "rdfs:label": "Operating Model",
+      "rdfs:comment": "Which selling motion is this?",
+      "schema:sameAs": {
+        "@id": "https://schema.org/BusinessFunction"
+      },
+      "fabric:attribute": [
+        {
+          "@id": "fabric:operating_model.id",
+          "rdfs:label": "id",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:identifier"
+          }
+        },
+        {
+          "@id": "fabric:operating_model.name",
+          "rdfs:label": "name",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:name"
+          }
+        },
+        {
+          "@id": "fabric:operating_model.motion",
+          "rdfs:label": "motion",
+          "fabric:dataType": "enum",
+          "fabric:required": true
+        },
+        {
+          "@id": "fabric:operating_model.sellerKind",
+          "rdfs:label": "sellerKind",
+          "fabric:dataType": "enum",
+          "fabric:required": false
+        },
+        {
+          "@id": "fabric:operating_model.buyerKind",
+          "rdfs:label": "buyerKind",
+          "fabric:dataType": "enum",
+          "fabric:required": false
+        },
+        {
+          "@id": "fabric:operating_model.enabled",
+          "rdfs:label": "enabled",
+          "fabric:dataType": "boolean",
+          "fabric:required": false
+        }
+      ],
+      "fabric:relationship": [
+        {
+          "@id": "fabric:addresses",
+          "rdfs:label": "addresses",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:market"
+          }
+        },
+        {
+          "@id": "fabric:governedby",
+          "rdfs:label": "governedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:policy"
+          }
+        },
+        {
+          "@id": "fabric:appliesto",
+          "rdfs:label": "appliesTo",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:offer"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "fabric:primitive:order",
+      "@type": "schema:Order",
+      "rdfs:label": "Order",
+      "rdfs:comment": "What was purchased, by whom, and is it fulfilled?",
+      "schema:sameAs": {
+        "@id": "https://schema.org/Order"
+      },
+      "fabric:attribute": [
+        {
+          "@id": "fabric:order.id",
+          "rdfs:label": "id",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:identifier"
+          }
+        },
+        {
+          "@id": "fabric:order.quantity",
+          "rdfs:label": "quantity",
+          "fabric:dataType": "number",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:orderQuantity"
+          }
+        },
+        {
+          "@id": "fabric:order.amount",
+          "rdfs:label": "amount",
+          "fabric:dataType": "number",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:price"
+          }
+        },
+        {
+          "@id": "fabric:order.currency",
+          "rdfs:label": "currency",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:priceCurrency"
+          }
+        },
+        {
+          "@id": "fabric:order.status",
+          "rdfs:label": "status",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:orderStatus"
+          }
+        },
+        {
+          "@id": "fabric:order.placedAt",
+          "rdfs:label": "placedAt",
+          "fabric:dataType": "datetime",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:orderDate"
+          }
+        }
+      ],
+      "fabric:relationship": [
+        {
+          "@id": "fabric:foroffer",
+          "rdfs:label": "forOffer",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:offer"
+          }
+        },
+        {
+          "@id": "fabric:placedby",
+          "rdfs:label": "placedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:identity"
+          }
+        },
+        {
+          "@id": "fabric:fulfilledby",
+          "rdfs:label": "fulfilledBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:identity"
+          }
+        },
+        {
+          "@id": "fabric:settledby",
+          "rdfs:label": "settledBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:payment"
+          }
+        },
+        {
+          "@id": "fabric:transactedvia",
+          "rdfs:label": "transactedVia",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:protocol"
+          }
+        },
+        {
+          "@id": "fabric:hasstate",
+          "rdfs:label": "hasState",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:state"
+          }
+        },
+        {
+          "@id": "fabric:advancedby",
+          "rdfs:label": "advancedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:event"
+          }
+        },
+        {
+          "@id": "fabric:governedby",
+          "rdfs:label": "governedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:policy"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "fabric:primitive:payment",
+      "@type": "schema:PayAction",
+      "rdfs:label": "Payment",
+      "rdfs:comment": "How was value settled, under whose mandate?",
+      "schema:sameAs": {
+        "@id": "https://schema.org/PayAction"
+      },
+      "fabric:attribute": [
+        {
+          "@id": "fabric:payment.id",
+          "rdfs:label": "id",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:identifier"
+          }
+        },
+        {
+          "@id": "fabric:payment.amount",
+          "rdfs:label": "amount",
+          "fabric:dataType": "number",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:amount"
+          }
+        },
+        {
+          "@id": "fabric:payment.currency",
+          "rdfs:label": "currency",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:currency"
+          }
+        },
+        {
+          "@id": "fabric:payment.method",
+          "rdfs:label": "method",
+          "fabric:dataType": "string",
+          "fabric:required": false
+        },
+        {
+          "@id": "fabric:payment.status",
+          "rdfs:label": "status",
+          "fabric:dataType": "string",
+          "fabric:required": false
+        },
+        {
+          "@id": "fabric:payment.mandateId",
+          "rdfs:label": "mandateId",
+          "fabric:dataType": "string",
+          "fabric:required": false
+        }
+      ],
+      "fabric:relationship": [
+        {
+          "@id": "fabric:settles",
+          "rdfs:label": "settles",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:order"
+          }
+        },
+        {
+          "@id": "fabric:paidby",
+          "rdfs:label": "paidBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:identity"
+          }
+        },
+        {
+          "@id": "fabric:paysto",
+          "rdfs:label": "paysTo",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:identity"
+          }
+        },
+        {
+          "@id": "fabric:authorizedby",
+          "rdfs:label": "authorizedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:consent"
+          }
+        },
+        {
+          "@id": "fabric:securedby",
+          "rdfs:label": "securedBy",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:credential"
+          }
+        },
+        {
+          "@id": "fabric:draws",
+          "rdfs:label": "draws",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:resource"
+          }
+        },
+        {
+          "@id": "fabric:viaprotocol",
+          "rdfs:label": "viaProtocol",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:protocol"
+          }
+        },
+        {
+          "@id": "fabric:hasstate",
+          "rdfs:label": "hasState",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:state"
+          }
+        },
+        {
+          "@id": "fabric:emits",
+          "rdfs:label": "emits",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:event"
           }
         }
       ]

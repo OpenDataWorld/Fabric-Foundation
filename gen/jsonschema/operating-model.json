@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/operating-model.json",
+  "title": "Operating Model",
+  "description": "A configurable go-to-market / selling motion the marketplace runs: b2b, b2c, c2c, d2c, b2b2c, or p2p (peer-to-peer). A Marketplace ENABLES a subset of Operating Models; an Offer is sold UNDER exactly one. Motions are configuration, not code \u2014 enabling or disabling one is flipping a value (`enabled`), never a rewrite. The motion fixes the seller/buyer Identity kinds at the boundary, which is what lets the same platform serve many models at once.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "motion": {
+      "type": "string",
+      "description": "b2b | b2c | c2c | d2c | b2b2c | p2p \u2014 the configured selling motion."
+    },
+    "sellerKind": {
+      "type": "string",
+      "description": "Identity kind on the sell side: organization | person | agent | product."
+    },
+    "buyerKind": {
+      "type": "string",
+      "description": "Identity kind on the buy side: organization | person | agent."
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether this motion is switched on for the marketplace right now (the configuration knob)."
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "motion"
+  ]
+}

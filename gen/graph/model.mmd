@@ -55,6 +55,14 @@ graph LR
   Journey -->|forIdentity| Identity
   Journey -->|over| Time
   Location -->|bounds| Constraint
+  Marketplace -->|hosts| Offer
+  Marketplace -->|enables| OperatingModel
+  Marketplace -->|federatesVia| Protocol
+  Marketplace -->|transactsVia| Protocol
+  Marketplace -->|exposes| Touchpoint
+  Marketplace -->|servesMarket| Market
+  Marketplace -->|operatedBy| Tenant
+  Marketplace -->|governedBy| Policy
   Market -->|categorizes| Product
   Metric -->|measures| Objective
   Metric -->|evidencedBy| Evidence
@@ -62,6 +70,36 @@ graph LR
   Objective -->|boundedBy| Constraint
   Objective -->|measuredBy| Event
   Objective -->|subObjectiveOf| Objective
+  Offer -->|offeredBy| Identity
+  Offer -->|sells| Product
+  Offer -->|grants| Capability
+  Offer -->|pricedIn| Resource
+  Offer -->|listedOn| Marketplace
+  Offer -->|soldUnder| OperatingModel
+  Offer -->|transactedVia| Protocol
+  Offer -->|constrainedBy| Constraint
+  Offer -->|governedBy| Policy
+  Offer -->|hasState| State
+  OperatingModel -->|addresses| Market
+  OperatingModel -->|governedBy| Policy
+  OperatingModel -->|appliesTo| Offer
+  Order -->|forOffer| Offer
+  Order -->|placedBy| Identity
+  Order -->|fulfilledBy| Identity
+  Order -->|settledBy| Payment
+  Order -->|transactedVia| Protocol
+  Order -->|hasState| State
+  Order -->|advancedBy| Event
+  Order -->|governedBy| Policy
+  Payment -->|settles| Order
+  Payment -->|paidBy| Identity
+  Payment -->|paysTo| Identity
+  Payment -->|authorizedBy| Consent
+  Payment -->|securedBy| Credential
+  Payment -->|draws| Resource
+  Payment -->|viaProtocol| Protocol
+  Payment -->|hasState| State
+  Payment -->|emits| Event
   Permission -->|permits| Capability
   Permission -->|over| Resource
   Permission -->|composesInto| Policy

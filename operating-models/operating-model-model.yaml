@@ -1,0 +1,56 @@
+# Operating Model — the selling motion a marketplace runs
+id: "fabric:primitive:operating-model"
+name: "Operating Model"
+version: "1.0.0"
+layer: "domain"
+question: "Which selling motion is this?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A configurable go-to-market / selling motion the marketplace runs: b2b, b2c,
+  c2c, d2c, b2b2c, or p2p (peer-to-peer). A Marketplace ENABLES a subset of
+  Operating Models; an Offer is sold UNDER exactly one. Motions are
+  configuration, not code — enabling or disabling one is flipping a value
+  (`enabled`), never a rewrite. The motion fixes the seller/buyer Identity kinds
+  at the boundary, which is what lets the same platform serve many models at once.
+schemaOrg:
+  type: "schema:BusinessFunction"
+  url: "https://schema.org/BusinessFunction"
+  note: >
+    schema.org has no native selling-motion type; a motion is closest to
+    schema:BusinessFunction — the role a party plays in a commercial transaction.
+jsonldContext:
+  operatingModel: "fabric:OperatingModel"
+attributes:
+  - { name: id, type: string, required: true, schemaOrg: "schema:identifier" }
+  - { name: name, type: string, required: true, schemaOrg: "schema:name" }
+  - name: motion
+    type: enum
+    required: true
+    description: "b2b | b2c | c2c | d2c | b2b2c | p2p — the configured selling motion."
+  - name: sellerKind
+    type: enum
+    required: false
+    description: "Identity kind on the sell side: organization | person | agent | product."
+  - name: buyerKind
+    type: enum
+    required: false
+    description: "Identity kind on the buy side: organization | person | agent."
+  - name: enabled
+    type: boolean
+    required: false
+    description: "Whether this motion is switched on for the marketplace right now (the configuration knob)."
+relationships:
+  - { name: addresses, target: "fabric:primitive:market", cardinality: "0..*", description: "Market category this motion serves." }
+  - { name: governedBy, target: "fabric:primitive:policy", cardinality: "0..*", description: "Policy bounding who may sell/buy under this motion." }
+  - { name: appliesTo, target: "fabric:primitive:offer", cardinality: "0..*", description: "Offers sold under this motion." }
+invariants:
+  - "A Marketplace MAY enable any subset of motions; enabling/disabling a motion is a configuration change (a value), never a code change."
+  - "An Offer is sold under exactly one Operating Model at a time; the motion fixes the seller and buyer Identity kinds at the boundary."
+  - "Adding a new motion MUST NOT require changing core code — only defining/enabling an Operating Model asset."
+examples:
+  - { id: "operating-model:b2b", name: "Business-to-Business", motion: "b2b", sellerKind: "organization", buyerKind: "organization", enabled: true }
+  - { id: "operating-model:b2c", name: "Business-to-Consumer", motion: "b2c", sellerKind: "organization", buyerKind: "person", enabled: true }
+  - { id: "operating-model:c2c", name: "Consumer-to-Consumer", motion: "c2c", sellerKind: "person", buyerKind: "person", enabled: true }
+  - { id: "operating-model:d2c", name: "Direct-to-Consumer", motion: "d2c", sellerKind: "organization", buyerKind: "person", enabled: true }
+  - { id: "operating-model:b2b2c", name: "Business-to-Business-to-Consumer", motion: "b2b2c", sellerKind: "organization", buyerKind: "person", enabled: true }
+  - { id: "operating-model:p2p", name: "Peer-to-Peer (agent-to-agent)", motion: "p2p", sellerKind: "agent", buyerKind: "agent", enabled: true }

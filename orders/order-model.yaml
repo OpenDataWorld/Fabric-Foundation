@@ -1,0 +1,42 @@
+# Order — a purchase commitment (Agent Commerce Protocol)
+id: "fabric:primitive:order"
+name: "Order"
+version: "1.0.0"
+layer: "domain"
+question: "What was purchased, by whom, and is it fulfilled?"
+extends: ["fabric:primitive:thing"]
+description: >
+  A buyer's commitment against an Offer: the Agent Commerce Protocol transaction.
+  An Order is placed by a buyer Identity, fulfilled by a seller Identity, settled
+  by a Payment, and moves through a lifecycle of States advanced by Events
+  (placed -> accepted -> fulfilled -> settled / cancelled / refunded). The Order
+  is the closed-loop plant whose State the settlement controller drives to its
+  setpoint.
+schemaOrg:
+  type: "schema:Order"
+  url: "https://schema.org/Order"
+  note: "Maps directly to schema:Order (orderStatus, orderedItem, customer, seller)."
+jsonldContext:
+  order: "fabric:Order"
+attributes:
+  - { name: id, type: string, required: true, schemaOrg: "schema:identifier" }
+  - { name: quantity, type: number, required: false, schemaOrg: "schema:orderQuantity" }
+  - { name: amount, type: number, required: false, schemaOrg: "schema:price", description: "Total committed amount." }
+  - { name: currency, type: string, required: false, schemaOrg: "schema:priceCurrency" }
+  - { name: status, type: string, required: false, schemaOrg: "schema:orderStatus", description: "placed | accepted | fulfilled | settled | cancelled | refunded." }
+  - { name: placedAt, type: datetime, required: false, schemaOrg: "schema:orderDate" }
+relationships:
+  - { name: forOffer, target: "fabric:primitive:offer", cardinality: "1", description: "The Offer this order commits against." }
+  - { name: placedBy, target: "fabric:primitive:identity", cardinality: "1", description: "Buyer Identity (agent, person, or organization)." }
+  - { name: fulfilledBy, target: "fabric:primitive:identity", cardinality: "0..1", description: "Seller Identity fulfilling the order." }
+  - { name: settledBy, target: "fabric:primitive:payment", cardinality: "0..1", description: "Payment that settles this order." }
+  - { name: transactedVia, target: "fabric:primitive:protocol", cardinality: "0..*", description: "Agent Commerce Protocol carrying the order." }
+  - { name: hasState, target: "fabric:primitive:state", cardinality: "0..1", description: "Current lifecycle State." }
+  - { name: advancedBy, target: "fabric:primitive:event", cardinality: "0..*", description: "Events that move the order between States." }
+  - { name: governedBy, target: "fabric:primitive:policy", cardinality: "0..*", description: "Order/escrow policy (when funds release, refund rules)." }
+invariants:
+  - "An Order references exactly one Offer and is placed by exactly one buyer Identity."
+  - "Every status change is an Event that advances the Order's State — never a silent in-memory mutation."
+  - "An Order is settled only by a Payment that settles THIS order; fulfillment and settlement are distinct States."
+examples:
+  - { id: "order:0001", quantity: 1000, amount: 10.0, currency: "USD", status: "placed", placedAt: "2026-06-05T12:00:00Z" }

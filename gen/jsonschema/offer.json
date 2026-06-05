@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/offer.json",
+  "title": "Offer",
+  "description": "A listing in the marketplace: a Product or Capability made available by a seller Identity at a price, sold UNDER one Operating Model and transacted over the Agent Commerce Protocol. The Offer is the ACP artifact a buyer agent discovers and turns into an Order. It is governed by listing Policy and bounded by Constraints (eligibility, price floors, rate limits).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number",
+      "description": "Listed unit price."
+    },
+    "currency": {
+      "type": "string",
+      "description": "ISO 4217 code, e.g. USD, or a token symbol."
+    },
+    "unit": {
+      "type": "string",
+      "description": "Pricing unit: per-call | per-seat | per-token | per-month | flat."
+    },
+    "status": {
+      "type": "string",
+      "description": "draft | listed | paused | sold-out | withdrawn."
+    },
+    "sku": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name"
+  ]
+}

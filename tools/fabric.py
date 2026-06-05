@@ -36,6 +36,13 @@ LINK_FIELDS = {
     "executes", "pursues", "governedBy", "guards", "speaks", "constraints",
     "contains", "grants", "memberOf", "assignedTo", "hasMemory", "holds",
     "remembers", "binds", "hosts", "exposes", "emits", "securedBy",
+    # marketplace (Agent Commerce / Agent Payments / Matrix federation) edges
+    "enables", "federatesVia", "transactsVia", "servesMarket", "operatedBy",
+    "offeredBy", "sells", "pricedIn", "listedOn", "soldUnder", "transactedVia",
+    "forOffer", "placedBy", "fulfilledBy", "settledBy", "advancedBy",
+    "settles", "paidBy", "paysTo", "authorizedBy", "draws", "viaProtocol",
+    "appliesTo", "addresses", "constrainedBy", "hasState", "measures",
+    "servesObjective",
 }
 # Asset fields that point at another asset by id (scalar record links).
 REF_FIELDS = {"source", "subject", "controller"}

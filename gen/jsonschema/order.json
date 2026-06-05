@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/order.json",
+  "title": "Order",
+  "description": "A buyer's commitment against an Offer: the Agent Commerce Protocol transaction. An Order is placed by a buyer Identity, fulfilled by a seller Identity, settled by a Payment, and moves through a lifecycle of States advanced by Events (placed -> accepted -> fulfilled -> settled / cancelled / refunded). The Order is the closed-loop plant whose State the settlement controller drives to its setpoint.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Total committed amount."
+    },
+    "currency": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "description": "placed | accepted | fulfilled | settled | cancelled | refunded."
+    },
+    "placedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id"
+  ]
+}

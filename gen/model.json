@@ -101,6 +101,11 @@
       "question": "Where is it?"
     },
     {
+      "id": "marketplace",
+      "name": "Marketplace",
+      "question": "Where do parties list, discover, and transact?"
+    },
+    {
       "id": "market",
       "name": "Market",
       "question": "What market category is this?"
@@ -114,6 +119,26 @@
       "id": "objective",
       "name": "Objective",
       "question": "Why are we doing it, and how is success judged?"
+    },
+    {
+      "id": "offer",
+      "name": "Offer",
+      "question": "What is offered for sale, by whom, at what price?"
+    },
+    {
+      "id": "operating-model",
+      "name": "Operating Model",
+      "question": "Which selling motion is this?"
+    },
+    {
+      "id": "order",
+      "name": "Order",
+      "question": "What was purchased, by whom, and is it fulfilled?"
+    },
+    {
+      "id": "payment",
+      "name": "Payment",
+      "question": "How was value settled, under whose mandate?"
     },
     {
       "id": "permission",
@@ -293,6 +318,10 @@
       "name": "Location"
     },
     {
+      "id": "marketplace",
+      "name": "Marketplace"
+    },
+    {
       "id": "market",
       "name": "Market"
     },
@@ -303,6 +332,22 @@
     {
       "id": "objective",
       "name": "Objective"
+    },
+    {
+      "id": "offer",
+      "name": "Offer"
+    },
+    {
+      "id": "operating-model",
+      "name": "Operating Model"
+    },
+    {
+      "id": "order",
+      "name": "Order"
+    },
+    {
+      "id": "payment",
+      "name": "Payment"
     },
     {
       "id": "permission",
@@ -663,6 +708,46 @@
       "to": "constraint"
     },
     {
+      "from": "marketplace",
+      "rel": "hosts",
+      "to": "offer"
+    },
+    {
+      "from": "marketplace",
+      "rel": "enables",
+      "to": "operating-model"
+    },
+    {
+      "from": "marketplace",
+      "rel": "federatesVia",
+      "to": "protocol"
+    },
+    {
+      "from": "marketplace",
+      "rel": "transactsVia",
+      "to": "protocol"
+    },
+    {
+      "from": "marketplace",
+      "rel": "exposes",
+      "to": "touchpoint"
+    },
+    {
+      "from": "marketplace",
+      "rel": "servesMarket",
+      "to": "market"
+    },
+    {
+      "from": "marketplace",
+      "rel": "operatedBy",
+      "to": "tenant"
+    },
+    {
+      "from": "marketplace",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
       "from": "market",
       "rel": "categorizes",
       "to": "product"
@@ -696,6 +781,156 @@
       "from": "objective",
       "rel": "subObjectiveOf",
       "to": "objective"
+    },
+    {
+      "from": "offer",
+      "rel": "offeredBy",
+      "to": "identity"
+    },
+    {
+      "from": "offer",
+      "rel": "sells",
+      "to": "product"
+    },
+    {
+      "from": "offer",
+      "rel": "grants",
+      "to": "capability"
+    },
+    {
+      "from": "offer",
+      "rel": "pricedIn",
+      "to": "resource"
+    },
+    {
+      "from": "offer",
+      "rel": "listedOn",
+      "to": "marketplace"
+    },
+    {
+      "from": "offer",
+      "rel": "soldUnder",
+      "to": "operating-model"
+    },
+    {
+      "from": "offer",
+      "rel": "transactedVia",
+      "to": "protocol"
+    },
+    {
+      "from": "offer",
+      "rel": "constrainedBy",
+      "to": "constraint"
+    },
+    {
+      "from": "offer",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "offer",
+      "rel": "hasState",
+      "to": "state"
+    },
+    {
+      "from": "operating-model",
+      "rel": "addresses",
+      "to": "market"
+    },
+    {
+      "from": "operating-model",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "operating-model",
+      "rel": "appliesTo",
+      "to": "offer"
+    },
+    {
+      "from": "order",
+      "rel": "forOffer",
+      "to": "offer"
+    },
+    {
+      "from": "order",
+      "rel": "placedBy",
+      "to": "identity"
+    },
+    {
+      "from": "order",
+      "rel": "fulfilledBy",
+      "to": "identity"
+    },
+    {
+      "from": "order",
+      "rel": "settledBy",
+      "to": "payment"
+    },
+    {
+      "from": "order",
+      "rel": "transactedVia",
+      "to": "protocol"
+    },
+    {
+      "from": "order",
+      "rel": "hasState",
+      "to": "state"
+    },
+    {
+      "from": "order",
+      "rel": "advancedBy",
+      "to": "event"
+    },
+    {
+      "from": "order",
+      "rel": "governedBy",
+      "to": "policy"
+    },
+    {
+      "from": "payment",
+      "rel": "settles",
+      "to": "order"
+    },
+    {
+      "from": "payment",
+      "rel": "paidBy",
+      "to": "identity"
+    },
+    {
+      "from": "payment",
+      "rel": "paysTo",
+      "to": "identity"
+    },
+    {
+      "from": "payment",
+      "rel": "authorizedBy",
+      "to": "consent"
+    },
+    {
+      "from": "payment",
+      "rel": "securedBy",
+      "to": "credential"
+    },
+    {
+      "from": "payment",
+      "rel": "draws",
+      "to": "resource"
+    },
+    {
+      "from": "payment",
+      "rel": "viaProtocol",
+      "to": "protocol"
+    },
+    {
+      "from": "payment",
+      "rel": "hasState",
+      "to": "state"
+    },
+    {
+      "from": "payment",
+      "rel": "emits",
+      "to": "event"
     },
     {
       "from": "permission",
