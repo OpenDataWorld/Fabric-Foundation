@@ -67,6 +67,25 @@ const PRESETS = [
       { name: "Audit trail", stage: "Planned" },
     ],
   },
+  {
+    name: "Liferay on Kubernetes",
+    slug: "liferay-on-kubernetes",
+    tagline: "Run and govern Liferay DXP as a managed, Kubernetes-native deployment.",
+    description:
+      "An MVP that packages Liferay DXP for Kubernetes: Helm-based provisioning, autoscaling and persistent storage as governed Resources, SSO, and live health/observability with a full audit trail.",
+    market: "Digital Experience Platforms",
+    status: "In design",
+    capabilities: ["resource", "application", "connector", "state", "event", "policy", "metric"],
+    customCaps: ["Helm packaging", "Autoscaling"],
+    features: [
+      { name: "Helm chart & values", stage: "Beta" },
+      { name: "Autoscaling & HPA", stage: "In design" },
+      { name: "Persistent storage", stage: "In design" },
+      { name: "SSO integration", stage: "Planned" },
+      { name: "Observability dashboards", stage: "Planned" },
+      { name: "Zero-downtime upgrades", stage: "Planned" },
+    ],
+  },
 ];
 
 const $ = (s, r = document) => r.querySelector(s);
