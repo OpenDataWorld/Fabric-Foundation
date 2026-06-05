@@ -7,6 +7,7 @@ graph LR
   Agent -->|pursues| Objective
   Agent -->|governedBy| Policy
   Agent -->|hasMemory| Event
+  Agent -->|guards| Touchpoint
   Application -->|authenticates| Account
   Application -->|registeredIn| Tenant
   Application -->|governedBy| Policy
@@ -91,6 +92,7 @@ graph LR
   Runtime -->|remembers| Event
   Runtime -->|holds| State
   Runtime -->|exposes| Touchpoint
+  Runtime -->|guarantees| Objective
   Schema -->|basedOnClass| Thing
   Schema -->|includesFieldGroup| FieldGroup
   Schema -->|governedBy| Policy

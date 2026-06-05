@@ -423,6 +423,11 @@
       "to": "event"
     },
     {
+      "from": "agent",
+      "rel": "guards",
+      "to": "touchpoint"
+    },
+    {
       "from": "application",
       "rel": "authenticates",
       "to": "account"
@@ -841,6 +846,11 @@
       "from": "runtime",
       "rel": "exposes",
       "to": "touchpoint"
+    },
+    {
+      "from": "runtime",
+      "rel": "guarantees",
+      "to": "objective"
     },
     {
       "from": "schema",

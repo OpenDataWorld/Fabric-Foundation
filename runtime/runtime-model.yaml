@@ -28,7 +28,9 @@ relationships:
   - { name: remembers, target: "fabric:primitive:event", cardinality: "0..*", description: "Memory: the recorded event history the runtime reads back." }
   - { name: holds, target: "fabric:primitive:state", cardinality: "0..*", description: "Current state the runtime knows from the graph." }
   - { name: exposes, target: "fabric:primitive:touchpoint", cardinality: "0..*", description: "The runtime's boundaries; each speaks a Protocol via a sidecar." }
+  - { name: guarantees, target: "fabric:primitive:objective", cardinality: "0..*", description: "The runtime contract / SLA it delivers — availability, latency, durability — as guaranteed Objectives." }
 invariants:
+  - "The runtime DELIVERS a runtime contract (SLA): the guarantees it owes, expressed as guaranteed Objectives bounded by Constraints (availability, latency, durability)."
   - "The core runtime = graph substrate + identity + memory (events/state) + agents."
   - "The runtime is protocol-agnostic: it MUST NOT embed any wire protocol. Protocols attach only as sidecar-realized Touchpoints at the edges."
   - "Memory is the runtime's recorded events/state in the graph — the runtime knows by reading the graph, not by holding hidden state."

@@ -52,6 +52,7 @@ MATCH (a:Primitive {id:'agent'}), (b:Primitive {id:'capability'}) CREATE (a)-[:E
 MATCH (a:Primitive {id:'agent'}), (b:Primitive {id:'objective'}) CREATE (a)-[:PURSUES]->(b);
 MATCH (a:Primitive {id:'agent'}), (b:Primitive {id:'policy'}) CREATE (a)-[:GOVERNEDBY]->(b);
 MATCH (a:Primitive {id:'agent'}), (b:Primitive {id:'event'}) CREATE (a)-[:HASMEMORY]->(b);
+MATCH (a:Primitive {id:'agent'}), (b:Primitive {id:'touchpoint'}) CREATE (a)-[:GUARDS]->(b);
 MATCH (a:Primitive {id:'application'}), (b:Primitive {id:'account'}) CREATE (a)-[:AUTHENTICATES]->(b);
 MATCH (a:Primitive {id:'application'}), (b:Primitive {id:'tenant'}) CREATE (a)-[:REGISTEREDIN]->(b);
 MATCH (a:Primitive {id:'application'}), (b:Primitive {id:'policy'}) CREATE (a)-[:GOVERNEDBY]->(b);
@@ -136,6 +137,7 @@ MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'agent'}) CREATE (a)-[:HOST
 MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'event'}) CREATE (a)-[:REMEMBERS]->(b);
 MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'state'}) CREATE (a)-[:HOLDS]->(b);
 MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'touchpoint'}) CREATE (a)-[:EXPOSES]->(b);
+MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'objective'}) CREATE (a)-[:GUARANTEES]->(b);
 MATCH (a:Primitive {id:'schema'}), (b:Primitive {id:'thing'}) CREATE (a)-[:BASEDONCLASS]->(b);
 MATCH (a:Primitive {id:'schema'}), (b:Primitive {id:'fieldgroup'}) CREATE (a)-[:INCLUDESFIELDGROUP]->(b);
 MATCH (a:Primitive {id:'schema'}), (b:Primitive {id:'policy'}) CREATE (a)-[:GOVERNEDBY]->(b);

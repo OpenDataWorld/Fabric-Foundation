@@ -145,6 +145,13 @@
           "schema:rangeIncludes": {
             "@id": "fabric:primitive:event"
           }
+        },
+        {
+          "@id": "fabric:guards",
+          "rdfs:label": "guards",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:touchpoint"
+          }
         }
       ]
     },
@@ -2005,6 +2012,13 @@
           "rdfs:label": "exposes",
           "schema:rangeIncludes": {
             "@id": "fabric:primitive:touchpoint"
+          }
+        },
+        {
+          "@id": "fabric:guarantees",
+          "rdfs:label": "guarantees",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:objective"
           }
         }
       ]
