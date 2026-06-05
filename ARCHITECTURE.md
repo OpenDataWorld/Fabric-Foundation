@@ -115,6 +115,24 @@ So the sidecar/core split isn't aesthetic — it's the ATD-minimizing decision.
 
 ---
 
+## 6. The product: the Agent Composer
+
+The platform ships as the **Agent Composer**. It has one hard admission rule:
+
+> **Inside the composer, only the agent language is allowed.**
+
+- The composer is a **closed world**: a single, ambiguity-free language is the
+  only thing spoken inside it. One term, one meaning — always.
+- Anything from outside enters **only through a Touchpoint**, where a Protocol
+  sidecar (an agent) **translates it into the agent language**. Foreign
+  protocols, formats, and dialects stop at the edge; they never leak inward.
+- This is what makes composition *safe to sell*: because the interior speaks
+  one unambiguous language over the State graph, composed agents are
+  deterministic and verifiable. Ambiguity can only exist at a boundary, and the
+  boundary is exactly where a Protocol is defined to remove it.
+
+In short: **the edge translates; the core composes — in one language only.**
+
 ## In one breath
 
 > The core is the graph. Everything important is a State; Events advance it;
