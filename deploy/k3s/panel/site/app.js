@@ -24,13 +24,16 @@
 
   function matches(item) {
     if (!query) return true;
-    const hay = (item.name + " " + (item.description || "") + " " + (item.image || "")).toLowerCase();
+    const hay = (item.name + " " + (item.description || "") + " " + (item.image || "") + " " + (item.maturity || "")).toLowerCase();
     return hay.includes(query);
   }
 
+  const MATURITY = { graduated: "graduated", incubating: "incubating", sandbox: "sandbox" };
+
   function cardHtml(item) {
     const status = item.status === "deployed" ? "deployed" : "available";
-    const cncf = item.cncf ? '<span class="badge-cncf">CNCF</span>' : "";
+    const m = MATURITY[item.maturity];
+    const cncf = m ? `<span class="badge-cncf maturity-${m}">${m}</span>` : "";
     const inner = `
       <div class="card-head">
         <div class="logo">${escapeHtml(item.logo || "📦")}</div>
@@ -57,8 +60,12 @@
     // Cards, grouped by category
     const groups = data.categories.filter((c) => activeCategory === "All" || c.name === activeCategory);
     let html = "";
-    let shown = 0, deployed = 0, total = 0;
-    data.categories.forEach((c) => c.items.forEach((i) => { total++; if (i.status === "deployed") deployed++; }));
+    let shown = 0, deployed = 0, total = 0, cncf = 0;
+    data.categories.forEach((c) => c.items.forEach((i) => {
+      total++;
+      if (i.status === "deployed") deployed++;
+      if (MATURITY[i.maturity]) cncf++;
+    }));
 
     groups.forEach((c) => {
       const items = c.items.filter(matches);
@@ -69,7 +76,7 @@
     });
 
     els.catalog.innerHTML = html || `<div class="empty">No components match “${escapeHtml(query)}”.</div>`;
-    els.counts.textContent = `${total} components · ${deployed} deployed · ${shown} shown`;
+    els.counts.textContent = `${total} components · ${cncf} CNCF · ${deployed} deployed · ${shown} shown`;
   }
 
   els.search.addEventListener("input", (e) => { query = e.target.value.trim().toLowerCase(); render(); });

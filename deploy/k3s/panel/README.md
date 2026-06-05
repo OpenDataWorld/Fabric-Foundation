@@ -48,7 +48,7 @@ kubectl apply -k .
           "description": "Self-hosted file sync.",
           "image": "nextcloud:30-apache",
           "status": "deployed",     // deployed | available
-          "cncf": false,            // shows a CNCF badge when true
+          "maturity": "graduated",  // graduated | incubating | sandbox | non-cncf
           "docs": "https://nextcloud.com",
           "manifest": "../nextcloud"
         }
@@ -60,11 +60,16 @@ kubectl apply -k .
 
 Add/extend categories and items, re-apply, and the panel rolls out the new
 catalog automatically. The UI provides category filtering, free-text search,
-and per-card deployed/available status + CNCF badges.
+per-card deployed/available status, and CNCF **maturity** badges
+(graduated / incubating / sandbox).
 
-It ships pre-catalogued with the companion [`../nextcloud`](../nextcloud) stack
-(Nextcloud, PostgreSQL, Redis, Traefik, cert-manager) plus common CNCF add-ons
-(Longhorn, Prometheus, Grafana) marked as *available*.
+It ships pre-catalogued from the **CNCF landscape** taxonomy — Orchestration &
+Management, App Definition & Development, Runtime, Provisioning & Security,
+Observability & Analysis, Service Mesh & Networking — with real projects
+(Kubernetes, etcd, Helm, Argo, Cilium, cert-manager, Prometheus, OpenTelemetry,
+Istio, Falco, …) tagged by maturity, and the companion
+[`../nextcloud`](../nextcloud) stack items marked *deployed*. Maturity is a
+snapshot; refresh against <https://landscape.cncf.io>.
 
 ## Preview locally
 
