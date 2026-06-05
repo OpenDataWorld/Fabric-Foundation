@@ -187,6 +187,15 @@ class Location:
 
 
 @dataclass
+class Marketplace:
+    """Where do parties list, discover, and transact?  (fabric:primitive:marketplace)"""
+    id: str
+    name: str
+    status: Optional[str] = None
+    federationId: Optional[str] = None
+
+
+@dataclass
 class Market:
     """What market category is this?  (fabric:primitive:market)"""
     id: str
@@ -213,6 +222,51 @@ class Objective:
     targetDate: Optional[str] = None
     priority: Optional[str] = None
     status: Optional[str] = None
+
+
+@dataclass
+class Offer:
+    """What is offered for sale, by whom, at what price?  (fabric:primitive:offer)"""
+    id: str
+    name: str
+    price: Optional[float] = None
+    currency: Optional[str] = None
+    unit: Optional[str] = None
+    status: Optional[str] = None
+    sku: Optional[str] = None
+
+
+@dataclass
+class OperatingModel:
+    """Which selling motion is this?  (fabric:primitive:operating-model)"""
+    id: str
+    name: str
+    motion: str
+    sellerKind: Optional[str] = None
+    buyerKind: Optional[str] = None
+    enabled: Optional[bool] = None
+
+
+@dataclass
+class Order:
+    """What was purchased, by whom, and is it fulfilled?  (fabric:primitive:order)"""
+    id: str
+    quantity: Optional[float] = None
+    amount: Optional[float] = None
+    currency: Optional[str] = None
+    status: Optional[str] = None
+    placedAt: Optional[datetime] = None
+
+
+@dataclass
+class Payment:
+    """How was value settled, under whose mandate?  (fabric:primitive:payment)"""
+    id: str
+    amount: Optional[float] = None
+    currency: Optional[str] = None
+    method: Optional[str] = None
+    status: Optional[str] = None
+    mandateId: Optional[str] = None
 
 
 @dataclass

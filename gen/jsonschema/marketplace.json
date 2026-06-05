@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendataworld.org/fabric/schema/marketplace.json",
+  "title": "Marketplace",
+  "description": "The platform itself: a federated venue that HOSTS Offers, ENABLES a configurable set of Operating Models (b2b/b2c/c2c/d2c/b2b2c/p2p), and is reachable over many channels and surfaces (api/ui/cli/agent/tool/webhook). Federation across community-run instances uses the Matrix protocol; commerce follows the Agent Commerce Protocol (Offer/Order) and settlement the Agent Payments Protocol (Payment). The marketplace is configuration over the graph, not a fixed app \u2014 which models, channels, and protocols are live are all values it points at, never branches in core code.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "description": "draft | open | paused | closed."
+    },
+    "federationId": {
+      "type": "string",
+      "description": "Matrix server / room identifier this instance federates under (e.g. #market:fabric.community)."
+    }
+  },
+  "required": [
+    "id",
+    "name"
+  ]
+}

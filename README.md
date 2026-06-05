@@ -42,10 +42,17 @@ schema.org-aligned YAML model conforming to
 `Dataset` · `Product` · `Solution` · `Feature` · `Market` · `Connector` ·
 `Pipeline` · `Agent` · `Journey` · `Metric` · `Tenant` · `Consent` · `Control`.
 
+**Commerce nodes** (the agent marketplace — community selling across motions):
+`Marketplace` · `OperatingModel` (b2b/b2c/c2c/d2c/b2b2c/p2p) · `Offer` · `Order` ·
+`Payment`. Federation over **Matrix**, commerce over the **Agent Commerce
+Protocol**, settlement over the **Agent Payments Protocol** — see
+[`docs/agent-marketplace.md`](docs/agent-marketplace.md) and the runnable
+[`examples/agent-marketplace`](examples/agent-marketplace/fabric.yaml).
+
 **IAM nodes** (generalizing Keycloak & Casdoor): `Role` · `Permission` ·
 `Group` · `Application`.
 
-The model forms a clean graph — **39 nodes, 104 edges, 0 dangling** (verified by
+The model forms a clean graph — **47 nodes, 158 edges, 0 dangling** (verified by
 `codegen/generate_models.py --target graph`).
 
 ## How the primitives compose

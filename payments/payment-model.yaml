@@ -1,0 +1,45 @@
+# Payment — settlement of value (Agent Payments Protocol)
+id: "fabric:primitive:payment"
+name: "Payment"
+version: "1.0.0"
+layer: "domain"
+question: "How was value settled, under whose mandate?"
+extends: ["fabric:primitive:thing"]
+description: >
+  The settlement of an Order under the Agent Payments Protocol (AP2). A Payment
+  is authorized by a Consent (the buyer's payment mandate), secured by a
+  Credential, draws on a Resource (budget/tokens), and is carried over the AP2
+  Protocol. Authorization, capture, and refund are each Events advancing the
+  Payment's State — the verifiable audit trail an agent-initiated transaction
+  requires.
+schemaOrg:
+  type: "schema:PayAction"
+  url: "https://schema.org/PayAction"
+  note: >
+    schema.org models paying as schema:PayAction; the settled amount is a
+    schema:MonetaryAmount. Payment generalizes it to an agent-mandated settlement.
+jsonldContext:
+  payment: "fabric:Payment"
+attributes:
+  - { name: id, type: string, required: true, schemaOrg: "schema:identifier" }
+  - { name: amount, type: number, required: false, schemaOrg: "schema:amount" }
+  - { name: currency, type: string, required: false, schemaOrg: "schema:currency", description: "ISO 4217 code or token/stablecoin symbol." }
+  - { name: method, type: string, required: false, description: "card | bank | wallet | stablecoin | x402 | credits." }
+  - { name: status, type: string, required: false, description: "authorized | captured | settled | failed | refunded." }
+  - { name: mandateId, type: string, required: false, description: "AP2 mandate identifier the buyer agent presented to authorize this payment." }
+relationships:
+  - { name: settles, target: "fabric:primitive:order", cardinality: "1", description: "The Order this payment settles." }
+  - { name: paidBy, target: "fabric:primitive:identity", cardinality: "0..1", description: "Payer Identity (buyer / buyer's agent)." }
+  - { name: paysTo, target: "fabric:primitive:identity", cardinality: "0..1", description: "Payee Identity (seller)." }
+  - { name: authorizedBy, target: "fabric:primitive:consent", cardinality: "0..*", description: "Payment mandate / consent authorizing the agent to pay." }
+  - { name: securedBy, target: "fabric:primitive:credential", cardinality: "0..*", description: "Credential securing the settlement (key, token, signed mandate)." }
+  - { name: draws, target: "fabric:primitive:resource", cardinality: "0..1", description: "Resource (budget, token balance) the payment draws down." }
+  - { name: viaProtocol, target: "fabric:primitive:protocol", cardinality: "0..*", description: "Agent Payments Protocol (AP2) carrying the settlement." }
+  - { name: hasState, target: "fabric:primitive:state", cardinality: "0..1", description: "Current settlement State." }
+  - { name: emits, target: "fabric:primitive:event", cardinality: "0..*", description: "authorize / capture / settle / refund Events." }
+invariants:
+  - "A Payment settles exactly one Order and MUST be authorized by a mandate (Consent) before capture — no mandate, no capture."
+  - "Every state transition (authorize/capture/settle/refund) is an Event; the Payment State is the system of record, not a gateway callback."
+  - "A Payment MUST NOT draw more than the Resource it is bounded by allows (budget Constraint is blocking)."
+examples:
+  - { id: "payment:0001", amount: 10.0, currency: "USD", method: "stablecoin", status: "settled", mandateId: "ap2:mandate:7f3a" }

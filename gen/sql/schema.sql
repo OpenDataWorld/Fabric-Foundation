@@ -140,6 +140,13 @@ CREATE TABLE IF NOT EXISTS location (
     uri TEXT
 );
 
+CREATE TABLE IF NOT EXISTS marketplace (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    status TEXT,
+    federationId TEXT
+);
+
 CREATE TABLE IF NOT EXISTS market (
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL
@@ -161,6 +168,43 @@ CREATE TABLE IF NOT EXISTS objective (
     targetDate TEXT,
     priority TEXT,
     status TEXT
+);
+
+CREATE TABLE IF NOT EXISTS offer (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    price DOUBLE PRECISION,
+    currency TEXT,
+    unit TEXT,
+    status TEXT,
+    sku TEXT
+);
+
+CREATE TABLE IF NOT EXISTS operating_model (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    motion TEXT NOT NULL,
+    sellerKind TEXT,
+    buyerKind TEXT,
+    enabled BOOLEAN
+);
+
+CREATE TABLE IF NOT EXISTS order (
+    id TEXT PRIMARY KEY NOT NULL,
+    quantity DOUBLE PRECISION,
+    amount DOUBLE PRECISION,
+    currency TEXT,
+    status TEXT,
+    placedAt TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS payment (
+    id TEXT PRIMARY KEY NOT NULL,
+    amount DOUBLE PRECISION,
+    currency TEXT,
+    method TEXT,
+    status TEXT,
+    mandateId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS permission (

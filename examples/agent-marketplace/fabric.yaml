@@ -1,0 +1,258 @@
+# Example: the Agent Marketplace — the platform + the necessary tools.
+#
+# A federated, community-run venue where agents (and people, and businesses)
+# LIST, DISCOVER, and TRANSACT. It is configuration over the graph:
+#
+#   • Operating models (b2b / b2c / c2c / d2c / b2b2c / p2p) are CONFIGURABLE
+#     assets the marketplace ENABLES — switch a motion on/off with `enabled`,
+#     never a code change.
+#   • Commerce follows the Agent Commerce Protocol (Offer -> Order); settlement
+#     the Agent Payments Protocol (Payment, mandate-authorized); federation
+#     across community instances uses Matrix. All three are Protocol sidecars at
+#     Touchpoints — the core stays protocol-agnostic.
+#   • Multi-channel / multi-surface: the venue is reachable on many Touchpoints
+#     (ui, api, cli, agent/a2a, tool/mcp, webhook, matrix federation).
+#   • Control theory: each operational agent is a CLOSED-LOOP CONTROLLER —
+#     Objective = setpoint, Metric = sensor, Constraint/Policy = controller
+#     bounds, Capability = actuator, Event->State = the plant it drives.
+#
+#   python tools/fabric.py validate --instance examples/agent-marketplace/fabric.yaml
+#   python tools/fabric.py create   examples/agent-marketplace/fabric.yaml
+fabric:
+  id: "fabric:instance:agent-marketplace"
+  name: "Agent Marketplace"
+  description: >
+    The platform and its tools: protocols (Matrix, Agent Commerce, Agent
+    Payments), configurable operating models, multi-surface channels, and the
+    agent sidecars that run the marketplace as governed closed-loop controllers.
+
+  assets:
+    # ════════════════════════ PROTOCOLS (sidecars at the edge) ════════════════
+    - { id: "protocol:matrix", type: "fabric:primitive:protocol", name: "Matrix", version: "v1.11", format: "json", status: "standard", spec: "https://spec.matrix.org" }
+    - { id: "protocol:acp", type: "fabric:primitive:protocol", name: "Agent Commerce Protocol", version: "0.1", format: "jsonld", status: "custom", spec: "https://agentcommerceprotocol.org" }
+    - { id: "protocol:ap2", type: "fabric:primitive:protocol", name: "Agent Payments Protocol", version: "0.1", format: "jsonld", status: "custom", spec: "https://ap2-protocol.org" }
+    - { id: "protocol:mcp", type: "fabric:primitive:protocol", name: "Model Context Protocol", version: "2025-06", format: "json", status: "standard", spec: "https://modelcontextprotocol.io" }
+    - { id: "protocol:a2a", type: "fabric:primitive:protocol", name: "Agent-to-Agent", version: "0.2", format: "json", status: "standard" }
+
+    # ════════════════════════ MARKET / TENANT ═════════════════════════════════
+    - { id: "market:agent-economy", type: "fabric:primitive:market", name: "Agent Economy" }
+    - { id: "tenant:community", type: "fabric:primitive:tenant", name: "Fabric Community" }
+
+    # ════════════════════════ IDENTITIES (parties + agent sidecars) ═══════════
+    - { id: "did:fabric:seller:acme", type: "fabric:primitive:identity", kind: "organization", displayName: "Acme AI (seller)" }
+    - { id: "did:fabric:seller:indie", type: "fabric:primitive:identity", kind: "person", displayName: "Indie Maker (seller)" }
+    - { id: "did:fabric:buyer:agent-x", type: "fabric:primitive:identity", kind: "agent", displayName: "Buyer Agent X" }
+    - { id: "did:fabric:seller:agent-y", type: "fabric:primitive:identity", kind: "agent", displayName: "Seller Agent Y" }
+    - { id: "did:fabric:agent:discovery", type: "fabric:primitive:identity", kind: "agent", displayName: "Discovery Agent" }
+    - { id: "did:fabric:agent:commerce", type: "fabric:primitive:identity", kind: "agent", displayName: "Commerce Agent" }
+    - { id: "did:fabric:agent:settlement", type: "fabric:primitive:identity", kind: "agent", displayName: "Settlement Agent" }
+    - { id: "did:fabric:agent:escrow", type: "fabric:primitive:identity", kind: "agent", displayName: "Escrow Agent" }
+    - { id: "did:fabric:agent:federation", type: "fabric:primitive:identity", kind: "agent", displayName: "Federation Agent" }
+
+    # ════════════════════════ OPERATING MODELS (configurable motions) ═════════
+    # Enabling/disabling a motion is flipping `enabled` — never a code change.
+    - { id: "operating-model:b2b",   type: "fabric:primitive:operating-model", name: "Business-to-Business",   motion: "b2b",   sellerKind: "organization", buyerKind: "organization", enabled: true,  addresses: ["market:agent-economy"], governedBy: ["policy:trust-safety"] }
+    - { id: "operating-model:b2c",   type: "fabric:primitive:operating-model", name: "Business-to-Consumer",   motion: "b2c",   sellerKind: "organization", buyerKind: "person",       enabled: true,  addresses: ["market:agent-economy"], governedBy: ["policy:trust-safety"] }
+    - { id: "operating-model:c2c",   type: "fabric:primitive:operating-model", name: "Consumer-to-Consumer",   motion: "c2c",   sellerKind: "person",       buyerKind: "person",       enabled: true,  addresses: ["market:agent-economy"], governedBy: ["policy:trust-safety"] }
+    - { id: "operating-model:d2c",   type: "fabric:primitive:operating-model", name: "Direct-to-Consumer",     motion: "d2c",   sellerKind: "organization", buyerKind: "person",       enabled: true,  addresses: ["market:agent-economy"], governedBy: ["policy:trust-safety"] }
+    - { id: "operating-model:b2b2c", type: "fabric:primitive:operating-model", name: "Business-to-Business-to-Consumer", motion: "b2b2c", sellerKind: "organization", buyerKind: "person", enabled: true,  addresses: ["market:agent-economy"], governedBy: ["policy:trust-safety"] }
+    - { id: "operating-model:p2p",   type: "fabric:primitive:operating-model", name: "Peer-to-Peer (agent-to-agent)", motion: "p2p", sellerKind: "agent", buyerKind: "agent", enabled: true,  addresses: ["market:agent-economy"], governedBy: ["policy:trust-safety"] }
+
+    # ════════════════════════ TOUCHPOINTS (multi-channel, multi-surface) ══════
+    - { id: "touchpoint:web-ui",   type: "fabric:primitive:touchpoint", name: "Marketplace Web UI",      surface: "ui",      protocol: "https",  direction: "bidirectional", speaks: ["protocol:acp"] }
+    - { id: "touchpoint:api",      type: "fabric:primitive:touchpoint", name: "Marketplace REST/GraphQL API", surface: "api", protocol: "https", direction: "bidirectional", speaks: ["protocol:acp"] }
+    - { id: "touchpoint:cli",      type: "fabric:primitive:touchpoint", name: "Marketplace CLI",         surface: "cli",     protocol: "custom", direction: "bidirectional", speaks: ["protocol:acp"] }
+    - { id: "touchpoint:agent-a2a",type: "fabric:primitive:touchpoint", name: "Agent channel (A2A)",     surface: "agent",   protocol: "a2a",    direction: "bidirectional", speaks: ["protocol:a2a"] }
+    - { id: "touchpoint:tool-mcp", type: "fabric:primitive:touchpoint", name: "Tool channel (MCP)",      surface: "tool",    protocol: "mcp",    direction: "bidirectional", speaks: ["protocol:mcp"] }
+    - { id: "touchpoint:pay-edge", type: "fabric:primitive:touchpoint", name: "Payments edge (AP2)",     surface: "api",     protocol: "https",  direction: "bidirectional", speaks: ["protocol:ap2"] }
+    - { id: "touchpoint:matrix",   type: "fabric:primitive:touchpoint", name: "Federation channel (Matrix)", surface: "event", protocol: "custom", direction: "bidirectional", speaks: ["protocol:matrix"] }
+    - { id: "touchpoint:webhook",  type: "fabric:primitive:touchpoint", name: "Settlement webhook",      surface: "webhook", protocol: "https",  direction: "inbound", speaks: ["protocol:ap2"] }
+
+    # ════════════════════════ PRODUCTS (what offers package) ══════════════════
+    - { id: "product:summarizer", type: "fabric:primitive:product", name: "Summarizer Pro", status: "ga" }
+    - { id: "product:translator", type: "fabric:primitive:product", name: "Translator", status: "ga" }
+    - { id: "product:skill-pack",  type: "fabric:primitive:product", name: "Agent Skill Pack", status: "beta" }
+
+    # ════════════════════════ CAPABILITIES (actuators) ════════════════════════
+    - { id: "capability:list-offer",     type: "fabric:primitive:capability", name: "List Offer",     verb: "list" }
+    - { id: "capability:match",          type: "fabric:primitive:capability", name: "Match & Discover", verb: "match" }
+    - { id: "capability:place-order",    type: "fabric:primitive:capability", name: "Place Order",    verb: "order" }
+    - { id: "capability:fulfill",        type: "fabric:primitive:capability", name: "Fulfill Order",  verb: "fulfill" }
+    - { id: "capability:settle",         type: "fabric:primitive:capability", name: "Settle Payment", verb: "settle" }
+    - { id: "capability:escrow-hold",    type: "fabric:primitive:capability", name: "Hold in Escrow", verb: "hold" }
+    - { id: "capability:escrow-release", type: "fabric:primitive:capability", name: "Release Escrow", verb: "release" }
+    - { id: "capability:federate",       type: "fabric:primitive:capability", name: "Federate (Matrix)", verb: "federate" }
+
+    # ════════════════════════ OBJECTIVES (setpoints / references) ═════════════
+    - { id: "objective:liquidity",   type: "fabric:primitive:objective", kind: "outcome", name: "Liquidity setpoint",  statement: "Keep offer<->demand fill-rate at or above the target; minimize time-to-match." }
+    - { id: "objective:fulfilled",   type: "fabric:primitive:objective", kind: "outcome", name: "Orders fulfilled",     statement: "Every accepted Order reaches fulfilled then settled." }
+    - { id: "objective:settlement",  type: "fabric:primitive:objective", kind: "outcome", name: "Settlement setpoint",  statement: "Every accepted Order settles within SLA, under mandate, within budget." }
+    - { id: "objective:zero-fraud",  type: "fabric:primitive:objective", kind: "outcome", name: "Zero fraud",           statement: "No unauthorized or unmandated transfer of value clears." }
+
+    # ════════════════════════ METRICS (sensors / measured variables) ══════════
+    - { id: "metric:fill-rate",         type: "fabric:primitive:metric", name: "Fill rate",            value: 0.0, unit: "ratio",   measures: ["objective:liquidity"] }
+    - { id: "metric:time-to-match",     type: "fabric:primitive:metric", name: "Time to match",        value: 0.0, unit: "seconds", measures: ["objective:liquidity"] }
+    - { id: "metric:settle-latency",    type: "fabric:primitive:metric", name: "Settlement latency",   value: 0.0, unit: "seconds", measures: ["objective:settlement"] }
+    - { id: "metric:settle-success",    type: "fabric:primitive:metric", name: "Settlement success",   value: 0.0, unit: "ratio",   measures: ["objective:settlement"] }
+    - { id: "metric:chargeback-rate",   type: "fabric:primitive:metric", name: "Chargeback rate",      value: 0.0, unit: "ratio",   measures: ["objective:zero-fraud"] }
+
+    # ════════════════════════ CONSTRAINTS (controller bounds) ═════════════════
+    - { id: "constraint:price-floor",     type: "fabric:primitive:constraint", kind: "boundary", expression: "offer.price >= floor(operating_model)", severity: "blocking" }
+    - { id: "constraint:eligibility",     type: "fabric:primitive:constraint", kind: "control",  expression: "seller.kind == operating_model.sellerKind && buyer.kind == operating_model.buyerKind", severity: "blocking" }
+    - { id: "constraint:mandate-required",type: "fabric:primitive:constraint", kind: "control",  expression: "payment.captured implies payment.mandate != null", severity: "blocking" }
+    - { id: "constraint:budget-bound",    type: "fabric:primitive:constraint", kind: "budget",   expression: "payment.amount <= resource.capacity - resource.consumed", severity: "blocking" }
+    - { id: "constraint:settle-sla",      type: "fabric:primitive:constraint", kind: "budget",   expression: "settle_latency_s <= 300", severity: "blocking" }
+
+    # ════════════════════════ POLICIES (controllers) ══════════════════════════
+    - { id: "policy:trust-safety",        type: "fabric:primitive:policy", name: "Trust & Safety",        effect: "enforce", constraints: ["constraint:eligibility"] }
+    - { id: "policy:listing",             type: "fabric:primitive:policy", name: "Listing Policy",        effect: "enforce", constraints: ["constraint:price-floor", "constraint:eligibility"] }
+    - { id: "policy:pricing-control",     type: "fabric:primitive:policy", name: "Pricing Control Loop",  effect: "enforce", constraints: ["constraint:price-floor"] }
+    - { id: "policy:settlement-control",  type: "fabric:primitive:policy", name: "Settlement Control Loop", effect: "enforce", constraints: ["constraint:settle-sla", "constraint:budget-bound", "constraint:mandate-required"] }
+    - { id: "policy:escrow",              type: "fabric:primitive:policy", name: "Escrow Policy",         effect: "require-approval", constraints: ["constraint:mandate-required"] }
+    - { id: "policy:federation",          type: "fabric:primitive:policy", name: "Federation Conformance", effect: "enforce", constraints: ["constraint:eligibility"] }
+
+    # ════════════════════════ PAYMENT PRECONDITIONS (AP2) ═════════════════════
+    - { id: "resource:buyer-budget", type: "fabric:primitive:resource", kind: "budget", unit: "USD", capacity: 100.0, consumed: 0.0, owner: "did:fabric:buyer:agent-x" }
+    - { id: "consent:pay-mandate",   type: "fabric:primitive:consent", purpose: "AP2 payment mandate: authorize Buyer Agent X to pay up to budget for matched offers", granted: true }
+    - { id: "credential:settle-key", type: "fabric:primitive:credential", name: "Settlement signing key" }
+
+    # ════════════════════════ AGENTS = THE TOOLS (closed-loop controllers) ════
+    # Each is a controller: pursues a setpoint (Objective), bounded by a Policy
+    # (Constraints), actuating via Capabilities, sensing via Metrics, guarding a
+    # Touchpoint. Paths are emergent — bounded only by governance.
+    - id: "agent:discovery"
+      type: "fabric:primitive:agent"
+      name: "Discovery Agent"
+      executes: ["capability:match", "capability:list-offer"]
+      pursues: ["objective:liquidity"]
+      governedBy: ["policy:listing", "policy:pricing-control"]
+      guards: ["touchpoint:api", "touchpoint:agent-a2a", "touchpoint:web-ui"]
+    - id: "agent:commerce"
+      type: "fabric:primitive:agent"
+      name: "Commerce Agent"
+      executes: ["capability:place-order", "capability:fulfill"]
+      pursues: ["objective:fulfilled"]
+      governedBy: ["policy:trust-safety", "policy:escrow"]
+      guards: ["touchpoint:tool-mcp", "touchpoint:api"]
+    - id: "agent:settlement"
+      type: "fabric:primitive:agent"
+      name: "Settlement Agent"
+      executes: ["capability:settle", "capability:escrow-release"]
+      pursues: ["objective:settlement"]
+      governedBy: ["policy:settlement-control"]
+      guards: ["touchpoint:pay-edge", "touchpoint:webhook"]
+    - id: "agent:escrow"
+      type: "fabric:primitive:agent"
+      name: "Escrow Agent"
+      executes: ["capability:escrow-hold"]
+      pursues: ["objective:zero-fraud"]
+      governedBy: ["policy:escrow"]
+      guards: ["touchpoint:pay-edge"]
+    - id: "agent:federation"
+      type: "fabric:primitive:agent"
+      name: "Federation Agent"
+      executes: ["capability:federate"]
+      pursues: ["objective:liquidity"]
+      governedBy: ["policy:federation"]
+      guards: ["touchpoint:matrix"]
+
+    # ════════════════════════ OFFERS (ACP listings, across motions) ═══════════
+    - id: "offer:summarizer-pro"
+      type: "fabric:primitive:offer"
+      name: "Summarizer Pro (per-call)"
+      price: 0.01
+      currency: "USD"
+      unit: "per-call"
+      status: "listed"
+      offeredBy: ["did:fabric:seller:acme"]
+      sells: ["product:summarizer"]
+      grants: ["capability:fulfill"]
+      pricedIn: ["resource:buyer-budget"]
+      listedOn: ["marketplace:fabric-community"]
+      soldUnder: ["operating-model:b2b"]
+      transactedVia: ["protocol:acp"]
+      constrainedBy: ["constraint:price-floor", "constraint:eligibility"]
+      governedBy: ["policy:listing"]
+      hasState: ["state:offer-listed"]
+    - id: "offer:translate-c2c"
+      type: "fabric:primitive:offer"
+      name: "Human Translation (per-doc)"
+      price: 5.0
+      currency: "USD"
+      unit: "flat"
+      status: "listed"
+      offeredBy: ["did:fabric:seller:indie"]
+      sells: ["product:translator"]
+      listedOn: ["marketplace:fabric-community"]
+      soldUnder: ["operating-model:c2c"]
+      transactedVia: ["protocol:acp"]
+      governedBy: ["policy:listing"]
+    - id: "offer:skill-p2p"
+      type: "fabric:primitive:offer"
+      name: "Agent Skill Pack (agent-to-agent)"
+      price: 0.5
+      currency: "USD"
+      unit: "flat"
+      status: "listed"
+      offeredBy: ["did:fabric:seller:agent-y"]
+      sells: ["product:skill-pack"]
+      grants: ["capability:match"]
+      listedOn: ["marketplace:fabric-community"]
+      soldUnder: ["operating-model:p2p"]
+      transactedVia: ["protocol:acp", "protocol:a2a"]
+      governedBy: ["policy:listing"]
+
+    # ════════════════════════ THE MARKETPLACE (the platform) ══════════════════
+    - id: "marketplace:fabric-community"
+      type: "fabric:primitive:marketplace"
+      name: "Fabric Community Marketplace"
+      status: "open"
+      federationId: "#market:fabric.community"
+      hosts: ["offer:summarizer-pro", "offer:translate-c2c", "offer:skill-p2p"]
+      enables: ["operating-model:b2b", "operating-model:b2c", "operating-model:c2c", "operating-model:d2c", "operating-model:b2b2c", "operating-model:p2p"]
+      federatesVia: ["protocol:matrix"]
+      transactsVia: ["protocol:acp", "protocol:ap2"]
+      exposes: ["touchpoint:web-ui", "touchpoint:api", "touchpoint:cli", "touchpoint:agent-a2a", "touchpoint:tool-mcp", "touchpoint:pay-edge", "touchpoint:matrix", "touchpoint:webhook"]
+      servesMarket: ["market:agent-economy"]
+      operatedBy: ["tenant:community"]
+      governedBy: ["policy:trust-safety"]
+
+    # ════════════════════════ A TRANSACTION (Order -> Payment) ════════════════
+    - id: "order:0001"
+      type: "fabric:primitive:order"
+      quantity: 1000
+      amount: 10.0
+      currency: "USD"
+      status: "accepted"
+      placedAt: "2026-06-05T12:00:00Z"
+      forOffer: ["offer:summarizer-pro"]
+      placedBy: ["did:fabric:buyer:agent-x"]
+      fulfilledBy: ["did:fabric:seller:acme"]
+      settledBy: ["payment:0001"]
+      transactedVia: ["protocol:acp"]
+      governedBy: ["policy:escrow"]
+      hasState: ["state:order-accepted"]
+      advancedBy: ["event:order-placed"]
+    - id: "payment:0001"
+      type: "fabric:primitive:payment"
+      amount: 10.0
+      currency: "USD"
+      method: "stablecoin"
+      status: "settled"
+      mandateId: "ap2:mandate:7f3a"
+      settles: ["order:0001"]
+      paidBy: ["did:fabric:buyer:agent-x"]
+      paysTo: ["did:fabric:seller:acme"]
+      authorizedBy: ["consent:pay-mandate"]
+      securedBy: ["credential:settle-key"]
+      draws: ["resource:buyer-budget"]
+      viaProtocol: ["protocol:ap2"]
+      hasState: ["state:settled"]
+      emits: ["event:payment-settled"]
+
+    # ════════════════════════ STATES & EVENTS (the plant) ═════════════════════
+    - { id: "state:offer-listed",   type: "fabric:primitive:state", name: "Offer listed" }
+    - { id: "state:order-accepted", type: "fabric:primitive:state", name: "Order accepted" }
+    - { id: "state:settled",        type: "fabric:primitive:state", name: "Settled" }
+    - { id: "event:order-placed",   type: "fabric:primitive:event", name: "Order placed" }
+    - { id: "event:payment-settled",type: "fabric:primitive:event", name: "Payment settled" }

@@ -160,6 +160,14 @@ export interface Location {
   uri?: string;
 }
 
+/** Where do parties list, discover, and transact?  (fabric:primitive:marketplace) */
+export interface Marketplace {
+  id: string;
+  name: string;
+  status?: string;
+  federationId?: string;
+}
+
 /** What market category is this?  (fabric:primitive:market) */
 export interface Market {
   id: string;
@@ -184,6 +192,47 @@ export interface Objective {
   targetDate?: string;
   priority?: string;
   status?: string;
+}
+
+/** What is offered for sale, by whom, at what price?  (fabric:primitive:offer) */
+export interface Offer {
+  id: string;
+  name: string;
+  price?: number;
+  currency?: string;
+  unit?: string;
+  status?: string;
+  sku?: string;
+}
+
+/** Which selling motion is this?  (fabric:primitive:operating-model) */
+export interface OperatingModel {
+  id: string;
+  name: string;
+  motion: string;
+  sellerKind?: string;
+  buyerKind?: string;
+  enabled?: boolean;
+}
+
+/** What was purchased, by whom, and is it fulfilled?  (fabric:primitive:order) */
+export interface Order {
+  id: string;
+  quantity?: number;
+  amount?: number;
+  currency?: string;
+  status?: string;
+  placedAt?: string;
+}
+
+/** How was value settled, under whose mandate?  (fabric:primitive:payment) */
+export interface Payment {
+  id: string;
+  amount?: number;
+  currency?: string;
+  method?: string;
+  status?: string;
+  mandateId?: string;
 }
 
 /** What action is allowed on what?  (fabric:primitive:permission) */

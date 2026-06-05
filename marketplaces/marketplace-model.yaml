@@ -1,0 +1,48 @@
+# Marketplace — the federated venue where parties list, discover, and transact
+id: "fabric:primitive:marketplace"
+name: "Marketplace"
+version: "1.0.0"
+layer: "domain"
+question: "Where do parties list, discover, and transact?"
+extends: ["fabric:primitive:thing"]
+description: >
+  The platform itself: a federated venue that HOSTS Offers, ENABLES a
+  configurable set of Operating Models (b2b/b2c/c2c/d2c/b2b2c/p2p), and is
+  reachable over many channels and surfaces (api/ui/cli/agent/tool/webhook).
+  Federation across community-run instances uses the Matrix protocol; commerce
+  follows the Agent Commerce Protocol (Offer/Order) and settlement the Agent
+  Payments Protocol (Payment). The marketplace is configuration over the graph,
+  not a fixed app — which models, channels, and protocols are live are all
+  values it points at, never branches in core code.
+schemaOrg:
+  type: "schema:OnlineStore"
+  url: "https://schema.org/OnlineStore"
+  note: >
+    schema:OnlineStore models a store reachable online; Marketplace generalizes
+    it to a multi-seller, multi-motion, federated venue rather than a single store.
+jsonldContext:
+  marketplace: "fabric:Marketplace"
+attributes:
+  - { name: id, type: string, required: true, schemaOrg: "schema:identifier" }
+  - { name: name, type: string, required: true, schemaOrg: "schema:name" }
+  - { name: status, type: string, required: false, description: "draft | open | paused | closed." }
+  - name: federationId
+    type: string
+    required: false
+    description: "Matrix server / room identifier this instance federates under (e.g. #market:fabric.community)."
+relationships:
+  - { name: hosts, target: "fabric:primitive:offer", cardinality: "0..*", description: "Offers listed on this marketplace." }
+  - { name: enables, target: "fabric:primitive:operating-model", cardinality: "0..*", description: "The configurable subset of selling motions switched on here." }
+  - { name: federatesVia, target: "fabric:primitive:protocol", cardinality: "0..*", description: "Federation protocol across community instances (Matrix)." }
+  - { name: transactsVia, target: "fabric:primitive:protocol", cardinality: "0..*", description: "Commerce + payment protocols (Agent Commerce Protocol, Agent Payments Protocol)." }
+  - { name: exposes, target: "fabric:primitive:touchpoint", cardinality: "0..*", description: "The channels/surfaces it is reachable on (multi-channel, multi-surface)." }
+  - { name: servesMarket, target: "fabric:primitive:market", cardinality: "0..*", description: "Market categories the venue serves." }
+  - { name: operatedBy, target: "fabric:primitive:tenant", cardinality: "0..1", description: "Tenant that operates this marketplace instance." }
+  - { name: governedBy, target: "fabric:primitive:policy", cardinality: "0..*", description: "Trust, safety, and listing policy for the venue." }
+invariants:
+  - "A Marketplace enables a SUBSET of Operating Models; changing the set is configuration, never a code change."
+  - "A Marketplace is reachable on one or more Touchpoints; each Touchpoint declares its surface and protocol (multi-channel, multi-surface by construction)."
+  - "Federation across instances is a Protocol at a Touchpoint (Matrix) — the core stays protocol-agnostic; federation lives in a sidecar agent."
+  - "Every Offer hosted MUST be sold under an Operating Model the marketplace enables."
+examples:
+  - { id: "marketplace:fabric-community", name: "Fabric Community Marketplace", status: "open", federationId: "#market:fabric.community" }
