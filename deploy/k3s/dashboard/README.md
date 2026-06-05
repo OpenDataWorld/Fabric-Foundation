@@ -46,6 +46,27 @@ kubectl -n kubernetes-dashboard get secret admin-user-token \
   -o jsonpath='{.data.token}' | base64 -d; echo
 ```
 
+## Optional: expose it at a URL
+
+If you really want a browser URL instead of a tunnel, pass a hostname:
+
+```bash
+./install.sh dashboard.yourdomain.com
+```
+
+This applies `20-ingress.example.yaml` — a Traefik route with **cert-manager
+TLS** and a **basic-auth gate** in front (the dashboard is never exposed raw).
+Prerequisites: cert-manager + a `letsencrypt-prod` ClusterIssuer, and public
+DNS for the host. You must set the basic-auth credentials before trusting it:
+
+```bash
+htpasswd -nb admin 'YOUR_PASSWORD' | base64 -w0   # copy the output
+kubectl -n kubernetes-dashboard edit secret dashboard-basic-auth   # data.users: <paste>
+```
+
+Then browse `https://dashboard.yourdomain.com`, pass the basic-auth prompt, and
+log in with the token (above).
+
 ## Security
 
 - The `admin-user` token is **cluster-admin** — treat it like a root password.

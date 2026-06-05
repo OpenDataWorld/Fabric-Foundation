@@ -2,17 +2,33 @@
 #
 # One-command install of the Kubernetes Dashboard control panel on k3s.
 #
-#   ./install.sh
+#   ./install.sh                      # secure default: port-forward access only
+#   ./install.sh dashboard.you.com    # ALSO expose at a URL (TLS + basic-auth)
 #
-# Deploys the dashboard + an admin-user login, then prints a login token and
-# the port-forward command to reach it securely (no public Ingress).
+# With no args you get port-forward access (recommended). Passing a hostname
+# additionally applies 20-ingress.example.yaml to expose it publicly behind
+# Traefik TLS + a basic-auth gate — you must still set the basic-auth secret.
 set -euo pipefail
 
+HOST="${1:-}"
 command -v kubectl >/dev/null || { echo "error: kubectl not found" >&2; exit 1; }
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo ">> applying Kubernetes Dashboard ..."
 kubectl apply -k "$SRC"
+
+if [[ -n "$HOST" ]]; then
+  echo ">> exposing at https://${HOST} (TLS + basic-auth) ..."
+  if kubectl -n kubernetes-dashboard get secret dashboard-basic-auth >/dev/null 2>&1; then
+    sed "s|dashboard.example.com|${HOST}|g" "$SRC/20-ingress.example.yaml" | kubectl apply -f -
+  else
+    sed -e "s|dashboard.example.com|${HOST}|g" \
+        -e '/^  users:/d' "$SRC/20-ingress.example.yaml" | kubectl apply -f -
+    echo "   !! set basic-auth before relying on this:" >&2
+    echo "      htpasswd -nb admin 'PASSWORD' | base64 -w0   # then put under data.users" >&2
+    echo "      kubectl -n kubernetes-dashboard edit secret dashboard-basic-auth" >&2
+  fi
+fi
 
 echo ">> waiting for the dashboard to become ready ..."
 kubectl -n kubernetes-dashboard rollout status deploy/kubernetes-dashboard --timeout=120s || true
