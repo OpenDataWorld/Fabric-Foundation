@@ -2,11 +2,13 @@
 #
 #  The whole stack, one command.
 #
-#      ./up.sh <base-domain> [letsencrypt-email]
+#      ./up.sh [base-domain] [letsencrypt-email]
 #
 #  Examples:
-#      ./up.sh example.com you@example.com     # real DNS + automatic TLS
-#      ./up.sh 203.0.113.10.sslip.io           # just an IP, instant DNS, self-signed
+#      ./up.sh                                  # NO domain needed — auto-detects
+#                                               # your IP and uses <ip>.sslip.io
+#      ./up.sh example.com you@example.com      # real DNS + automatic TLS
+#      ./up.sh 203.0.113.10.sslip.io            # a specific IP, instant DNS
 #
 #  Brings up, in dependency order, on one domain:
 #      cert-manager (TLS)                -> prerequisite
@@ -22,11 +24,20 @@ set -uo pipefail
 
 BASE="${1:-}"
 EMAIL="${2:-}"
-if [[ -z "$BASE" ]]; then
-  echo "usage: $0 <base-domain> [letsencrypt-email]" >&2
-  exit 1
-fi
 command -v kubectl >/dev/null || { echo "error: kubectl not found" >&2; exit 1; }
+
+# No domain given? Auto-detect the server IP and use sslip.io — zero DNS setup.
+if [[ -z "$BASE" ]]; then
+  IP="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}' 2>/dev/null)"
+  [[ -z "$IP" ]] && IP="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' 2>/dev/null)"
+  [[ -z "$IP" ]] && IP="$(hostname -I 2>/dev/null | awk '{print $1}')"
+  if [[ -z "$IP" ]]; then
+    echo "could not auto-detect an IP — pass one explicitly: $0 <domain-or-ip.sslip.io>" >&2
+    exit 1
+  fi
+  BASE="${IP}.sslip.io"
+  echo ">> no domain given — using ${BASE} (auto DNS via sslip.io, nothing to configure)"
+fi
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CM_VERSION="v1.16.2"
 
