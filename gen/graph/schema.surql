@@ -172,6 +172,10 @@ DEFINE FIELD status ON TABLE risk TYPE option<record>;
 DEFINE TABLE role SCHEMAFULL;
 DEFINE FIELD name ON TABLE role TYPE string;
 
+DEFINE TABLE runtime SCHEMAFULL;
+DEFINE FIELD name ON TABLE runtime TYPE string;
+DEFINE FIELD version ON TABLE runtime TYPE option<string>;
+
 DEFINE TABLE schema SCHEMAFULL;
 DEFINE FIELD name ON TABLE schema TYPE string;
 DEFINE FIELD baseClass ON TABLE schema TYPE record;
@@ -310,6 +314,11 @@ DEFINE TABLE governedby TYPE RELATION IN risk OUT policy;
 DEFINE TABLE evidencedby TYPE RELATION IN risk OUT evidence;
 DEFINE TABLE grants TYPE RELATION IN role OUT permission;
 DEFINE TABLE assignedto TYPE RELATION IN role OUT identity;
+DEFINE TABLE binds TYPE RELATION IN runtime OUT identity;
+DEFINE TABLE hosts TYPE RELATION IN runtime OUT agent;
+DEFINE TABLE remembers TYPE RELATION IN runtime OUT event;
+DEFINE TABLE holds TYPE RELATION IN runtime OUT state;
+DEFINE TABLE exposes TYPE RELATION IN runtime OUT touchpoint;
 DEFINE TABLE basedonclass TYPE RELATION IN schema OUT thing;
 DEFINE TABLE includesfieldgroup TYPE RELATION IN schema OUT field_group;
 DEFINE TABLE governedby TYPE RELATION IN schema OUT policy;

@@ -267,6 +267,13 @@ export interface Role {
   name: string;
 }
 
+/** What executes, remembers, and responds?  (fabric:primitive:runtime) */
+export interface Runtime {
+  id: string;
+  name: string;
+  version?: string;
+}
+
 /** How is this entity's structure composed?  (fabric:primitive:schema) */
 export interface Schema {
   id: string;

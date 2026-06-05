@@ -17,6 +17,7 @@
     "rel": "fabric:Relationship",
     "resource": "fabric:Resource",
     "risk": "fabric:Risk",
+    "runtime": "fabric:Runtime",
     "state": "fabric:State",
     "@vocab": "https://opendataworld.org/fabric/vocab#",
     "time": "http://www.w3.org/2006/time#",
@@ -1929,6 +1930,81 @@
           "rdfs:label": "assignedTo",
           "schema:rangeIncludes": {
             "@id": "fabric:primitive:identity"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "fabric:primitive:runtime",
+      "@type": "schema:SoftwareApplication",
+      "rdfs:label": "Runtime",
+      "rdfs:comment": "What executes, remembers, and responds?",
+      "schema:sameAs": {
+        "@id": "https://schema.org/SoftwareApplication"
+      },
+      "fabric:attribute": [
+        {
+          "@id": "fabric:runtime.id",
+          "rdfs:label": "id",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:identifier"
+          }
+        },
+        {
+          "@id": "fabric:runtime.name",
+          "rdfs:label": "name",
+          "fabric:dataType": "string",
+          "fabric:required": true,
+          "schema:sameAs": {
+            "@id": "schema:name"
+          }
+        },
+        {
+          "@id": "fabric:runtime.version",
+          "rdfs:label": "version",
+          "fabric:dataType": "string",
+          "fabric:required": false,
+          "schema:sameAs": {
+            "@id": "schema:softwareVersion"
+          }
+        }
+      ],
+      "fabric:relationship": [
+        {
+          "@id": "fabric:binds",
+          "rdfs:label": "binds",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:identity"
+          }
+        },
+        {
+          "@id": "fabric:hosts",
+          "rdfs:label": "hosts",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:agent"
+          }
+        },
+        {
+          "@id": "fabric:remembers",
+          "rdfs:label": "remembers",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:event"
+          }
+        },
+        {
+          "@id": "fabric:holds",
+          "rdfs:label": "holds",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:state"
+          }
+        },
+        {
+          "@id": "fabric:exposes",
+          "rdfs:label": "exposes",
+          "schema:rangeIncludes": {
+            "@id": "fabric:primitive:touchpoint"
           }
         }
       ]

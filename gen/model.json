@@ -161,6 +161,11 @@
       "question": "What set of permissions is granted?"
     },
     {
+      "id": "runtime",
+      "name": "Runtime",
+      "question": "What executes, remembers, and responds?"
+    },
+    {
       "id": "schema",
       "name": "Schema",
       "question": "How is this entity's structure composed?"
@@ -334,6 +339,10 @@
     {
       "id": "role",
       "name": "Role"
+    },
+    {
+      "id": "runtime",
+      "name": "Runtime"
     },
     {
       "id": "schema",
@@ -807,6 +816,31 @@
       "from": "role",
       "rel": "assignedTo",
       "to": "identity"
+    },
+    {
+      "from": "runtime",
+      "rel": "binds",
+      "to": "identity"
+    },
+    {
+      "from": "runtime",
+      "rel": "hosts",
+      "to": "agent"
+    },
+    {
+      "from": "runtime",
+      "rel": "remembers",
+      "to": "event"
+    },
+    {
+      "from": "runtime",
+      "rel": "holds",
+      "to": "state"
+    },
+    {
+      "from": "runtime",
+      "rel": "exposes",
+      "to": "touchpoint"
     },
     {
       "from": "schema",

@@ -33,6 +33,7 @@ CREATE (:Primitive {id:'relationship', name:'Relationship', question:'How are th
 CREATE (:Primitive {id:'resource', name:'Resource', question:'What is consumed, allocated, or required?'});
 CREATE (:Primitive {id:'risk', name:'Risk', question:'What could go wrong, and how bad?'});
 CREATE (:Primitive {id:'role', name:'Role', question:'What set of permissions is granted?'});
+CREATE (:Primitive {id:'runtime', name:'Runtime', question:'What executes, remembers, and responds?'});
 CREATE (:Primitive {id:'schema', name:'Schema', question:'How is this entity\'s structure composed?'});
 CREATE (:Primitive {id:'session', name:'Session', question:'When and how was access established?'});
 CREATE (:Primitive {id:'solution', name:'Solution', question:'What outcome does this compose?'});
@@ -130,6 +131,11 @@ MATCH (a:Primitive {id:'risk'}), (b:Primitive {id:'policy'}) CREATE (a)-[:GOVERN
 MATCH (a:Primitive {id:'risk'}), (b:Primitive {id:'evidence'}) CREATE (a)-[:EVIDENCEDBY]->(b);
 MATCH (a:Primitive {id:'role'}), (b:Primitive {id:'permission'}) CREATE (a)-[:GRANTS]->(b);
 MATCH (a:Primitive {id:'role'}), (b:Primitive {id:'identity'}) CREATE (a)-[:ASSIGNEDTO]->(b);
+MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'identity'}) CREATE (a)-[:BINDS]->(b);
+MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'agent'}) CREATE (a)-[:HOSTS]->(b);
+MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'event'}) CREATE (a)-[:REMEMBERS]->(b);
+MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'state'}) CREATE (a)-[:HOLDS]->(b);
+MATCH (a:Primitive {id:'runtime'}), (b:Primitive {id:'touchpoint'}) CREATE (a)-[:EXPOSES]->(b);
 MATCH (a:Primitive {id:'schema'}), (b:Primitive {id:'thing'}) CREATE (a)-[:BASEDONCLASS]->(b);
 MATCH (a:Primitive {id:'schema'}), (b:Primitive {id:'fieldgroup'}) CREATE (a)-[:INCLUDESFIELDGROUP]->(b);
 MATCH (a:Primitive {id:'schema'}), (b:Primitive {id:'policy'}) CREATE (a)-[:GOVERNEDBY]->(b);

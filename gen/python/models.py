@@ -306,6 +306,14 @@ class Role:
 
 
 @dataclass
+class Runtime:
+    """What executes, remembers, and responds?  (fabric:primitive:runtime)"""
+    id: str
+    name: str
+    version: Optional[str] = None
+
+
+@dataclass
 class Schema:
     """How is this entity's structure composed?  (fabric:primitive:schema)"""
     id: str

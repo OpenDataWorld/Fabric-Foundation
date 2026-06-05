@@ -86,6 +86,11 @@ graph LR
   Risk -->|evidencedBy| Evidence
   Role -->|grants| Permission
   Role -->|assignedTo| Identity
+  Runtime -->|binds| Identity
+  Runtime -->|hosts| Agent
+  Runtime -->|remembers| Event
+  Runtime -->|holds| State
+  Runtime -->|exposes| Touchpoint
   Schema -->|basedOnClass| Thing
   Schema -->|includesFieldGroup| FieldGroup
   Schema -->|governedBy| Policy
