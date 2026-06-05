@@ -13,11 +13,11 @@
     },
     "surface": {
       "type": "string",
-      "description": "Interface kind exposed: api | ui | cli | event | file | database | webhook | stream."
+      "description": "Interface kind exposed: api | ui | cli | event | file | database | webhook | stream | agent | tool."
     },
     "protocol": {
       "type": "string",
-      "description": "How parties communicate: http | https | grpc | graphql | websocket | sql | amqp | mqtt | kafka | s3 | smtp | custom. Required \u2014 if none exists, define one for this touchpoint."
+      "description": "How parties communicate: http | https | grpc | graphql | websocket | sql | amqp | mqtt | kafka | s3 | smtp | a2a | mcp | custom. Note: a2a (Agent-to-Agent) is agent\u2194agent \u2014 same type on both sides, so it is the SEAMLESS case and not itself a boundary touchpoint. The boundary is where an agent meets a different type: agent\u2194tool uses mcp (Model Context Protocol). Required \u2014 if no protocol exists for a boundary, define one.\n"
     },
     "format": {
       "type": "string",
