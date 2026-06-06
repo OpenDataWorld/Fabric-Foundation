@@ -5,6 +5,11 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.0-alpha] — 2026-06-06
+
+Second alpha. Grows the platform from a model + generators into a runnable,
+agent-native fabric, and adds product-composition tooling.
+
 ### Added
 - **Fabric Runtime** (`runtime/`) — a Go multi-model graph runtime (documents +
   typed graph edges in one in-memory engine) seeded self-describingly from the
@@ -74,4 +79,5 @@ execution) is design-stage.** APIs and schemas may change without notice.
 SurrealDB (engine) · Apache SeaTunnel (integration) · OpenMetadata (catalog) ·
 OpenLineage (lineage).
 
+[0.2.0-alpha]: https://github.com/opendataworld/fabric/releases/tag/v0.2.0-alpha
 [0.1.0-alpha]: https://github.com/opendataworld/fabric/releases/tag/v0.1.0-alpha
