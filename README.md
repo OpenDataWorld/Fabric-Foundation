@@ -1,8 +1,9 @@
 # Fabric — Foundation Primitive Layer
 
-> **Status: `v0.1.0-alpha`** — the model, generators, API, and identity
-> connectors are real and runnable; the data-plane runtime (Fabric DB,
-> ingestion/governance execution) is design-stage. See [CHANGELOG](CHANGELOG.md).
+> **Status: `v0.2.0-alpha`** — the model, generators, API, identity connectors,
+> a runnable Go graph runtime (GraphQL + MCP), and product-composition tooling
+> (the Product MVP Builder) are real and runnable; persistent storage and full
+> governance execution are still maturing. See [CHANGELOG](CHANGELOG.md).
 
 Fabric is the canonical semantic foundation for the OpenDataWorld platform:
 an open, schema.org-aligned model from which schemas, entities, knowledge,
@@ -47,6 +48,18 @@ schema.org-aligned YAML model conforming to
 
 The model forms a clean graph — **42 nodes, 120 edges, 0 dangling** (verified by
 `python tools/fabric.py validate`).
+
+## What you can run today
+
+- **Data Model API** — `python api/server.py` (schema registry over the primitives).
+- **Code generator** — `python codegen/generate_models.py --target all` (Python,
+  TypeScript, JSON Schema, SQL, and SurrealDB graph schema).
+- **Fabric Runtime** — `runtime/` Go multi-model graph engine with a GraphQL API
+  and MCP server (`runtime --mcp`); agents are first-class governed actors.
+- **Product MVP Builder** — [`site/build.html`](site/build.html): compose a
+  `Product` from the live model and export aligned YAML + a catalog snippet.
+- **Liferay on Kubernetes** — [`deploy/liferay/`](deploy/liferay/): a starter
+  Helm chart realizing the matching MVP preset.
 
 ## How the primitives compose
 
